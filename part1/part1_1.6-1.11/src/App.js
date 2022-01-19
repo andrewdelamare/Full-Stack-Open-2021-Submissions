@@ -69,7 +69,13 @@ const App = () => {
     setBad(bad + 1)
   }
 
-
+  if(good === 0 && neutral === 0 && bad === 0){return (
+    <div>
+      <h2>Give Feedback</h2>
+      <Feedback setGood={handleGood} setNeutral={handleNeutral} setBad={handleBad} good="good" neutral='neutral' bad='bad' />
+      <h2>No feedback given</h2>
+    </div>
+  )}else{
   return (
     <div>
       <h2>Give Feedback</h2>
@@ -77,7 +83,7 @@ const App = () => {
       <h2>Statistics</h2>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
-  )
+  )}
 }
 
 export default App
