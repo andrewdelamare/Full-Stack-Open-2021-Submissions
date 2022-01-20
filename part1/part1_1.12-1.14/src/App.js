@@ -16,6 +16,17 @@ const randomAnecdote = () => {
   return(rand)
 }
 
+
+const MostPopular = (props) => {
+  const popular = props.popu[1]
+  const numVotes = props.popu[0]
+  return(
+  <div>  
+    <Anecdote anec={props.anec} select={popular} />
+    <Votes votes={numVotes} />
+  </div>)
+}
+
 const Votes = (props) => {
   return (
     <div>
@@ -37,24 +48,42 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0])
+  const [popular, setPopular] = useState([0, 0])
   
   const handleVote = () => {
     let newVotes = [...votes]
     newVotes[selected] += 1
     setVotes(newVotes)
+    console.log("votes: ", votes)
+    handlePopular(newVotes)
   }
 
   const handleButton = () => {
     setSelected(randomAnecdote())
   }
 
+  const handlePopular = (votes) => {
+    console.log("origional popular: ", popular)
+    let max = Math.max(...votes)
+    console.log("max: ", max)
+    let index = votes.indexOf(max)
+    console.log("index: ", index)
+    console.log("popular: ", popular)
+    const newPopular = [max, index]
+    console.log( "newPopular: ", newPopular)
+    setPopular(newPopular)
+    
+    }
+
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <Anecdote anec={anecdotes} select={selected} />
       <Votes votes={votes[selected]} />
       <Button onClick={handleButton} text={'Next Anecdote'} />
-      <Button onClick={handleVote} text={'Vote'} />
-      
+      <Button onClick={()=>{handleVote();}} text={'Vote'} />
+      <h2>Most popular Anecdote</h2>
+      <MostPopular anec={anecdotes} popu={popular} votes={votes} />
       
     </div>
   )
