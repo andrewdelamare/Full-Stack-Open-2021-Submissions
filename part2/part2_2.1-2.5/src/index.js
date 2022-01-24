@@ -16,21 +16,31 @@ const Total = ({ course }) => {
 
 const Part = (props) => {
   return (
-    <p>
-      {props.part.name} {props.part.exercises}
+    <p key={props.id}>
+      {props.name} {props.exercises}
     </p>    
   )
 }
 
 const Content = ({ course }) => {
+  const parts = course.parts
+  console.log(parts)
   return (
     <div>
-      <Part part={course.parts[0]} />
-      <Part part={course.parts[1]} />
-      <Part part={course.parts[2]} />
+      {parts.map((part) => <Part key={part.id} name={part.name} exercises={part.exercises} />)}
     </div>
   )
 }
+
+const Course = ({ course }) => {
+  return(
+    <div>
+      <Header course={course} />
+      <Content course={course} />
+      <Total course={course} />
+    </div>
+  )
+} 
 
 const App = () => {
   const course = {
@@ -46,12 +56,13 @@ const App = () => {
         name: 'Using props to pass data',
         exercises: 7,
         id: 2
-      },
+      }, 
       {
         name: 'State of a component',
         exercises: 14,
         id: 3
       }
+      
     ]
   }
 
