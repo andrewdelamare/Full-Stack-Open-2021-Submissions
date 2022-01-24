@@ -10,12 +10,7 @@ const Header = ({ course }) => {
 const Total = ({ course }) => {
   const parts = course.parts
   const exerciseList = parts.map((part) => part.exercises)
-  console.log(exerciseList)
-  let sum = 0
-  exerciseList.forEach(element => {
-    sum += element
-  });
- 
+  const sum = exerciseList.reduce((total, exercises)=> total+=exercises, 0)
   return(
     <p>Total number of exercises: {sum}</p>
   ) 
