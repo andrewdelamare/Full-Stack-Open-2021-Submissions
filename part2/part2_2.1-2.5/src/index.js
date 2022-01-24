@@ -8,23 +8,29 @@ const Header = ({ course }) => {
 }
 
 const Total = ({ course }) => {
-  const sum = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
+  const parts = course.parts
+  const exerciseList = parts.map((part) => part.exercises)
+  console.log(exerciseList)
+  let sum = 0
+  exerciseList.forEach(element => {
+    sum += element
+  });
+ 
   return(
-    <p>Number of exercises {sum}</p>
+    <p>Total number of exercises: {sum}</p>
   ) 
 }
 
 const Part = (props) => {
   return (
     <p key={props.id}>
-      {props.name} {props.exercises}
+      {props.name}: {props.exercises}
     </p>    
   )
 }
 
 const Content = ({ course }) => {
   const parts = course.parts
-  console.log(parts)
   return (
     <div>
       {parts.map((part) => <Part key={part.id} name={part.name} exercises={part.exercises} />)}
