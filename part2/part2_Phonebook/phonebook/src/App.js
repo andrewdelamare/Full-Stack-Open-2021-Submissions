@@ -1,50 +1,7 @@
 import React, { useState } from 'react'
-
-const Part = (props) => {
-  
-  return (
-    <p key={props.id}>
-      {props.name} {props.number}
-    </p>    
-  )
-}
-
-const Content = ({ persons, filter }) => {
-  if(filter.isOn){
-    const filtered = persons.filter(person => person.name.toLowerCase().includes(filter.text.toLowerCase()))
-    return (
-      <div>
-        {filtered.map((person) => <Part key={person.id} name={person.name} number={person.number} />)}
-      </div>
-    )
-  }else{
-    return (
-    <div>
-      {persons.map((person) => <Part key={person.id} name={person.name} number={person.number} />)}
-    </div>
-  )}
-}
-
-const Numbers = ({ persons, filter }) => {
-  return(
-    <div>
-      <h2>Numbers</h2>
-      <Content persons={persons} filter={filter} />
-   </div> 
-  )
-}
-
-const Filter = (props) => {
-  return(
-    <div>
-      <form>
-        <div>
-          Filter with: <input onChange={props.handleNewFilter} />
-        </div>
-      </form>
-    </div>
-  )
-}
+import { Numbers } from './numbers'
+import { Filter } from './filter'
+import { NumberEntry } from './numberEntry'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -64,7 +21,7 @@ const App = () => {
     const names = oldPersons.map((person) => person.name)
     const included = names.includes(newName) ? true : false
     if(included){
-      return(window.alert(`${newName} is already indluded in your phonebook`))
+      return(window.alert(`${newName} is already included in your phonebook`))
     }else{
     const newPerson = {name: newName, number: newNumber, id: id}
     const newPersons = oldPersons.concat(newPerson)
@@ -90,17 +47,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter handleNewFilter={handleNewFilter} />
-      <form onSubmit={addNewPerson}>
-        <div>
-          Name: <input onChange={handleNewName} />
-        </div>
-        <div>
-          Number: <input onChange={handleNewNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <NumberEntry addNewPerson={addNewPerson} handleNewName={handleNewName} handleNewNumber={handleNewNumber} />
       <Numbers persons={persons} filter={filter} />
     </div>
   )
