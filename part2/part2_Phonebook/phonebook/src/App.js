@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const Part = (props) => {
   console.log(props)
   return (
-    <p key={props.key}>
+    <p key={props.id}>
       {props.name}
     </p>    
   )
@@ -39,9 +39,14 @@ const App = () => {
     event.preventDefault()
     const oldPersons = persons
     const id = oldPersons.length 
+    const names = oldPersons.map((person) => person.name)
+    const included = names.includes(newName) ? true : false
+    if(included){
+      return(window.alert(`${newName} is already indluded in your phonebook`))
+    }else{
     const newPerson = {name: newName, id: id}
     const newPersons = oldPersons.concat(newPerson)
-    setPersons(newPersons)
+    setPersons(newPersons)}
   }
 
   const handleNewName = (event) => {
