@@ -20,8 +20,6 @@ export const Details = ({ country }) => {
       <h2>Languages</h2>
       <Languages languageList={country.languages}/>
       <img src={country.flags.png} alt='Flag'></img>
-
-
     </div>
   )
 }

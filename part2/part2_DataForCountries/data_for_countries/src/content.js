@@ -2,9 +2,8 @@ import React from "react";
 import { Part } from "./part";
 import { Details } from "./details";
 
-export const Content = ({ persons, filter }) => {
-  const filtered = persons.filter(person => person.name.common.toLowerCase().includes(filter.text.toLowerCase()))
-  console.log(filtered)
+export const Content = ({ countries, filter}) => {
+  const filtered = countries.filter(country => country.name.common.toLowerCase().includes(filter.text.toLowerCase()))
   if(filter.isOn && filtered.length > 10){
     return (
       <div>
@@ -14,7 +13,7 @@ export const Content = ({ persons, filter }) => {
     } else if(filter.isOn && filtered.length <= 10 && filtered.length > 1){
       return (
         <div>
-          {filtered.map((person) => <Part key={filtered.indexOf(person)} name={person.name.common} />)}
+          {filtered.map((country) => <Part key={filtered.indexOf(country)} name={country.name.common} country={country} />)}
         </div> 
     )} else if(filter.isOn && filtered.length === 1){
       return (
