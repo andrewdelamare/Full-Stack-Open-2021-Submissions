@@ -21,9 +21,14 @@ const App = () => {
     }else{
     const newPerson = {name: newName, number: newNumber, id: id}
     const newPersons = oldPersons.concat(newPerson)
-    setPersons(newPersons)}
+    setPersons(newPersons)
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+      }) 
+    }
   }
-
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
