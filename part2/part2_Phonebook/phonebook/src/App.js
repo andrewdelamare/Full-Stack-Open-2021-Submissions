@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Numbers } from './numbers'
 import { Filter } from './filter'
 import { NumberEntry } from './numberEntry'
+import nService from './services/namesService'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -20,13 +20,7 @@ const App = () => {
       return(window.alert(`${newName} is already included in your phonebook`))
     }else{
     const newPerson = {name: newName, number: newNumber, id: id}
-    const newPersons = oldPersons.concat(newPerson)
-    setPersons(newPersons)
-    axios
-      .post('http://localhost:3001/persons', newPerson)
-      .then(response => {
-        setPersons(persons.concat(response.data))
-      }) 
+    return(nService.create(newPerson).then(response => setPersons(persons.concat(response))))
     }
   }
   const handleNewName = (event) => {
@@ -43,16 +37,8 @@ const App = () => {
     let on = value !== '' ? true : false
     setNewFilter({text: `${value}`, isOn:on })
   }
-
-  const getData = () => {
-    axios 
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      setPersons(response.data)
-    })
-  }
-
-  useEffect(getData, [])
+useEffect(()=>{nService.getAll().then(initialResponse => setPersons(initialResponse))}, []
+)
 
   return (
     <div>
