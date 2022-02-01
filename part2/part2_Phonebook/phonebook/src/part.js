@@ -1,10 +1,12 @@
 import React from "react";
-
-export const Part = (props) => {
-  
+import nService from "./services/namesService";
+export const Part = ({ obj, id, name, number, handleDeleteEvent }) => {
+  console.log(obj)
     return (
-      <p key={props.id}>
-        {props.name} {props.number}
-      </p>    
+      <div>
+        <p key={id.value}> {name} {number}</p> 
+        <button  key={`${id}.1`} onClick={() => {return (nService.remove(obj, true), handleDeleteEvent())} }> Delete </button>
+      </div>
+          
     )
   }

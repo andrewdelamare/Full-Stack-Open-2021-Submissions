@@ -13,7 +13,8 @@ const App = () => {
   const addNewPerson = (event) => {
     event.preventDefault()
     const oldPersons = persons
-    const id = oldPersons.length 
+    // new ID generation system prevents issues if an entry has been deleted
+    const id = oldPersons[oldPersons.length-1].id + 1  
     const names = oldPersons.map((person) => person.name)
     const included = names.includes(newName) ? true : false
     if(included){
@@ -37,6 +38,9 @@ const App = () => {
     let on = value !== '' ? true : false
     setNewFilter({text: `${value}`, isOn:on })
   }
+  const handleDeleteEvent = (event) => {
+    nService.getAll().then(initialResponse => setPersons(initialResponse))}
+    
 useEffect(()=>{nService.getAll().then(initialResponse => setPersons(initialResponse))}, []
 )
 
@@ -45,7 +49,7 @@ useEffect(()=>{nService.getAll().then(initialResponse => setPersons(initialRespo
       <h2>Phonebook</h2>
       <Filter handleNewFilter={handleNewFilter} />
       <NumberEntry addNewPerson={addNewPerson} handleNewName={handleNewName} handleNewNumber={handleNewNumber} />
-      <Numbers persons={persons} filter={filter} />
+      <Numbers persons={persons} filter={filter} handleDeleteEvent={handleDeleteEvent}/>
     </div>
   )
 }
