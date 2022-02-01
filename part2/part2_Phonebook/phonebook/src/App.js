@@ -10,20 +10,36 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setNewFilter] = useState({text: '', isOn: false})
 
+  useEffect(()=>{nService.getAll().then(initialResponse => setPersons(initialResponse))}, [])
+
   const addNewPerson = (event) => {
     event.preventDefault()
     const oldPersons = persons
     // new ID generation system prevents issues if an entry has been deleted
-    const id = oldPersons[oldPersons.length-1].id + 1  
+    const newid = oldPersons[oldPersons.length-1].id + 1  
     const names = oldPersons.map((person) => person.name)
     const included = names.includes(newName) ? true : false
     if(included){
-      return(window.alert(`${newName} is already included in your phonebook`))
+      const oldPerson = oldPersons.filter(person => person.name === newName)
+      const oldPersonDat = oldPerson[0]
+      const newishPerson = {name: newName, number: newNumber, id: oldPersonDat.id}
+      const confirmed = window.confirm(`${newName} is already included in your phonebook. Update ${newName}?`)
+      if(confirmed){ 
+        nService.update(newishPerson)
+        //struggled for many hours to get setPersons to update the state correctly, with previous strategies the state would update but wouldnt re render
+        setPersons(persons.map(person => {
+          if(person.name !== newishPerson.name){
+            return person
+          }else{return newishPerson}}))
+      }else{
+        console.log('unconfirmed')
+      }
     }else{
-    const newPerson = {name: newName, number: newNumber, id: id}
-    return(nService.create(newPerson).then(response => setPersons(persons.concat(response))))
-    }
-  }
+      const newPerson = {name: newName, number: newNumber, id: newid}
+      return(nService.create(newPerson).then(response => setPersons(persons.concat(response))))
+      }
+    }  
+
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
@@ -38,11 +54,12 @@ const App = () => {
     let on = value !== '' ? true : false
     setNewFilter({text: `${value}`, isOn:on })
   }
-  const handleDeleteEvent = (event) => {
-    nService.getAll().then(initialResponse => setPersons(initialResponse))}
-    
-useEffect(()=>{nService.getAll().then(initialResponse => setPersons(initialResponse))}, []
-)
+  const handleDeleteEvent = (id) => {
+    console.log('updating state with handleDeleteEvent')
+    setPersons(persons.filter(person => person.id !== id))
+    }
+
+
 
   return (
     <div>

@@ -13,11 +13,7 @@ const create = newObject => {
 const remove = (obj, clicked) => {
   const request = () => {
     axios.delete(`${baseUrl}/${obj.id}`, { data: { obj }})
-    getAll()
-    console.log('getAll called by remove')
-    return(
-      console.log('deleted')
-    )
+    console.log('deleted')
   }
   const message = window.confirm(`Delete ${obj.name}?`)
   if(message && clicked){
@@ -32,5 +28,9 @@ const remove = (obj, clicked) => {
       )
     }
 }
+const update = (obj) => {
+  const request = axios.put(`${baseUrl}/${obj.id}`, obj)
+  return(true)
+}
 
-export default { getAll, create, remove }
+export default { getAll, create, remove, update }

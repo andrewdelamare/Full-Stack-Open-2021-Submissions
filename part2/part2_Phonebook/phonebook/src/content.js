@@ -6,13 +6,13 @@ export const Content = ({ persons, filter, handleDeleteEvent }) => {
       const filtered = persons.filter(person => person.name.toLowerCase().includes(filter.text.toLowerCase()))
       return (
         <div>
-          {filtered.map((person) => <Part obj={person} id={person.id} name={person.name} number={person.number} handleDeleteEvent={handleDeleteEvent} />)}
+          {filtered.map((person) => <Part obj={person} name={person.name} number={person.number} handleDeleteEvent={handleDeleteEvent} />)}
         </div>
       )
     }else{
       return (
       <div>
-        {persons.map((person) => <Part obj={person} id={person.id} name={person.name} number={person.number} handleDeleteEvent={handleDeleteEvent} />)}
+        {persons.map((person) => <Part obj={person} name={person.name} number={person.number} handleDeleteEvent={handleDeleteEvent} />)}
       </div>
     )}
   }
