@@ -24,6 +24,16 @@
       "name": "Olaf the Snowman",
       "number": "753 159 9685",
       "id": 4
+    },
+    {
+      "name": "Geoffery the Cat",
+      "number": "Meow meow",
+      "id": 5
+    },
+    {
+      "name": "Hunam ",
+      "number": "545 555 5665",
+      "id": 6
     }
   ]
 }

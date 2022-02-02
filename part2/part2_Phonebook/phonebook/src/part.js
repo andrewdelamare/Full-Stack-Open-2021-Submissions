@@ -7,7 +7,7 @@ export const Part = ({ obj, name, number, handleDeleteEvent }) => {
         <button onClick={
           () => {
             return (
-              nService.remove(obj, true), handleDeleteEvent(obj.id)
+              nService.remove(obj, true), handleDeleteEvent(obj.id, obj.name)
               )
             } 
           }> Delete </button>

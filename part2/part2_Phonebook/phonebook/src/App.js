@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Numbers } from './numbers'
 import { Filter } from './filter'
 import { NumberEntry } from './numberEntry'
+import { Notification } from './notification'
 import nService from './services/namesService'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setNewFilter] = useState({text: '', isOn: false})
+  const [notification, setNotification] = useState({msg: null, type: null})
 
   useEffect(()=>{nService.getAll().then(initialResponse => setPersons(initialResponse))}, [])
 
@@ -26,17 +28,35 @@ const App = () => {
       const confirmed = window.confirm(`${newName} is already included in your phonebook. Update ${newName}?`)
       if(confirmed){ 
         nService.update(newishPerson)
+        
+          //.catch(error => {
+            //setErrorMsg(`${newishPerson} was already removed from the server.`)
+          //})
         //struggled for many hours to get setPersons to update the state correctly, with previous strategies the state would update but wouldnt re render
         setPersons(persons.map(person => {
           if(person.name !== newishPerson.name){
             return person
           }else{return newishPerson}}))
+        setNotification({msg:`Sucessfully updated ${newishPerson.name}!`, type:true})
+        setTimeout(() => {
+          setNotification({msg: null, type: null})
+          }, 5000)
       }else{
         console.log('unconfirmed')
       }
     }else{
       const newPerson = {name: newName, number: newNumber, id: newid}
-      return(nService.create(newPerson).then(response => setPersons(persons.concat(response))))
+      return(
+        nService.create(newPerson)
+        .then(response => setPersons(persons.concat(response)))
+        .then(() => {
+          setNotification({msg:`Sucessfully added ${newPerson.name}!`, type:true})
+          setTimeout(() => {
+            setNotification({msg: null, type: null})
+          }, 5000)
+            }
+          )
+        )
       }
     }  
 
@@ -54,16 +74,22 @@ const App = () => {
     let on = value !== '' ? true : false
     setNewFilter({text: `${value}`, isOn:on })
   }
-  const handleDeleteEvent = (id) => {
+  const handleDeleteEvent = (id, name) => {
     console.log('updating state with handleDeleteEvent')
     setPersons(persons.filter(person => person.id !== id))
-    }
+    setNotification({msg: `Successfully deleted ${name}`, type:true})
+    setTimeout(() => {
+      setNotification({msg: null, type: null})
+      }, 5000)
+  }
+
 
 
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification.msg} type={notification.type} />
       <Filter handleNewFilter={handleNewFilter} />
       <NumberEntry addNewPerson={addNewPerson} handleNewName={handleNewName} handleNewNumber={handleNewNumber} />
       <Numbers persons={persons} filter={filter} handleDeleteEvent={handleDeleteEvent}/>
