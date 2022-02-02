@@ -28,9 +28,9 @@ const remove = (obj, clicked) => {
       )
     }
 }
-const update = (obj) => {
+const update = function(obj) {
   const request = axios.put(`${baseUrl}/${obj.id}`, obj)
-  return(true)
+  return(request)
 }
 
 export default { getAll, create, remove, update }

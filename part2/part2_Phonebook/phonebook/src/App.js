@@ -27,11 +27,9 @@ const App = () => {
       const newishPerson = {name: newName, number: newNumber, id: oldPersonDat.id}
       const confirmed = window.confirm(`${newName} is already included in your phonebook. Update ${newName}?`)
       if(confirmed){ 
-        nService.update(newishPerson)
-        
-          //.catch(error => {
-            //setErrorMsg(`${newishPerson} was already removed from the server.`)
-          //})
+        nService
+          .update(newishPerson)
+          .catch(() => setNotification({msg: `${newishPerson.name} was already removed from the server`, type: false}))
         //struggled for many hours to get setPersons to update the state correctly, with previous strategies the state would update but wouldnt re render
         setPersons(persons.map(person => {
           if(person.name !== newishPerson.name){
