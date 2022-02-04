@@ -35,10 +35,34 @@ let date = new Date
 
 app.post('/api/persons', (request, response) => {
   const person = request.body
-  console.log(person)
-  person.id = Math.floor(Math.random()*100000)
-  persons = persons.concat(person)
-  response.json(person)
+  const personExists = (person) => {
+    let exists = []
+    exists = persons.map(per => {if(per.name === person.name){return true}})
+
+    if(exists.includes(true)){
+      console.log(exists)
+      return(true)
+    }else{
+      return(false)
+    }
+  }
+   if(!person){
+    return(response.status(400).json({error: 'content missing'}))
+  }else if(!person.name && person.number){
+    return(response.status(400).json({error: 'name missing'}))
+  }else if(!person.number && person.name){
+    return(response.status(400).json({error: 'number missing'}))
+  }else if(!person.name && !person.number){
+    return(response.status(400).json({error: 'content missing'}))
+  }else if(personExists(person)){
+    console.log(person)
+    return(response.status(400).json({error: 'person already exists'}))
+  }else{
+    console.log(person)
+    person.id = Math.floor(Math.random()*100000)
+    persons = persons.concat(person)
+    return(response.json(person))
+  }
 })
 
 app.delete('/api/persons/:id', (request, response) => {
