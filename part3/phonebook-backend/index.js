@@ -35,6 +35,16 @@ app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  const wanted = persons.find(person => person.id.toString() === id)
+  if(wanted){
+    response.json(wanted)
+  }else{
+    response.status(404).end()
+  }
+})
+
 app.get('/info', (request, response) => {
   response.send(`<p> Phonebook has info for ${total()} people </p> <p>${date}</p>`)
 })
