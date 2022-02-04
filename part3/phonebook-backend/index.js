@@ -1,3 +1,4 @@
+const { request, response } = require('express')
 const express = require('express')
 const app = express()
 
@@ -30,6 +31,12 @@ const total = () => {
 }
 
 let date = new Date
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  persons = persons.filter(person => person.id.toString() !== id)
+  response.status(204).end()
+})
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
