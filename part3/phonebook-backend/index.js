@@ -1,7 +1,11 @@
 const { request, response } = require('express')
 const express = require('express')
+const res = require('express/lib/response')
+const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+morgan.token('people', (req) => JSON.stringify(req.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :people'))
 
 let persons = [
     { 
@@ -25,6 +29,7 @@ let persons = [
       number: "39-23-6423122"
     }
 ]
+
 const total = () => {
   let count = 0
   persons.forEach(() => count += 1)
@@ -40,7 +45,6 @@ app.post('/api/persons', (request, response) => {
     exists = persons.map(per => {if(per.name === person.name){return true}})
 
     if(exists.includes(true)){
-      console.log(exists)
       return(true)
     }else{
       return(false)
@@ -55,10 +59,8 @@ app.post('/api/persons', (request, response) => {
   }else if(!person.name && !person.number){
     return(response.status(400).json({error: 'content missing'}))
   }else if(personExists(person)){
-    console.log(person)
     return(response.status(400).json({error: 'person already exists'}))
   }else{
-    console.log(person)
     person.id = Math.floor(Math.random()*100000)
     persons = persons.concat(person)
     return(response.json(person))
