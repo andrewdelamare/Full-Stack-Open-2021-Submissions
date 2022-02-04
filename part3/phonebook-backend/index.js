@@ -23,9 +23,20 @@ let persons = [
       number: "39-23-6423122"
     }
 ]
+const total = () => {
+  let count = 0
+  persons.forEach(() => count += 1)
+  return(count)
+}
+
+let date = new Date
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+  response.send(`<p> Phonebook has info for ${total()} people </p> <p>${date}</p>`)
 })
 
 const PORT = 3001
