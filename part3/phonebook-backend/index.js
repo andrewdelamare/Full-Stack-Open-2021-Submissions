@@ -1,6 +1,7 @@
 const { request, response } = require('express')
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let persons = [
     { 
@@ -31,6 +32,14 @@ const total = () => {
 }
 
 let date = new Date
+
+app.post('/api/persons', (request, response) => {
+  const person = request.body
+  console.log(person)
+  person.id = Math.floor(Math.random()*100000)
+  persons = persons.concat(person)
+  response.json(person)
+})
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
