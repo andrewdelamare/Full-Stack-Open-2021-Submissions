@@ -84,6 +84,18 @@ app.get('/api/persons/:id', (request, response) => {
   const wanted = persons.find(person => person.id.toString() === id)
   if(wanted){
     response.json(wanted)
+    response.status(200).end()
+  }else{
+    response.status(404).end()
+  }
+})
+
+app.put('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  const wanted = persons.find(person => person.id.toString() === id)
+  if(wanted){
+    wanted.number = request.params.number
+    response.status(200).end()
   }else{
     response.status(404).end()
   }
@@ -92,6 +104,7 @@ app.get('/api/persons/:id', (request, response) => {
 app.get('/info', (request, response) => {
   response.send(`<p> Phonebook has info for ${total()} people </p> <p>${date}</p>`)
 })
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
