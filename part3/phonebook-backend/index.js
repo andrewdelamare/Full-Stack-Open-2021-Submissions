@@ -1,36 +1,17 @@
+require('dotenv').config()
 const { request, response } = require('express')
 const express = require('express')
 const res = require('express/lib/response')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
+const Person = require( './modules/persons')
 app.use(express.json())
 app.use(cors())
 morgan.token('people', (req) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :people'))
 
-let persons = [
-    { 
-      id: 1,
-      name: "Arto Hellas", 
-      number: "040-123456"
-    },
-    { 
-      id: 2,
-      name: "Ada Lovelace", 
-      number: "39-44-5323523"
-    },
-    { 
-      id: 3,
-      name: "Dan Abramov", 
-      number: "12-43-234345"
-    },
-    { 
-      id: 4,
-      name: "Mary Poppendieck", 
-      number: "39-23-6423122"
-    }
-]
+let persons = []
 
 const total = () => {
   let count = 0
@@ -40,18 +21,22 @@ const total = () => {
 
 let date = new Date
 
-app.post('/api/persons', (request, response) => {
-  const person = request.body
-  const personExists = (person) => {
-    let exists = []
-    exists = persons.map(per => {if(per.name === person.name){return true}})
+app.get('/api/persons', (request, response) => {
+  console.log(`people before get: ${persons}`)
+  Person.find({})
+  .then(peep => {
+    response.json(peep)
+    peep.forEach(p => persons.concat(p))
+    console.log(`people after get: ${persons}`)
+  })
+})
 
-    if(exists.includes(true)){
-      return(true)
-    }else{
-      return(false)
-    }
-  }
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  const person = new Person({
+    name: body.name,
+    number: body.number
+  })
    if(!person){
     return(response.status(400).json({error: 'content missing'}))
   }else if(!person.name && person.number){
@@ -60,28 +45,26 @@ app.post('/api/persons', (request, response) => {
     return(response.status(400).json({error: 'number missing'}))
   }else if(!person.name && !person.number){
     return(response.status(400).json({error: 'content missing'}))
-  }else if(personExists(person)){
-    return(response.status(400).json({error: 'person already exists'}))
   }else{
-    person.id = Math.floor(Math.random()*100000)
+  //  person.id = Math.floor(Math.random()*100000)
     persons = persons.concat(person)
-    return(response.json(person))
+    console.log(persons)
+    person.save().then(savedPerson => {
+      response.json(savedPerson)
+    })
   }
 })
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  persons = persons.filter(person => person.id.toString() !== id)
+  persons = persons.filter(person => person.id !== id)
   response.status(204).end()
 })
 
-app.get('/api/persons', (request, response) => {
-  response.json(persons)
-})
-
 app.get('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  const wanted = persons.find(person => person.id.toString() === id)
+  const wanted = Person.findById(request.params.id).then(person => {
+    response.json(person)
+  })
   if(wanted){
     response.json(wanted)
     response.status(200).end()
@@ -92,11 +75,12 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.put('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  const wanted = persons.find(person => person.id.toString() === id)
-  if(wanted){
-    wanted.number = request.params.number
+  const update = request.params.number
+  if(Person.findById(id)){
+    Person.findByIdAndUpdate(id, update) 
     response.status(200).end()
   }else{
+    console.log("NOT FOUND")
     response.status(404).end()
   }
 })
@@ -105,7 +89,7 @@ app.get('/info', (request, response) => {
   response.send(`<p> Phonebook has info for ${total()} people </p> <p>${date}</p>`)
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
