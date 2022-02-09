@@ -79,8 +79,12 @@ app.put('/api/persons/:id', (request, response, next) => {
 })
 
 app.get('/info', (request, response) => {
-
-  response.send(`<p> Phonebook has info for _ people </p> <p>${date}</p>`)
+  Person.estimatedDocumentCount(function (err, count) {
+    if (err){
+        console.log(err)
+    }else{
+      return response.send(`<p> Phonebook has info for ${count} people </p> <p>${date}</p>`)    
+    }})
 })
 
 app.use(unknownEndpoint)
