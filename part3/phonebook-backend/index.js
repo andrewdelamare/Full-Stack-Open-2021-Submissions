@@ -57,8 +57,11 @@ app.post('/api/persons', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
+  console.log(`Removing entry with id: ${id}`)
   persons = persons.filter(person => person.id !== id)
-  response.status(204).end()
+  Person.findByIdAndRemove(id).then(response.status(204).end())
+  
+  
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -75,7 +78,8 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.put('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  const update = request.params.number
+  const update = request.params.number.toString()
+  
   if(Person.findById(id)){
     Person.findByIdAndUpdate(id, update) 
     response.status(200).end()

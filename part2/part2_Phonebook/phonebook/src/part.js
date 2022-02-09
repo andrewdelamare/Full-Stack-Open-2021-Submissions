@@ -2,7 +2,7 @@ import React from "react";
 import nService from "./services/namesService";
 export const Part = ({ obj, name, number, handleDeleteEvent }) => {
     return (
-      <div key={obj.id}>
+      <div>
         <p> {name} {number}</p> 
         <button onClick={
           () => {
