@@ -1,7 +1,8 @@
-PUT http://localhost:3001/api/persons/620385e73d97c6f3a627d5cb 
+PUT http://localhost:3001/api/persons/620394d4eae44d881e37e962 
 Content-Type: application/json
 
 {
-    "name":"Malory Archer", 
-    "number":"12312122"
+  "name": "Malory A",
+  "number": "15464654",
+  "id": "620394d4eae44d881e37e962"
 }

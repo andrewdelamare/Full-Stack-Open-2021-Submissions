@@ -7,6 +7,7 @@ const app = express()
 app.use(express.json())
 const cors = require('cors')
 const Person = require( './modules/persons')
+const req = require('express/lib/request')
 app.use(cors())
 morgan.token('people', (req) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :people'))
@@ -19,7 +20,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  }else if (error.name === 'TypeError'){
+    return response.status(400).send({error: 'type error'})
+  }
 
   next(error)
 }
@@ -67,10 +70,10 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const id = request.params.id
-  const update = request.params.number.toString()
+  const person = request.body
+  console.log("person", person)
   
-  Person.findByIdAndUpdate(id, update)
+  Person.findByIdAndUpdate(person.id, person, {new: true})
   .then(response.status(200).end())
   .catch(error => next(error))
 })

@@ -19,12 +19,14 @@ const remove = (obj, clicked) => {
   if(message && clicked){
     return(
       request(),
-      console.log('deleted through conditional statement')
+      console.log('deleted through conditional statement'),
+      true
       )
       
     }else{
       return (
-        console.log('delete action aborted')
+        console.log('delete action aborted'), 
+        false
       )
     }
 }
