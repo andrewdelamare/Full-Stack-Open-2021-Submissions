@@ -17,8 +17,8 @@ const App = () => {
   const addNewPerson = (event) => {
     event.preventDefault()
     const oldPersons = persons
-    // new ID generation system prevents issues if an entry has been deleted
-    const newid = oldPersons[oldPersons.length-1].id + 1  
+    // ID generation now unecessary
+    // const newid = oldPersons[oldPersons.length-1].id + 1  
     const names = oldPersons.map((person) => person.name)
     const included = names.includes(newName) ? true : false
     if(included){
@@ -43,20 +43,25 @@ const App = () => {
         console.log('unconfirmed')
       }
     }else{
-      const newPerson = {name: newName, number: newNumber, id: newid}
-      return(
-        nService.create(newPerson)
-        .then(response => setPersons(persons.concat(response)))
-        .then(() => {
-          setNotification({msg:`Sucessfully added ${newPerson.name}!`, type:true})
-          setTimeout(() => {
-            setNotification({msg: null, type: null})
-          }, 5000)
-            }
-          )
-        )
-      }
-    }  
+      const newPerson = {name: newName, number: newNumber}
+      nService.create(newPerson)
+      .then(response => setPersons(persons.concat(response)))
+      .then(() => {
+        setNotification({msg:`Sucessfully added ${newPerson.name}!`, type:true})
+        setTimeout(() => {
+          setNotification({msg: null, type: null})
+        }, 5000)
+      })
+      .catch(error => {
+        if(error.response){
+        setNotification({msg:`${error.response.data}`, type:false})
+        console.log(`error: ${error.response.data}`)
+        setTimeout(() => {
+          setNotification({msg: null, type: null})
+        }, 5000)}
+      })      
+    }
+  }  
 
   const handleNewName = (event) => {
     setNewName(event.target.value)
