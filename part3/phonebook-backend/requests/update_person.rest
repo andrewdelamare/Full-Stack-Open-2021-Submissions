@@ -2,7 +2,7 @@ PUT http://localhost:3001/api/persons/620394d4eae44d881e37e962
 Content-Type: application/json
 
 {
-  "name": "Malory A",
-  "number": "15464654",
-  "id": "620394d4eae44d881e37e962"
+  "name": "Pam",
+  "number": "89-15464654",
+  "id": "6204f814d93720c8501c7260"
 }

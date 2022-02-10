@@ -25,7 +25,6 @@ const errorHandler = (error, request, response, next) => {
   }else if (error.name === 'ValidationError'){
     return response.status(400).send(error.message)
   }
-
   next(error)
 }
 const unknownEndpoint = (request, response) => {
@@ -46,11 +45,15 @@ app.post('/api/persons', (request, response, next) => {
     name: body.name,
     number: body.number
   })
-  person.save()
-  .then(savedPerson => {
-    response.json(savedPerson)
+ Person.find({name: person.name}, function(error, result) {
+  console.log(`result: ${result}`)
+  if (result.length >= 1){
+      return response.status(400).send({error: 'person already exists'})
+    }else{
+      person.save()
+      .then(savedPerson => {response.json(savedPerson)})
+    }
   })
-  .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -75,9 +78,13 @@ app.put('/api/persons/:id', (request, response, next) => {
   const person = request.body
   console.log("person", person)
   
-  Person.findByIdAndUpdate(person.id, person, {new: true})
-  .then(response.status(200).end())
+  Person.findByIdAndUpdate(person.id, person, {runValidators: true})
+  .then(person => {
+    response.json(person)
+    response.status(200).end()
+  })
   .catch(error => next(error))
+  
 })
 
 app.get('/info', (request, response) => {

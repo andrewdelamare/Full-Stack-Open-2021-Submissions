@@ -29,16 +29,25 @@ const App = () => {
       if(confirmed){ 
         nService
           .update(newishPerson)
-          .catch(() => setNotification({msg: `${newishPerson.name} was already removed from the server`, type: false}))
+          .then( noerror => 
+            setPersons(persons.map(person => {
+              if(person.name !== newishPerson.name){
+                return person
+              }else{return newishPerson}})),
+            setNotification({msg:`Sucessfully updated ${newishPerson.name}!`, type:true}),
+            setTimeout(() => {
+              setNotification({msg: null, type: null})
+              }, 5000))
+          .catch(error => {
+            if(error.response){
+            setNotification({msg:`${error.response.data}`, type:false})
+            console.log(`error: ${error.response.data}`)
+            setTimeout(() => {
+              setNotification({msg: null, type: null})
+            }, 5000)}
+          })   
         //struggled for many hours to get setPersons to update the state correctly, with previous strategies the state would update but wouldnt re render
-        setPersons(persons.map(person => {
-          if(person.name !== newishPerson.name){
-            return person
-          }else{return newishPerson}}))
-        setNotification({msg:`Sucessfully updated ${newishPerson.name}!`, type:true})
-        setTimeout(() => {
-          setNotification({msg: null, type: null})
-          }, 5000)
+        
       }else{
         console.log('unconfirmed')
       }
