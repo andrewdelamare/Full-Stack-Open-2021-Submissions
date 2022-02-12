@@ -13,7 +13,6 @@ morgan.token('people', (req) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :people'))
 
 let date = new Date
-let count = undefined
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
@@ -39,7 +38,7 @@ app.get('/api/persons', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response,  next) => {
   const body = request.body
   const person = new Person({
     name: body.name,
@@ -52,6 +51,7 @@ app.post('/api/persons', (request, response) => {
     }else{
       person.save()
         .then(savedPerson => {response.json(savedPerson)})
+        .catch(error => next(error))
     }
   })
 })
