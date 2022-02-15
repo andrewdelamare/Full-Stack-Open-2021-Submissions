@@ -2,9 +2,9 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "a blog",
-    "author": "no one",
-    "url": "fake",
+    "title": "a blog 2",
+    "author": "no one 2",
+    "url": "fake 2",
     "likes": 1
 }
 
