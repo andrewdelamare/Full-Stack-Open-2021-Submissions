@@ -1,16 +1,16 @@
-const config = require('./utils/config')
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const mongoose = require('mongoose')
-const blogsRouter = require('./controllers/blogs')
+const express = require('express');
 
+const app = express();
+const cors = require('cors');
+const mongoose = require('mongoose');
+const blogsRouter = require('./controllers/blogs');
+const config = require('./utils/config');
 
-mongoose.connect(config.MONGODB_URI)
- 
-app.use(cors())
-app.use(express.json())
+mongoose.connect(config.MONGODB_URI);
 
-app.use(blogsRouter)
+app.use(cors());
+app.use(express.json());
 
-module.exports = app
+app.use(blogsRouter);
+
+module.exports = app;
