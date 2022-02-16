@@ -24,6 +24,15 @@ const initialBlogs = [
   },
 ];
 
+const newBlog = {
+  _id: '5a422ba71b54a676234d17fb',
+  title: 'TDD harms architecture',
+  author: 'Robert C. Martin',
+  url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+  likes: 0,
+  __v: 0,
+};
+
 beforeEach(async () => {
   await Blog.deleteMany({});
   let blogObject = new Blog(initialBlogs[0]);
@@ -42,6 +51,13 @@ describe('Blogs', () => {
   test('_id renamed to id', async () => {
     const response = await api.get('/api/blogs');
     expect(response.body[0].id).toBeDefined();
+  });
+  test('are posted', async () => {
+    await api
+      .post('/api/blogs')
+      .send(newBlog);
+    const response = await api.get('/api/blogs');
+    expect(response.body.length).toEqual(3);
   });
 });
 
