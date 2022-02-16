@@ -33,6 +33,12 @@ const newBlog = {
   __v: 0,
 };
 
+const noLikes = {
+  title: 'A new entry with no likes',
+  author: 'no one',
+  url: 'fake url',
+};
+
 beforeEach(async () => {
   await Blog.deleteMany({});
   let blogObject = new Blog(initialBlogs[0]);
@@ -58,6 +64,13 @@ describe('Blogs', () => {
       .send(newBlog);
     const response = await api.get('/api/blogs');
     expect(response.body.length).toEqual(3);
+  });
+  test('default to zero likes if none provided', async () => {
+    await api
+      .post('/api/blogs')
+      .send(noLikes);
+    const response = await api.get('/api/blogs');
+    expect(response.body[2]).toHaveProperty('likes', 0);
   });
 });
 
