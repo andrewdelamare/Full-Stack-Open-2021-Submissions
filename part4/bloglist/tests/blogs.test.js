@@ -32,11 +32,17 @@ beforeEach(async () => {
   await blogObject.save();
 });
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/);
+describe('Blogs', () => {
+  test(' are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+  });
+  test('_id renamed to id', async () => {
+    const response = await api.get('/api/blogs');
+    expect(response.body[0].id).toBeDefined();
+  });
 });
 
 afterAll(() => {
