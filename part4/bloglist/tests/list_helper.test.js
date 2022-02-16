@@ -72,7 +72,12 @@ const favorite = {
   likes: 13,
   __v: 0,
 };
-
+/*
+const authorWithMostBlogs = {
+  author: 'Robert C. Martin',
+  blogs: 3,
+};
+*/
 test('dummy returns one', () => {
   const result = listHelper.dummy();
   expect(result).toBe(1);
@@ -99,3 +104,11 @@ describe('total likes', () => {
     expect(result).toEqual(favorite);
   });
 });
+/*
+describe('most', () => {
+  test('blogs', () => {
+    const result = listHelper.mostBlogs(blogs);
+    expect(result).toEqual(authorWithMostBlogs);
+  });
+});
+*/

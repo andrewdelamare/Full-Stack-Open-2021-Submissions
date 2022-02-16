@@ -1,3 +1,5 @@
+// const _ = require('lodash');
+
 const dummy = () => 1;
 
 const totalLikes = (blogs) => {
@@ -24,7 +26,39 @@ const favoriteBlog = (blogs) => {
   });
   return fav;
 };
+/*
+const findSomething = (arr) => {
+  let result = [];
+  arr.forEach((item) => {
+    if(result.forEach(thing => Object.keys(thing).includes(item.author))){
+        result[item.author] += 1
+    }else{
+        const key = item.author;
+        result.push({ item.author: 1 })
+    }
+  })
+  console.log(result);
+  return result;
+};
 
+const mostBlogs = (blogs) => {
+  const array = findSomething(blogs, 'author');
+  console.log('list of occurences after find something', array);
+  let mostNum = 0;
+  let mostAuthor = '';
+  array.forEach((auth) => {
+    if (auth.occurrence > mostNum) {
+      mostNum = auth.occurrence;
+      mostAuthor = auth.author;
+    }
+  });
+  return (
+    {
+      author: mostAuthor,
+      blogs: mostNum,
+    });
+};
+*/
 module.exports = {
   dummy,
   totalLikes,
