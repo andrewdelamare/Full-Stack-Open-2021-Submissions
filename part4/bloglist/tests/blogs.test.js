@@ -44,6 +44,12 @@ const noTitleUrl = {
   likes: 0,
 };
 
+const updatedInfo = {
+  id: '5a422aa71b54a676234d17f8',
+  title: 'Go To Statement Considered NOT Harmful!',
+  likes: 20,
+};
+
 beforeEach(async () => {
   await Blog.deleteMany({});
   let blogObject = new Blog(initialBlogs[0]);
@@ -89,6 +95,15 @@ describe('Blogs', () => {
       .expect(204);
     const updated = await api.get('/api/blogs');
     expect(updated.body.length).toEqual(1);
+  });
+  test('are updated', async () => {
+    await api
+      .put('/api/blogs/5a422aa71b54a676234d17f8')
+      .send(updatedInfo)
+      .expect(200);
+    const updated = await api.get('/api/blogs');
+    expect(updated.body[1]).toHaveProperty('likes', 20);
+    expect(updated.body[1]).toHaveProperty('title', 'Go To Statement Considered NOT Harmful!');
   });
 });
 
