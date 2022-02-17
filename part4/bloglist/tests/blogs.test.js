@@ -83,6 +83,13 @@ describe('Blogs', () => {
       .send(noTitleUrl)
       .expect(400);
   });
+  test('are deleted', async () => {
+    await api
+      .delete('/api/blogs/5a422aa71b54a676234d17f8')
+      .expect(204);
+    const updated = await api.get('/api/blogs');
+    expect(updated.body.length).toEqual(1);
+  });
 });
 
 afterAll(() => {

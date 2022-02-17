@@ -12,4 +12,10 @@ blogsRouter.post('/api/blogs', async (request, response) => {
   response.status(201).json(result);
 });
 
+blogsRouter.delete('/api/blogs/:id', async (request, response) => {
+  const { id } = request.params;
+  await Blog.findByIdAndDelete(id);
+  response.status(204).end();
+});
+
 module.exports = blogsRouter;
