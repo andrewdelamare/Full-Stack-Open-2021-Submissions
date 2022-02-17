@@ -39,6 +39,11 @@ const noLikes = {
   url: 'fake url',
 };
 
+const noTitleUrl = {
+  author: 'no one',
+  likes: 0,
+};
+
 beforeEach(async () => {
   await Blog.deleteMany({});
   let blogObject = new Blog(initialBlogs[0]);
@@ -71,6 +76,12 @@ describe('Blogs', () => {
       .send(noLikes);
     const response = await api.get('/api/blogs');
     expect(response.body[2]).toHaveProperty('likes', 0);
+  });
+  test('require title & url', async () => {
+    await api
+      .post('/api/blogs')
+      .send(noTitleUrl)
+      .expect(400);
   });
 });
 

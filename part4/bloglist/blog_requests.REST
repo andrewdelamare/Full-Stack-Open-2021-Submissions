@@ -13,3 +13,12 @@ Content-Type: application/json
 GET http://localhost:3001/api/blogs 
 Content-Type: application/json
 
+###
+
+POST http://localhost:3001/api/blogs 
+Content-Type: application/json
+
+{
+    "author": "no one 2",
+    "likes": 1
+}
