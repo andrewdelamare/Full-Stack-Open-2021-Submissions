@@ -22,3 +22,19 @@ Content-Type: application/json
     "author": "no one 2",
     "likes": 1
 }
+
+###
+
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "username": "fakeUser",
+    "name": "I do not exist",
+    "password": "fake"
+}
+
+###
+
+GET http://localhost:3001/api/users
+Content-Type: application/json
