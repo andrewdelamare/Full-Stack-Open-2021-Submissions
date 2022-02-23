@@ -29,9 +29,9 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username": "fakeUser7",
+    "username": "fakeUser789",
     "name": "I do not exist",
-    "password": "fa"
+    "password": "fakeeeeee"
 }
 
 ###
