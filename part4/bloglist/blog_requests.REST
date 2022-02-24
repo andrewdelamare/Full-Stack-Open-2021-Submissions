@@ -53,13 +53,13 @@ Content-Type: application/json
 
 POST http://localhost:3001/api/blogs 
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZha2VVc2VyNzg5IiwiaWQiOiI2MjE2MTY1OTczMjZkMWM2NGM3Njg0ZTUiLCJpYXQiOjE2NDU3MDYxNDV9.7DsL4Dd55Pl9chXt14j9r9LliCiZgtl3ppgnpoFiHNw
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZha2VVc2VyNzg5IiwiaWQiOiI2MjE2MTY1OTczMjZkMWM2NGM3Njg0ZTUiLCJpYXQiOjE2NDU3MDgwNTR9.LrHP53k7gvLJtduOj5gpZg_AsIqGx9RMV_FEYbg4Umw
 
 {
-    "title": "a blog 8",
-    "author": "no one 8",
-    "url": "fake 8",
-    "likes": 9
+    "title": "a blog 11",
+    "author": "no one 11",
+    "url": "fake 11",
+    "likes": 11
 }
 
 ###
