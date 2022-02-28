@@ -1,4 +1,6 @@
 /* eslint-disable consistent-return */
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization');
@@ -9,6 +11,18 @@ const tokenExtractor = (request, response, next) => {
     );
   }
   next();
+};
+
+const userExtractor = async (request, response, next) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+  const user = await User.findById(decodedToken.id);
+  request.user = user;
+  return (
+    request, next()
+  );
 };
 
 const errorHandler = (error, request, response, next) => {
@@ -24,4 +38,6 @@ const errorHandler = (error, request, response, next) => {
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
-module.exports = { tokenExtractor, errorHandler, unknownEndpoint };
+module.exports = {
+  tokenExtractor, userExtractor, errorHandler, unknownEndpoint,
+};
