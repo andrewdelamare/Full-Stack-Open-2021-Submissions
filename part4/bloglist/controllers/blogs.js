@@ -32,9 +32,19 @@ blogsRouter.post('/api/blogs', async (request, response) => {
 });
 
 blogsRouter.delete('/api/blogs/:id', async (request, response) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+  const user = await User.findById(decodedToken.id);
   const { id } = request.params;
-  await Blog.findByIdAndDelete(id);
-  response.status(204).end();
+  const blog = await Blog.findById(id);
+  if (blog.user.toString() === user.id.toString()) {
+    await Blog.findByIdAndDelete(id);
+    response.status(204).end();
+  } else {
+    response.status(403).json({ error: 'in order to delete this blog you must be signed in as the user who created it' });
+  }
 });
 
 blogsRouter.put('/api/blogs/:id', async (request, response) => {

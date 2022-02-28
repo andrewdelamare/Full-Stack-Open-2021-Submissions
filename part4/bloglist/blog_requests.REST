@@ -56,10 +56,13 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZha2VVc2VyNzg5IiwiaWQiOiI2MjE2MTY1OTczMjZkMWM2NGM3Njg0ZTUiLCJpYXQiOjE2NDU3MDgwNTR9.LrHP53k7gvLJtduOj5gpZg_AsIqGx9RMV_FEYbg4Umw
 
 {
-    "title": "a blog 11",
-    "author": "no one 11",
-    "url": "fake 11",
-    "likes": 11
+    "title": "a blog 1100",
+    "author": "no one 1100",
+    "url": "fake 1100",
+    "likes": 1100
 }
 
 ###
+
+DELETE http://localhost:3001/api/blogs/621ca7c3d37d68ce68bae1e7
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZha2VVc2VyNzg5IiwiaWQiOiI2MjE2MTY1OTczMjZkMWM2NGM3Njg0ZTUiLCJpYXQiOjE2NDU3MDgwNTR9.LrHP53k7gvLJtduOj5gpZg_AsIqGx9RMV_FEYbg4Umw
