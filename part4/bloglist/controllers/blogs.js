@@ -30,7 +30,7 @@ blogsRouter.delete('/api/blogs/:id', middleware.userExtractor, async (request, r
   const { user } = request;
   const { id } = request.params;
   const blog = await Blog.findById(id);
-  if (blog.user === user.id) {
+  if (blog.user.toString() === user.id.toString()) {
     await Blog.findByIdAndDelete(id);
     response.status(204).end();
   } else {
@@ -39,10 +39,13 @@ blogsRouter.delete('/api/blogs/:id', middleware.userExtractor, async (request, r
 });
 
 blogsRouter.put('/api/blogs/:id', async (request, response) => {
-  const blog = request.body;
-
-  await Blog.findByIdAndUpdate(blog.id, blog, { runValidators: true });
-  response.json(blog);
+  const { id } = request.params;
+  const update = request.body;
+  console.log('THIS IS THE UPDATE TO BE SENT: ', update);
+  await Blog.findByIdAndUpdate(id, update, { runValidators: true });
+  const updated = await Blog.findById(id);
+  console.log('THIS IS THE RESPONSE', updated)
+  response.json(updated);
   response.status(200).end();
 });
 

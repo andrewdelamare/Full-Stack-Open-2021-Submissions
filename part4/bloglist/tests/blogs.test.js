@@ -13,7 +13,6 @@ const initialBlog = {
   url: 'https://reactpatterns.com/',
   likes: 7,
   __v: 0,
-  user: '621ded029db19dc1e67b8830',
 };
 
 const secondBlog = {
@@ -23,7 +22,6 @@ const secondBlog = {
   url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
   likes: 13,
   __v: 0,
-  user: '621ded029db19dc1e67b8830',
 };
 
 const newBlog = {
@@ -47,8 +45,7 @@ const noTitleUrl = {
 };
 
 const updatedInfo = {
-  _id: '5a422a851b54a676234d17f7',
-  title: 'React Chaos',
+  title: 'React CHAOS',
   likes: 20,
 };
 
@@ -57,13 +54,11 @@ const initialUsers = [
     username: 'testUser',
     name: 'I do not exist',
     password: 'fake',
-    _id: '621ded029db19dc1e67b8830',
   },
   {
     username: 'testUser2',
     name: 'I also do not exist',
     password: 'fake2',
-    _id: '621ded029db19dc1e67b8832',
   },
 ];
 
@@ -73,8 +68,9 @@ const loginInfo = {
 };
 
 let token;
+let usrId;
 
-beforeAll(async () => {
+beforeEach(async () => {
   await User.deleteMany({});
   await api
     .post('/api/users')
@@ -83,9 +79,7 @@ beforeAll(async () => {
     .post('/api/login')
     .send(loginInfo);
   token = res.body.token;
-});
-
-beforeEach(async () => {
+  usrId = res.body.id;
   await Blog.deleteMany({});
   await api
     .post('/api/blogs')
@@ -133,16 +127,20 @@ describe('Blogs', () => {
       .expect(400);
   });
   test('are deleted', async () => {
+    const users = await api
+      .get('/api/users');
     await api
-      .delete('/api/blogs/621df30eafae214031f1ce1c')
+      .delete(`/api/blogs/${users.body[0].blogs[0].id}`)
       .set('Authorization', `bearer ${token}`)
       .expect(204);
     const updated = await api.get('/api/blogs');
     expect(updated.body.length).toEqual(1);
   });
   test('are updated', async () => {
+    const users = await api
+      .get('/api/users');
     await api
-      .put('/api/blogs/5a422a851b54a676234d17f7')
+      .put(`/api/blogs/${users.body[0].blogs[0].id}`)
       .set('Authorization', `bearer ${token}`)
       .send(updatedInfo)
       .expect(200);
