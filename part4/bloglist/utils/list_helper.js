@@ -26,41 +26,43 @@ const favoriteBlog = (blogs) => {
   });
   return fav;
 };
-/*
-const findSomething = (arr) => {
-  let result = [];
+
+const countBlogs = (arr) => {
+  const result = {};
   arr.forEach((item) => {
-    if(result.forEach(thing => Object.keys(thing).includes(item.author))){
-        result[item.author] += 1
-    }else{
-        const key = item.author;
-        result.push({ item.author: 1 })
+    if (Object.keys(result).includes(item.author)) {
+      const key = item.author;
+      result[key] += 1;
+    } else {
+      const { author } = item;
+      result[author] = 1;
     }
-  })
+  });
   console.log(result);
   return result;
 };
 
 const mostBlogs = (blogs) => {
-  const array = findSomething(blogs, 'author');
-  console.log('list of occurences after find something', array);
+  const obj = countBlogs(blogs);
+  console.log('list of occurences after find something', obj);
   let mostNum = 0;
   let mostAuthor = '';
-  array.forEach((auth) => {
-    if (auth.occurrence > mostNum) {
-      mostNum = auth.occurrence;
-      mostAuthor = auth.author;
+  for (const [key, value] of Object.entries(obj)) {
+    if (value > mostNum) {
+      mostNum = value;
+      mostAuthor = key;
     }
-  });
+  }
   return (
     {
       author: mostAuthor,
       blogs: mostNum,
     });
 };
-*/
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 };

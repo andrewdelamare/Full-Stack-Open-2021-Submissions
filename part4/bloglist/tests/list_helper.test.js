@@ -72,15 +72,21 @@ const favorite = {
   likes: 13,
   __v: 0,
 };
-/*
+
 const authorWithMostBlogs = {
   author: 'Robert C. Martin',
   blogs: 3,
-};
-*/
-test('dummy returns one', () => {
-  const result = listHelper.dummy();
-  expect(result).toBe(1);
+}
+
+cosnt blogMostLikes = {
+  
+}
+
+describe('dummy', () => {
+  test('returns one', () => {
+    const result = listHelper.dummy();
+    expect(result).toBe(1);
+  });
 });
 
 describe('total likes', () => {
@@ -104,11 +110,14 @@ describe('total likes', () => {
     expect(result).toEqual(favorite);
   });
 });
-/*
-describe('most', () => {
-  test('blogs', () => {
+
+describe('correctly identifies', () => {
+  test('author of the most blogs', () => {
     const result = listHelper.mostBlogs(blogs);
     expect(result).toEqual(authorWithMostBlogs);
   });
+  test('blog with most likes', () => {
+    const result = listHelper.mostLikes(blogs);
+    expect(result).toEqual(blogMostLikes);
 });
-*/
+
