@@ -148,6 +148,12 @@ describe('Blogs', () => {
     expect(updated.body[0]).toHaveProperty('likes', 20);
     expect(updated.body[0]).toHaveProperty('title', 'React CHAOS');
   });
+  test('401 if no token provided', async () => {
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401);
+  });
 });
 
 afterAll(() => {
