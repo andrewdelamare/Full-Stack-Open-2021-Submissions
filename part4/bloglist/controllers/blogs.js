@@ -1,12 +1,13 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const middleware = require('../utils/middleware');
 
 blogsRouter.get('/api/blogs', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
   response.json(blogs);
 });
 
-blogsRouter.post('/api/blogs', async (request, response) => {
+blogsRouter.post('/api/blogs', middleware.userExtractor, async (request, response) => {
   const { user } = request;
 
   const blog = new Blog({
@@ -25,11 +26,11 @@ blogsRouter.post('/api/blogs', async (request, response) => {
   );
 });
 
-blogsRouter.delete('/api/blogs/:id', async (request, response) => {
+blogsRouter.delete('/api/blogs/:id', middleware.userExtractor, async (request, response) => {
   const { user } = request;
   const { id } = request.params;
   const blog = await Blog.findById(id);
-  if (blog.user.toString() === user.id.toString()) {
+  if (blog.user === user.id) {
     await Blog.findByIdAndDelete(id);
     response.status(204).end();
   } else {

@@ -10,11 +10,13 @@ const initialUsers = [
     username: 'testUser',
     name: 'I do not exist',
     password: 'fake',
+    _id: '621ded029db19dc1e67b8830',
   },
   {
     username: 'testUser2',
     name: 'I also do not exist',
     password: 'fake2',
+    _id: '621ded029db19dc1e67b8832',
   },
 ];
 

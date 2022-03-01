@@ -2,27 +2,29 @@ const supertest = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app');
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 const api = supertest(app);
 
-const initialBlogs = [
-  {
-    _id: '5a422a851b54a676234d17f7',
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-    __v: 0,
-  },
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0,
-  },
-];
+const initialBlog = {
+  _id: '5a422a851b54a676234d17f7',
+  title: 'React patterns',
+  author: 'Michael Chan',
+  url: 'https://reactpatterns.com/',
+  likes: 7,
+  __v: 0,
+  user: '621ded029db19dc1e67b8830',
+};
+
+const secondBlog = {
+  _id: '5a422b3a1b54a676234d17f9',
+  title: 'Canonical string reduction',
+  author: 'Edsger W. Dijkstra',
+  url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+  likes: 13,
+  __v: 0,
+  user: '621ded029db19dc1e67b8830',
+};
 
 const newBlog = {
   _id: '5a422ba71b54a676234d17fb',
@@ -45,17 +47,54 @@ const noTitleUrl = {
 };
 
 const updatedInfo = {
-  id: '5a422aa71b54a676234d17f8',
-  title: 'Go To Statement Considered NOT Harmful!',
+  _id: '5a422a851b54a676234d17f7',
+  title: 'React Chaos',
   likes: 20,
 };
 
+const initialUsers = [
+  {
+    username: 'testUser',
+    name: 'I do not exist',
+    password: 'fake',
+    _id: '621ded029db19dc1e67b8830',
+  },
+  {
+    username: 'testUser2',
+    name: 'I also do not exist',
+    password: 'fake2',
+    _id: '621ded029db19dc1e67b8832',
+  },
+];
+
+const loginInfo = {
+  username: 'testUser',
+  password: 'fake',
+};
+
+let token;
+
+beforeAll(async () => {
+  await User.deleteMany({});
+  await api
+    .post('/api/users')
+    .send(initialUsers[0]);
+  const res = await api
+    .post('/api/login')
+    .send(loginInfo);
+  token = res.body.token;
+});
+
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(initialBlogs[1]);
-  await blogObject.save();
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `bearer ${token}`)
+    .send(initialBlog);
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `bearer ${token}`)
+    .send(secondBlog);
 });
 
 describe('Blogs', () => {
@@ -72,13 +111,16 @@ describe('Blogs', () => {
   test('are posted', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog);
+
     const response = await api.get('/api/blogs');
     expect(response.body.length).toEqual(3);
   });
   test('default to zero likes if none provided', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(noLikes);
     const response = await api.get('/api/blogs');
     expect(response.body[2]).toHaveProperty('likes', 0);
@@ -86,24 +128,27 @@ describe('Blogs', () => {
   test('require title & url', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(noTitleUrl)
       .expect(400);
   });
   test('are deleted', async () => {
     await api
-      .delete('/api/blogs/5a422aa71b54a676234d17f8')
+      .delete('/api/blogs/621df30eafae214031f1ce1c')
+      .set('Authorization', `bearer ${token}`)
       .expect(204);
     const updated = await api.get('/api/blogs');
     expect(updated.body.length).toEqual(1);
   });
   test('are updated', async () => {
     await api
-      .put('/api/blogs/5a422aa71b54a676234d17f8')
+      .put('/api/blogs/5a422a851b54a676234d17f7')
+      .set('Authorization', `bearer ${token}`)
       .send(updatedInfo)
       .expect(200);
     const updated = await api.get('/api/blogs');
-    expect(updated.body[1]).toHaveProperty('likes', 20);
-    expect(updated.body[1]).toHaveProperty('title', 'Go To Statement Considered NOT Harmful!');
+    expect(updated.body[0]).toHaveProperty('likes', 20);
+    expect(updated.body[0]).toHaveProperty('title', 'React CHAOS');
   });
 });
 
