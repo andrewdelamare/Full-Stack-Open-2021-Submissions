@@ -60,9 +60,26 @@ const mostBlogs = (blogs) => {
     });
 };
 
+const mostLikes = (blogs) => {
+  let mostNum = 0;
+  let mostAuthor = '';
+  blogs.forEach((blog) => {
+    if (blog.likes > mostNum) {
+      mostNum = blog.likes;
+      mostAuthor = blog.author;
+    }
+  });
+  return (
+    {
+      author: mostAuthor,
+      likes: mostNum,
+    });
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
