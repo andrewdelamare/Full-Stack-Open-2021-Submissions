@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
+import BlogEntry from './components/BlogEntry';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -10,16 +11,22 @@ function App() {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-/*
-  useEffect(() => {
+  const [title, setTitle] = useState(null);
+  const [author, setAuthor] = useState(null);
+  const [url, setUrl] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useEffect(async () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
       const u = JSON.parse(loggedUserJSON);
       setUser(u);
-      blogService.setToken(user.token);
+      setToken(u.token);
+      const bl = await blogService.getAll();
+      setBlogs(bl);
     }
   }, []);
-*/
+
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -29,7 +36,7 @@ function App() {
       setUser(u);
       setUsername(username);
       setPassword(password);
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(u));
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(u));
       const bl = await blogService.getAll();
       setBlogs(bl);
     } catch (exception) {
@@ -63,13 +70,25 @@ function App() {
       <button type="submit">login</button>
     </form>
   );
-
-  const blogForm = () => (
-    <form onSubmit={blogService.addBlog}>
-      <input />
-      <button type="submit">save</button>
-    </form>
-  );
+  const handleNewBlog = async (event) => {
+    event.preventDefault();
+    try {
+      const newBlog = {
+        title,
+        author,
+        url,
+      };
+      const response = await blogService.addBlog(newBlog, token);
+      const newList = blogs.concat(response);
+      setBlogs(newList);
+    } catch (exception) {
+      setErrorMessage('Wrong credentials');
+      console.log(exception);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
+  };
   const resetUser = () => {
     loginService.logout();
     const nul = null;
@@ -80,7 +99,16 @@ function App() {
       <h2>
         {`Logged in as ${user.username}`}
       </h2>
-      <button onClick={resetUser}>Logout</button>
+      <button onClick={resetUser} type="button">Logout</button>
+      <BlogEntry
+        addBlog={handleNewBlog}
+        author={author}
+        setAuthor={setAuthor}
+        title={title}
+        setTitle={setTitle}
+        url={url}
+        setUrl={setUrl}
+      />
       {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
