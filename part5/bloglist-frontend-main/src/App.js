@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import BlogEntry from './components/BlogEntry';
+import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -10,11 +11,11 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
   const [title, setTitle] = useState(null);
   const [author, setAuthor] = useState(null);
   const [url, setUrl] = useState(null);
   const [token, setToken] = useState(null);
+  const [notification, setNotification] = useState({ msg: null, type: null });
 
   useEffect(async () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -40,10 +41,10 @@ function App() {
       const bl = await blogService.getAll();
       setBlogs(bl);
     } catch (exception) {
-      setErrorMessage('Wrong credentials');
+      setNotification({ msg: 'Incorrect username or password', type: false });
       console.log(exception);
       setTimeout(() => {
-        setErrorMessage(null);
+        setNotification({ msg: null, type: null });
       }, 5000);
     }
   };
@@ -80,12 +81,13 @@ function App() {
       };
       const response = await blogService.addBlog(newBlog, token);
       const newList = blogs.concat(response);
+      setNotification({ msg: `${title} added!`, type: true });
       setBlogs(newList);
     } catch (exception) {
-      setErrorMessage('Wrong credentials');
+      setNotification({ msg: `${exception.response.data}`, type: false });
       console.log(exception);
       setTimeout(() => {
-        setErrorMessage(null);
+        setNotification({ msg: null, type: null });
       }, 5000);
     }
   };
@@ -115,6 +117,7 @@ function App() {
 
   return (
     <div>
+      <Notification message={notification.msg} type={notification.type} />
       <h2>Blogs</h2>
       {user === null
         ? loginForm()
