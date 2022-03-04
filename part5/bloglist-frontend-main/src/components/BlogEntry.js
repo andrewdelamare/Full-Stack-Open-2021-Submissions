@@ -2,14 +2,32 @@
 import React, { useState } from 'react';
 
 function BlogEntry({ handleNewBlog, setNewBlog }) {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  const [title, setTitle] = useState(' ');
+  const [author, setAuthor] = useState(' ');
+  const [url, setUrl] = useState(' ');
 
   const newBlog = {
     title,
     author,
     url,
+  };
+
+  const handleTitle = async (value) => {
+    await setTitle(value);
+    console.log(title);
+    setNewBlog(newBlog);
+  };
+
+  const handleAuthor = async function (value) {
+    await setAuthor(value);
+    console.log(author);
+    setNewBlog(newBlog);
+  };
+
+  const handleUrl = async function (value) {
+    await setUrl(value);
+    console.log(url);
+    setNewBlog(newBlog);
   };
 
   return (
@@ -21,9 +39,11 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
           type="text"
           value={title}
           name="Title "
+          onInputCapture={({ target }) => {
+            handleTitle(target.value);
+          }}
           onChange={({ target }) => {
-            setTitle(target.value);
-            setNewBlog(newBlog);
+            handleTitle(target.value);
           }}
         />
       </div>
@@ -33,9 +53,11 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
           type="text"
           value={author}
           name="Author "
+          onInputCapture={({ target }) => {
+            handleAuthor(target.value);
+          }}
           onChange={({ target }) => {
-            setAuthor(target.value);
-            setNewBlog(newBlog);
+            handleAuthor(target.value);
           }}
         />
       </div>
@@ -45,9 +67,12 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
           type="text"
           value={url}
           name="URL "
+          onInputCapture={({ target }) => {
+            handleUrl(target.value);
+          }}
           onChange={({ target }) => {
-            setUrl(target.value);
-            setNewBlog(newBlog);
+            handleUrl(target.value);
+            console.log(url);
           }}
         />
       </div>
