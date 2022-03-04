@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, {} from 'react';
+import React from 'react';
 
 function BlogEntry({
   addBlog, author, setAuthor, title, setTitle, url, setUrl,

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import BlogEntry from './components/BlogEntry';
 import Notification from './components/Notification';
+import Toggleable from './components/Toggleable';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -102,15 +103,17 @@ function App() {
         {`Logged in as ${user.username}`}
       </h2>
       <button onClick={resetUser} type="button">Logout</button>
-      <BlogEntry
-        addBlog={handleNewBlog}
-        author={author}
-        setAuthor={setAuthor}
-        title={title}
-        setTitle={setTitle}
-        url={url}
-        setUrl={setUrl}
-      />
+      <Toggleable buttonLabel="Add Blog">
+        <BlogEntry
+          addBlog={handleNewBlog}
+          author={author}
+          setAuthor={setAuthor}
+          title={title}
+          setTitle={setTitle}
+          url={url}
+          setUrl={setUrl}
+        />
+      </Toggleable>
       {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
