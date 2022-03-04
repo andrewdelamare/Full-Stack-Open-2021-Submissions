@@ -102,7 +102,9 @@ function App() {
       <Toggleable buttonLabel="Add Blog">
         <BlogEntry handleNewBlog={handleNewBlog} setNewBlog={setNewBlog} />
       </Toggleable>
-      {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+      {blogs
+        .sort((a, b) => a.likes - b.likes)
+        .map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
 
