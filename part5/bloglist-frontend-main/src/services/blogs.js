@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const baseUrl = '/api/blogs';
 
-const getAll = () => {
-  const request = axios.get(baseUrl);
-  return request.then((response) => response.data);
+const getAll = async () => {
+  const request = await axios.get(baseUrl);
+  return request.data;
 };
 
 const addBlog = async (newBlog, token) => {
@@ -30,4 +30,16 @@ const updateBlog = async (updatedBlog, token) => {
   return response.data;
 };
 
-export default { getAll, addBlog, updateBlog };
+const deleteIt = async (blogToDelete, token) => {
+  const bToken = `bearer ${token}`;
+  const config = {
+    headers: { Authorization: bToken },
+  };
+  const idUrl = `api/blogs/${blogToDelete}`;
+  const response = await axios.delete(idUrl, config);
+  return response.data;
+};
+
+export default {
+  getAll, addBlog, updateBlog, deleteIt,
+};

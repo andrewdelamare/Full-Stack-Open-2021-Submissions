@@ -54,9 +54,31 @@ function App() {
       const response = await blogService.addBlog(newBlog, token);
       const newList = blogs.concat(response);
       setNotification({ msg: 'Your blog was added!', type: true });
+      setTimeout(() => {
+        setNotification({ msg: null, type: null });
+      }, 5000);
       setBlogs(newList);
     } catch (exception) {
       setNotification({ msg: `${exception.response.data}`, type: false });
+      console.log(exception);
+      setTimeout(() => {
+        setNotification({ msg: null, type: null });
+      }, 5000);
+    }
+  };
+
+  const removeBlog = async (idOfBlog) => {
+    try {
+      console.log(idOfBlog);
+      await blogService.deleteIt(idOfBlog, token);
+      const bl = await blogService.getAll();
+      setBlogs(bl);
+      setNotification({ msg: 'Blog Deleted Successfully', type: true });
+      setTimeout(() => {
+        setNotification({ msg: null, type: null });
+      }, 5000);
+    } catch (exception) {
+      setNotification({ msg: 'failed to delete blog', type: false });
       console.log(exception);
       setTimeout(() => {
         setNotification({ msg: null, type: null });
@@ -104,7 +126,13 @@ function App() {
       </Toggleable>
       {blogs
         .sort((a, b) => a.likes - b.likes)
-        .map((blog) => <Blog key={blog.id} blog={blog} />)}
+        .map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            removeBlog={removeBlog}
+          />
+        ))}
     </div>
   );
 

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-function Blog({ blog }) {
+function Blog({ blog, removeBlog }) {
   const [visible, setVisible] = useState(false);
   const [updatedBlog, setUpdatedBlog] = useState(blog);
   const [likes, setLikes] = useState(blog.likes);
@@ -35,6 +35,13 @@ function Blog({ blog }) {
     setUpdatedBlog(blogCopy);
     blogService.updateBlog(updatedBlog);
   };
+
+  const deleteBlog = async () => {
+    const message = 'Do you really want to delete this blog?';
+    if (window.confirm(message)) {
+      removeBlog(blog.id);
+    }
+  };
   return (
 
     <div>
@@ -49,6 +56,7 @@ function Blog({ blog }) {
         <div>
           {blog.title}
         </div>
+        <button onClick={toggleVisibility} type="button">Hide Details</button>
         <div>
           Author:
           {' '}
@@ -66,7 +74,13 @@ function Blog({ blog }) {
           {' '}
           {blog.url}
         </div>
-        <button onClick={toggleVisibility} type="button">Hide Details</button>
+        <button
+          onClick={deleteBlog}
+          type="button"
+        >
+          Delete Blog
+
+        </button>
       </div>
     </div>
 
