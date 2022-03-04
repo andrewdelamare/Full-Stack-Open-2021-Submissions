@@ -14,19 +14,16 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
 
   const handleTitle = async (value) => {
     await setTitle(value);
-    console.log(title);
     setNewBlog(newBlog);
   };
 
   const handleAuthor = async function (value) {
     await setAuthor(value);
-    console.log(author);
     setNewBlog(newBlog);
   };
 
   const handleUrl = async function (value) {
     await setUrl(value);
-    console.log(url);
     setNewBlog(newBlog);
   };
 

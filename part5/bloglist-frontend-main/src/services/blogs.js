@@ -17,4 +17,17 @@ const addBlog = async (newBlog, token) => {
   return response.data;
 };
 
-export default { getAll, addBlog };
+const updateBlog = async (updatedBlog, token) => {
+  const bToken = `bearer ${token}`;
+  const config = {
+    headers: { Authorization: bToken },
+  };
+  const updatedInfo = {
+    likes: updatedBlog.likes,
+  };
+  const idUrl = `api/blogs/${updatedBlog.id}`;
+  const response = await axios.put(idUrl, updatedInfo, config);
+  return response.data;
+};
+
+export default { getAll, addBlog, updateBlog };

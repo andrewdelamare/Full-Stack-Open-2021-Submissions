@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import blogService from '../services/blogs';
 
 function Blog({ blog }) {
   const [visible, setVisible] = useState(false);
+  const [updatedBlog, setUpdatedBlog] = useState(blog);
+  const [likes, setLikes] = useState(blog.likes);
 
   const hideWhenVisible = {
     display: visible ? 'none' : '',
@@ -25,6 +28,13 @@ function Blog({ blog }) {
     setVisible(!visible);
   };
 
+  const addLike = () => {
+    const blogCopy = blog;
+    blogCopy.likes += 1;
+    setLikes(likes + 1);
+    setUpdatedBlog(blogCopy);
+    blogService.updateBlog(updatedBlog);
+  };
   return (
 
     <div>
@@ -47,9 +57,9 @@ function Blog({ blog }) {
         <div>
           Likes:
           {' '}
-          {blog.likes}
+          {likes}
           {' '}
-          <button type="button">Like</button>
+          <button type="button" onClick={addLike}>Like</button>
         </div>
         <div>
           URL:
