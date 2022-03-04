@@ -9,12 +9,10 @@ import loginService from './services/login';
 
 function App() {
   const [blogs, setBlogs] = useState([]);
+  const [newBlog, setNewBlog] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [author, setAuthor] = useState(null);
-  const [url, setUrl] = useState(null);
   const [token, setToken] = useState(null);
   const [notification, setNotification] = useState({ msg: null, type: null });
 
@@ -49,6 +47,23 @@ function App() {
       }, 5000);
     }
   };
+
+  const handleNewBlog = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await blogService.addBlog(newBlog, token);
+      const newList = blogs.concat(response);
+      setNotification({ msg: 'Your blog was added!', type: true });
+      setBlogs(newList);
+    } catch (exception) {
+      setNotification({ msg: `${exception.response.data}`, type: false });
+      console.log(exception);
+      setTimeout(() => {
+        setNotification({ msg: null, type: null });
+      }, 5000);
+    }
+  };
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -72,26 +87,7 @@ function App() {
       <button type="submit">login</button>
     </form>
   );
-  const handleNewBlog = async (event) => {
-    event.preventDefault();
-    try {
-      const newBlog = {
-        title,
-        author,
-        url,
-      };
-      const response = await blogService.addBlog(newBlog, token);
-      const newList = blogs.concat(response);
-      setNotification({ msg: `${title} added!`, type: true });
-      setBlogs(newList);
-    } catch (exception) {
-      setNotification({ msg: `${exception.response.data}`, type: false });
-      console.log(exception);
-      setTimeout(() => {
-        setNotification({ msg: null, type: null });
-      }, 5000);
-    }
-  };
+
   const resetUser = () => {
     loginService.logout();
     const nul = null;
@@ -104,15 +100,7 @@ function App() {
       </h2>
       <button onClick={resetUser} type="button">Logout</button>
       <Toggleable buttonLabel="Add Blog">
-        <BlogEntry
-          addBlog={handleNewBlog}
-          author={author}
-          setAuthor={setAuthor}
-          title={title}
-          setTitle={setTitle}
-          url={url}
-          setUrl={setUrl}
-        />
+        <BlogEntry handleNewBlog={handleNewBlog} setNewBlog={setNewBlog} />
       </Toggleable>
       {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>

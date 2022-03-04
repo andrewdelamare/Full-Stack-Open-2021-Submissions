@@ -1,11 +1,19 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 
-function BlogEntry({
-  addBlog, author, setAuthor, title, setTitle, url, setUrl,
-}) {
+function BlogEntry({ handleNewBlog, setNewBlog }) {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
+
+  const newBlog = {
+    title,
+    author,
+    url,
+  };
+
   return (
-    <form onSubmit={addBlog}>
+    <form onSubmit={handleNewBlog}>
       <div>Add a new blog</div>
       <div>
         Title:
@@ -13,7 +21,10 @@ function BlogEntry({
           type="text"
           value={title}
           name="Title "
-          onChange={({ target }) => setTitle(target.value)}
+          onChange={({ target }) => {
+            setTitle(target.value);
+            setNewBlog(newBlog);
+          }}
         />
       </div>
       <div>
@@ -22,7 +33,10 @@ function BlogEntry({
           type="text"
           value={author}
           name="Author "
-          onChange={({ target }) => setAuthor(target.value)}
+          onChange={({ target }) => {
+            setAuthor(target.value);
+            setNewBlog(newBlog);
+          }}
         />
       </div>
       <div>
@@ -31,7 +45,10 @@ function BlogEntry({
           type="text"
           value={url}
           name="URL "
-          onChange={({ target }) => setUrl(target.value)}
+          onChange={({ target }) => {
+            setUrl(target.value);
+            setNewBlog(newBlog);
+          }}
         />
       </div>
       <button type="submit">create</button>
@@ -41,17 +58,3 @@ function BlogEntry({
 }
 
 export default BlogEntry;
-
-/*
-<form onSubmit={props.addNewPerson}>
-            <div>
-                Name: <input onChange={props.handleNewName} />
-            </div>
-            <div>
-                Number: <input onChange={props.handleNewNumber} />
-            </div>
-            <div>
-                <button type="submit">add</button>
-            </div>
-        </form>
-*/
