@@ -69,7 +69,6 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
           }}
           onChange={({ target }) => {
             handleUrl(target.value);
-            console.log(url);
           }}
         />
       </div>
