@@ -44,8 +44,8 @@ function Blog({ blog, removeBlog }) {
   };
   return (
 
-    <div>
-      <div style={hideWhenVisible}>
+    <div className="blog">
+      <div style={hideWhenVisible} className="t&a">
         {blog.title}
         {' '}
         {blog.author}
@@ -53,23 +53,23 @@ function Blog({ blog, removeBlog }) {
         <button onClick={toggleVisibility} type="button">Show Details</button>
       </div>
       <div style={showWhenVisible}>
-        <div>
+        <div className="title">
           {blog.title}
         </div>
         <button onClick={toggleVisibility} type="button">Hide Details</button>
-        <div>
+        <div className="author">
           Author:
           {' '}
           {blog.author}
         </div>
-        <div>
+        <div className="likes">
           Likes:
           {' '}
           {likes}
           {' '}
           <button type="button" onClick={addLike}>Like</button>
         </div>
-        <div>
+        <div className="url">
           URL:
           {' '}
           {blog.url}
