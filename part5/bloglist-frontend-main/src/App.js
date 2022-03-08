@@ -109,6 +109,7 @@ function App() {
             key={blog.id}
             blog={blog}
             removeBlog={removeBlog}
+            updateBlog={blogService.updateBlog}
           />
         ))}
     </div>

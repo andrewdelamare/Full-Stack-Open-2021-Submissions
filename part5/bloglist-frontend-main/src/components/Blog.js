@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
 
-function Blog({ blog, removeBlog }) {
+function Blog({ blog, removeBlog, updateBlog }) {
   const [visible, setVisible] = useState(false);
   const [updatedBlog, setUpdatedBlog] = useState(blog);
   const [likes, setLikes] = useState(blog.likes);
@@ -33,7 +32,7 @@ function Blog({ blog, removeBlog }) {
     blogCopy.likes += 1;
     setLikes(likes + 1);
     setUpdatedBlog(blogCopy);
-    blogService.updateBlog(updatedBlog);
+    updateBlog(updatedBlog);
   };
 
   const deleteBlog = async () => {
