@@ -45,14 +45,14 @@ function Blog({ blog, removeBlog }) {
   return (
 
     <div className="blog">
-      <div style={hideWhenVisible} className="t&a">
+      <div style={hideWhenVisible} className="someShown">
         {blog.title}
         {' '}
         {blog.author}
         {' '}
         <button onClick={toggleVisibility} type="button">Show Details</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="allShown">
         <div className="title">
           {blog.title}
         </div>
