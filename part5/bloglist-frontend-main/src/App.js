@@ -17,6 +17,37 @@ function App() {
   const [token, setToken] = useState(null);
   const [notification, setNotification] = useState({ msg: null, type: null });
 
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
+
+  const handleTitle = async (value) => {
+    await setTitle(value);
+    setNewBlog({
+      title,
+      author,
+      url,
+    });
+  };
+
+  const handleAuthor = async (value) => {
+    await setAuthor(value);
+    setNewBlog({
+      title,
+      author,
+      url,
+    });
+  };
+
+  const handleUrl = async (value) => {
+    await setUrl(value);
+    setNewBlog({
+      title,
+      author,
+      url,
+    });
+  };
+
   useEffect(async () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
@@ -100,7 +131,15 @@ function App() {
       </h2>
       <button onClick={resetUser} type="button">Logout</button>
       <Toggleable buttonLabel="Add Blog">
-        <BlogEntry handleNewBlog={handleNewBlog} setNewBlog={setNewBlog} />
+        <BlogEntry
+          handleNewBlog={handleNewBlog}
+          title={title}
+          handleTitle={handleTitle}
+          author={author}
+          handleAuthor={handleAuthor}
+          url={url}
+          handleUrl={handleUrl}
+        />
       </Toggleable>
       {blogs
         .sort((a, b) => a.likes - b.likes)

@@ -1,32 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 
-function BlogEntry({ handleNewBlog, setNewBlog }) {
-  const [title, setTitle] = useState(' ');
-  const [author, setAuthor] = useState(' ');
-  const [url, setUrl] = useState(' ');
-
-  const newBlog = {
-    title,
-    author,
-    url,
-  };
-
-  const handleTitle = async (value) => {
-    await setTitle(value);
-    setNewBlog(newBlog);
-  };
-
-  const handleAuthor = async function (value) {
-    await setAuthor(value);
-    setNewBlog(newBlog);
-  };
-
-  const handleUrl = async function (value) {
-    await setUrl(value);
-    setNewBlog(newBlog);
-  };
-
+function BlogEntry({
+  handleNewBlog, title, handleTitle, author, handleAuthor, url, handleUrl,
+}) {
   return (
     <form onSubmit={handleNewBlog}>
       <div>Add a new blog</div>
@@ -36,6 +13,7 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
           type="text"
           value={title}
           name="Title "
+          placeholder="Enter title"
           onInputCapture={({ target }) => {
             handleTitle(target.value);
           }}
@@ -50,6 +28,7 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
           type="text"
           value={author}
           name="Author "
+          placeholder="Enter author"
           onInputCapture={({ target }) => {
             handleAuthor(target.value);
           }}
@@ -64,6 +43,7 @@ function BlogEntry({ handleNewBlog, setNewBlog }) {
           type="text"
           value={url}
           name="URL "
+          placeholder="Enter URL"
           onInputCapture={({ target }) => {
             handleUrl(target.value);
           }}
