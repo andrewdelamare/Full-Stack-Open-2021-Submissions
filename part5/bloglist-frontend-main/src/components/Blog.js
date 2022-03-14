@@ -76,6 +76,7 @@ function Blog({ blog, removeBlog, updateBlog }) {
         <button
           onClick={deleteBlog}
           type="button"
+          id="deleteBlogButton"
         >
           Delete Blog
 

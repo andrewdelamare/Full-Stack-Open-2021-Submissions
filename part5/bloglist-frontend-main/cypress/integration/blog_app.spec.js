@@ -67,5 +67,17 @@ describe('Blog app', () => {
       cy.get('#likeButton').click();
       cy.contains('Likes: 1');
     });
+    it('A blog can be deleted by the user who created it', () => {
+      cy.get('#addBlogToggle').click();
+      cy.get('#title').type('How to stop dogs from eating you');
+      cy.get('#author').type('A cat');
+      cy.get('#url').type('www.hissssgrowllllmeowwwwwww.blog.ca');
+      cy.get('#createBlogButton').click();
+      cy.get('#showDetailsButton').click();
+      cy.get('#deleteBlogButton').click();
+      cy.get('#success').should('have.css', 'color', 'rgb(0, 128, 0)');
+      cy.get('#success').should('have.css', 'border-style', 'solid');
+      cy.contains('Blog Deleted Successfully');
+    });
   });
 });
