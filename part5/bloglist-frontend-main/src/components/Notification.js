@@ -25,13 +25,13 @@ function Notification({ message, type }) {
     return null;
   } if (type === true) {
     return (
-      <div className="success" style={successStyles}>
+      <div className="success" id="success" style={successStyles}>
         {message}
       </div>
     );
   } if (type === false) {
     return (
-      <div className="failure" style={failureStyles}>
+      <div className="failure" id="failure" style={failureStyles}>
         {message}
       </div>
     );
