@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 
-function Togglable({ buttonLabel, children }) {
+function Togglable({ id, buttonLabel, children }) {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? 'none' : '' };
@@ -14,7 +14,7 @@ function Togglable({ buttonLabel, children }) {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility} type="button">{buttonLabel}</button>
+        <button onClick={toggleVisibility} type="button" id={id}>{buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
         {children}

@@ -39,4 +39,23 @@ describe('Blog app', () => {
       cy.get('#failure').should('have.css', 'border-style', 'solid');
     });
   });
+  describe('When logged in', () => {
+    beforeEach(() => {
+      cy.get('#username').type('are');
+      cy.get('#password').type('andrewismyname');
+      cy.get('#login').click();
+    });
+
+    it('A blog can be created', () => {
+      cy.get('#addBlogToggle').click();
+      cy.get('#title').type('Being a 17th century pirate');
+      cy.get('#author').type('A famous 17th centry pirate');
+      cy.get('#url').type('www.thetruthofbeinga17thcentrypirate.blog.pi');
+      cy.get('#createBlogButton').click();
+      cy.contains('Being a 17th century pirate');
+      cy.contains('A famous 17th centry pirate');
+      cy.get('#success').should('have.css', 'color', 'rgb(0, 128, 0)');
+      cy.get('#success').should('have.css', 'border-style', 'solid');
+    });
+  });
 });

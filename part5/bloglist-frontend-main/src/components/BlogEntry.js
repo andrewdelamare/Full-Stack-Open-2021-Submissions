@@ -15,7 +15,7 @@ function BlogEntry({
         <input
           type="text"
           value={title}
-          name="Title "
+          id="title"
           placeholder="Enter title"
           onInputCapture={({ target }) => {
             handleTitle(target.value);
@@ -30,7 +30,7 @@ function BlogEntry({
         <input
           type="text"
           value={author}
-          name="Author "
+          id="author"
           placeholder="Enter author"
           onInputCapture={({ target }) => {
             handleAuthor(target.value);
@@ -45,7 +45,7 @@ function BlogEntry({
         <input
           type="text"
           value={url}
-          name="URL "
+          id="url"
           placeholder="Enter URL"
           onInputCapture={({ target }) => {
             handleUrl(target.value);
@@ -55,7 +55,7 @@ function BlogEntry({
           }}
         />
       </div>
-      <button type="submit">create</button>
+      <button id="createBlogButton" type="submit">create</button>
     </form>
 
   );
