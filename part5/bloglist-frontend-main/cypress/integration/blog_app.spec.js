@@ -57,5 +57,15 @@ describe('Blog app', () => {
       cy.get('#success').should('have.css', 'color', 'rgb(0, 128, 0)');
       cy.get('#success').should('have.css', 'border-style', 'solid');
     });
+    it('A blog can be liked', () => {
+      cy.get('#addBlogToggle').click();
+      cy.get('#title').type('15th centry farmers and how to control them');
+      cy.get('#author').type('A noble who disdains the pesantry');
+      cy.get('#url').type('www.peasantsstinkkeepthemawayfromme.blog.no');
+      cy.get('#createBlogButton').click();
+      cy.get('#showDetailsButton').click();
+      cy.get('#likeButton').click();
+      cy.contains('Likes: 1');
+    });
   });
 });

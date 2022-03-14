@@ -49,7 +49,7 @@ function Blog({ blog, removeBlog, updateBlog }) {
         {' '}
         {blog.author}
         {' '}
-        <button onClick={toggleVisibility} type="button">Show Details</button>
+        <button onClick={toggleVisibility} type="button" id="showDetailsButton">Show Details</button>
       </div>
       <div style={showWhenVisible} className="allShown">
         <div className="title">
@@ -66,7 +66,7 @@ function Blog({ blog, removeBlog, updateBlog }) {
           {' '}
           {likes}
           {' '}
-          <button type="button" onClick={addLike}>Like</button>
+          <button type="button" onClick={addLike} id="likeButton">Like</button>
         </div>
         <div className="url">
           URL:
