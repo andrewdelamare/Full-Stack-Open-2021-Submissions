@@ -59,7 +59,7 @@ describe('Blog app', () => {
     });
     it('A blog can be liked', () => {
       cy.get('#addBlogToggle').click();
-      cy.get('#title').type('15th centry farmers and how to control them');
+      cy.get('#title').type('15th century farmers and how to control them');
       cy.get('#author').type('A noble who disdains the pesantry');
       cy.get('#url').type('www.peasantsstinkkeepthemawayfromme.blog.no');
       cy.get('#createBlogButton').click();
@@ -78,6 +78,35 @@ describe('Blog app', () => {
       cy.get('#success').should('have.css', 'color', 'rgb(0, 128, 0)');
       cy.get('#success').should('have.css', 'border-style', 'solid');
       cy.contains('Blog Deleted Successfully');
+    });
+    it('Blogs are listed in order by number of likes', () => {
+      cy.get('#addBlogToggle').click();
+      cy.get('#title').type('How to stop dogs from eating you');
+      cy.get('#author').type('A cat');
+      cy.get('#url').type('www.hissssgrowllllmeowwwwwww.blog.ca');
+      cy.get('#createBlogButton').click();
+      cy.get('#showDetailsButton').click();
+      cy.get('#likeButton').click();
+
+      cy.get('#title').type('15th century farmers and how to control them');
+      cy.get('#author').type('A noble who disdains the pesantry');
+      cy.get('#url').type('www.peasantsstinkkeepthemawayfromme.blog.no');
+      cy.get('#createBlogButton').click();
+      cy.contains('15th century farmers and how to control them A noble who disdains the pesantry').parent().find('#showDetailsButton').click();
+      cy.contains('15th century farmers and how to control them').parent().find('#likeButton').click();
+      cy.contains('15th century farmers and how to control them').parent().find('#likeButton').click();
+      cy.contains('15th century farmers and how to control them').parent().find('#likeButton').click();
+
+      cy.get('#title').type('Being a 17th century pirate');
+      cy.get('#author').type('A famous 17th centry pirate');
+      cy.get('#url').type('www.thetruthofbeinga17thcentrypirate.blog.pi');
+      cy.get('#createBlogButton').click();
+      cy.get('.blogs > .blog')
+        .eq(0)
+        .should('contain.text', '15th century farmers and how to control them');
+      cy.get('.blogs > .blog')
+        .eq(1)
+        .should('contain.text', 'How to stop dogs from eating you');
     });
   });
 });

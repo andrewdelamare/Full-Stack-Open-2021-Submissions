@@ -144,16 +144,18 @@ function App() {
           handleUrl={handleUrl}
         />
       </Toggleable>
-      {blogs
-        .sort((a, b) => a.likes - b.likes)
-        .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            removeBlog={removeBlog}
-            updateBlog={blogService.updateBlog}
-          />
-        ))}
+      <div className="blogs">
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              removeBlog={removeBlog}
+              updateBlog={blogService.updateBlog}
+            />
+          ))}
+      </div>
     </div>
   );
   const loginForm = () => (
