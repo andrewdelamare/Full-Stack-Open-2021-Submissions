@@ -1,5 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React from 'react';
+
+// I had to move state out to the app component in order
+// to test things the way that the course exercises demanded
 
 function BlogEntry({
   handleNewBlog, title, handleTitle, author, handleAuthor, url, handleUrl,
