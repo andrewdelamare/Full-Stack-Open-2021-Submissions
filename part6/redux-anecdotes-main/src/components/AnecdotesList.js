@@ -17,7 +17,7 @@ const Anecdote = ({anecdote, handleVote}) => {
 };
 
 
-const Anecodtes = () => {
+const AnecodteList = () => {
   const anecdotes = useSelector((state) => state);
   const dispatch = useDispatch();
   const voted = (id) => dispatch(vote(id));
@@ -33,4 +33,4 @@ const Anecodtes = () => {
   );
 };
 
-export default Anecodtes;
+export default AnecodteList;
