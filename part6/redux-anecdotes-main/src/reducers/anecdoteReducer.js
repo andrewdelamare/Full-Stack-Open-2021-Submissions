@@ -26,6 +26,13 @@ export const vote = (id) => {
   };
 };
 
+export const add = (quote) => {
+  return {
+    type: 'ADD',
+    data: asObject(quote),
+  };
+};
+
 const initialState = anecdotesAtStart.map(asObject);
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +47,12 @@ const reducer = (state = initialState, action) => {
       return state.map((quote)=>
         quote.id !== action.data ? quote : votedQuote,
       );
+    }
+    case 'ADD': {
+      const quoteToAdd = action.data;
+      console.log(quoteToAdd);
+      const noteAdded = [...state, quoteToAdd];
+      return noteAdded;
     }
     default: {
       return state;

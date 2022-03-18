@@ -1,4 +1,5 @@
 import Anecdotes from './components/Anecdotes';
+import AddQuote from './components/AddQuote';
 
 const App = () => {
   return (
@@ -6,10 +7,7 @@ const App = () => {
       <h2>Anecdotes</h2>
       <Anecdotes />
       <h2>create new</h2>
-      <form>
-        <div><input /></div>
-        <button>create</button>
-      </form>
+      <AddQuote />
     </div>
   );
 };
