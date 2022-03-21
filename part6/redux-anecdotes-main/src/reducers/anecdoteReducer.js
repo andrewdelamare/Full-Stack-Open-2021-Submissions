@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
+import {createSlice} from '@reduxjs/toolkit';
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -18,46 +20,26 @@ const asObject = (anecdote) => {
     votes: 0,
   };
 };
-
-export const vote = (id) => {
-  return {
-    type: 'VOTE',
-    data: id,
-  };
-};
-
-export const add = (quote) => {
-  return {
-    type: 'ADD',
-    data: asObject(quote),
-  };
-};
-
 const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'VOTE': {
-      const quoteToVote = state.find((obj) => obj.id === action.data);
-      console.log(quoteToVote);
-      const votedQuote = {
-        ...quoteToVote,
-        votes: quoteToVote.votes += 1};
-      console.log('state now: ', state);
-      return state.map((quote)=>
-        quote.id !== action.data ? quote : votedQuote,
-      );
-    }
-    case 'ADD': {
-      const quoteToAdd = action.data;
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    vote(state, action) {
+      const id = action.payload;
+      const toChange = state.find((n) => n.id === id);
+      toChange.votes = toChange.votes +=1;
+      state.sort((a, b) => b.votes - a.votes);
+    },
+    add(state, action) {
+      const quoteToAdd = action.payload;
       console.log(quoteToAdd);
       const noteAdded = [...state, quoteToAdd];
       return noteAdded;
-    }
-    default: {
-      return state;
-    }
-  }
-};
+    },
+  },
+});
 
-export default reducer;
+export const {vote, add} = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;

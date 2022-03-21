@@ -18,11 +18,11 @@ const Anecdote = ({anecdote, handleVote}) => {
 
 
 const AnecodteList = () => {
-  const anecdotes = useSelector((state) => state);
+  const anecdotes = useSelector((state) => state.anecdotes);
   const dispatch = useDispatch();
   const voted = (id) => dispatch(vote(id));
-  const sorted = anecdotes.sort((a, b) => b.votes - a.votes);
-  const listed = sorted.map((anec) => {
+
+  const listed = anecdotes.map((anec) => {
     return (
       <Anecdote key={anec.id} anecdote={anec} handleVote={voted} />);
   });
