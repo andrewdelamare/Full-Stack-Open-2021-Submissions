@@ -1,14 +1,17 @@
 /* eslint-disable no-unused-vars */
 import {useSelector, useDispatch} from 'react-redux';
 import {add} from '../reducers/anecdoteReducer';
-import {notify} from '../reducers/notificationReducer';
+import {notify, clear} from '../reducers/notificationReducer';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
   const addaQuote = (event) => {
     event.preventDefault();
     dispatch(add(event.target.quote.value));
-    dispatch(notify('Added an anecdote'));
+    dispatch(notify(`Added: ${event.target.quote.value}`));
+    setTimeout(()=> {
+      dispatch(clear());
+    }, 5000);
     event.target.quote.value = '';
   };
   return (
