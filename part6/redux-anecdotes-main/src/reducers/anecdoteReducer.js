@@ -33,7 +33,7 @@ const anecdoteSlice = createSlice({
       state.sort((a, b) => b.votes - a.votes);
     },
     add(state, action) {
-      const quoteToAdd = action.payload;
+      const quoteToAdd = asObject(action.payload);
       console.log(quoteToAdd);
       const noteAdded = [...state, quoteToAdd];
       return noteAdded;

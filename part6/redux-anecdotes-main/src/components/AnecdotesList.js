@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {useSelector, useDispatch} from 'react-redux';
 import {vote} from '../reducers/anecdoteReducer';
+import {notify} from '../reducers/notificationReducer';
 
 const Anecdote = ({anecdote, handleVote}) => {
   return (
@@ -10,7 +11,7 @@ const Anecdote = ({anecdote, handleVote}) => {
       </div>
       <div>
             has {anecdote.votes}
-        <button onClick={() => (handleVote(anecdote.id))}>vote</button>
+        <button onClick={() => (handleVote(anecdote))}>vote</button>
       </div>
     </div>
   );
@@ -20,7 +21,10 @@ const Anecdote = ({anecdote, handleVote}) => {
 const AnecodteList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
   const dispatch = useDispatch();
-  const voted = (id) => dispatch(vote(id));
+  const voted = (anecdote) => {
+    dispatch(vote(anecdote.id));
+    dispatch(notify(`Voted for: ${anecdote.content}`));
+  };
 
   const listed = anecdotes.map((anec) => {
     return (
