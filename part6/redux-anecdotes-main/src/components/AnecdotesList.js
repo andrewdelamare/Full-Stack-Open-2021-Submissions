@@ -23,7 +23,9 @@ const AnecodteList = () => {
     if (state.filter === '') {
       return state.anecdotes;
     } else {
-      const filtered = state.anecdotes.filter((anec) => anec.content.includes(state.filter));
+      const filtered = state.anecdotes.filter((anec) => {
+        anec.content.includes(state.filter);
+      });
       console.log(filtered);
       return filtered;
     }
