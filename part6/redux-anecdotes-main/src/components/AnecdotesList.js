@@ -23,10 +23,11 @@ const AnecodteList = () => {
     if (state.filter === '') {
       return state.anecdotes;
     } else {
-      const filtered = state.anecdotes.filter((anec) => {
-        anec.content.includes(state.filter);
+      const filter = state.filter;
+      const filtered = [];
+      state.anecdotes.forEach((anec) => {
+        anec.content.includes(filter) ? filtered.push(anec) : null;
       });
-      console.log(filtered);
       return filtered;
     }
   });
