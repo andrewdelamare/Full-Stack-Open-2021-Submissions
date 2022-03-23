@@ -2,13 +2,16 @@
 import {useSelector, useDispatch} from 'react-redux';
 import {add} from '../reducers/anecdoteReducer';
 import {notify, clear} from '../reducers/notificationReducer';
+import {addAnecdote} from '../services/anecdotes';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
   const addaQuote = (event) => {
+    const target = event.target.quote.value;
     event.preventDefault();
-    dispatch(add(event.target.quote.value));
-    dispatch(notify(`Added: ${event.target.quote.value}`));
+    addAnecdote(target);
+    dispatch(add(target));
+    dispatch(notify(`Added: ${target}`));
     setTimeout(()=> {
       dispatch(clear());
     }, 5000);

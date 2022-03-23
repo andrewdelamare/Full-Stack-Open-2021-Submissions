@@ -1,10 +1,14 @@
 import axios from 'axios';
-
+import {asObject} from '../reducers/anecdoteReducer';
 const baseUrl = 'http://localhost:3001/anecdotes';
 
-const getAll = async () => {
+export const getAll = async () => {
   const response = await axios.get(baseUrl);
   return response.data;
 };
 
-export default getAll;
+export const addAnecdote = async (anec) => {
+  const response = await axios.post(baseUrl, asObject(anec));
+  console.log(response.data);
+  return response.data;
+};
