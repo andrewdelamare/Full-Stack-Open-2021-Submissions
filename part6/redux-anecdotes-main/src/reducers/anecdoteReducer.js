@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {createSlice} from '@reduxjs/toolkit';
 import {getAll, addAnecdote, addVote} from '../services/anecdotes';
-import {notify, clear} from './notificationReducer';
+import {displayNotification} from './notificationReducer';
 
 
 const anecdotesAtStart = [];
@@ -53,10 +53,7 @@ export const addNewAnecdote = (target) => {
   return async (dispatch) => {
     const newQuote = await addAnecdote(target);
     dispatch(add(newQuote));
-    dispatch(notify(`Added: ${newQuote.content}`));
-    setTimeout(()=> {
-      dispatch(clear());
-    }, 5000);
+    dispatch(displayNotification(`Added: ${newQuote.content}`, 5));
   };
 };
 

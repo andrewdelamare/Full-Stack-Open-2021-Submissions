@@ -43,7 +43,7 @@
     {
       "content": "Yay for breaking everything!",
       "id": "52339",
-      "votes": 6
+      "votes": 10
     },
     {
       "content": "Please dont break",
@@ -58,6 +58,11 @@
     {
       "content": "YESSSSSSS",
       "id": "55532",
+      "votes": 0
+    },
+    {
+      "content": "Hey look it works!",
+      "id": "35429",
       "votes": 0
     }
   ]
