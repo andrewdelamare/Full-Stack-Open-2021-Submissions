@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import {createSlice} from '@reduxjs/toolkit';
-import {getAll, addAnecdote} from '../services/anecdotes';
+import {getAll, addAnecdote, addVote} from '../services/anecdotes';
 import {notify, clear} from './notificationReducer';
 
 
@@ -21,7 +21,7 @@ const anecdoteSlice = createSlice({
   initialState,
   reducers: {
     vote(state, action) {
-      const id = action.payload;
+      const id = action.payload.id;
       const toChange = state.find((n) => n.id === id);
       toChange.votes = toChange.votes +=1;
       state.sort((a, b) => b.votes - a.votes);
@@ -33,7 +33,8 @@ const anecdoteSlice = createSlice({
     },
     initialize(state, action) {
       state = action.payload;
-      return action.payload;
+      state.sort((a, b) => b.votes - a.votes);
+      return state;
     },
   },
 });
@@ -56,6 +57,18 @@ export const addNewAnecdote = (target) => {
     setTimeout(()=> {
       dispatch(clear());
     }, 5000);
+  };
+};
+
+export const voteIt = (quote, votes) => {
+  return async (dispatch) => {
+    console.log(quote);
+    const newVotes = votes + 1;
+    console.log(newVotes);
+    const updated = {content: quote.content, id: quote.id, votes: newVotes};
+    console.log(updated);
+    addVote(updated);
+    dispatch(vote(updated));
   };
 };
 

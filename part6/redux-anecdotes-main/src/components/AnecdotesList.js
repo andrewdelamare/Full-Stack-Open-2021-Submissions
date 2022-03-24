@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import {useSelector, useDispatch} from 'react-redux';
-import {vote} from '../reducers/anecdoteReducer';
+import {voteIt} from '../reducers/anecdoteReducer';
 import {notify, clear} from '../reducers/notificationReducer';
 
 const Anecdote = ({anecdote, handleVote}) => {
@@ -33,7 +33,7 @@ const AnecodteList = () => {
   });
   const dispatch = useDispatch();
   const voted = (anecdote) => {
-    dispatch(vote(anecdote.id));
+    dispatch(voteIt(anecdote, anecdote.votes));
     dispatch(notify(`Voted for: ${anecdote.content}`));
     setTimeout(()=> {
       dispatch(clear());
