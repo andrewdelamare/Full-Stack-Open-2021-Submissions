@@ -1,22 +1,18 @@
 /* eslint-disable no-unused-vars */
 import {useSelector, useDispatch} from 'react-redux';
-import {add} from '../reducers/anecdoteReducer';
-import {notify, clear} from '../reducers/notificationReducer';
-import {addAnecdote} from '../services/anecdotes';
+import {addNewAnecdote} from '../reducers/anecdoteReducer';
+
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
+
   const addaQuote = (event) => {
-    const target = event.target.quote.value;
     event.preventDefault();
-    addAnecdote(target);
-    dispatch(add(target));
-    dispatch(notify(`Added: ${target}`));
-    setTimeout(()=> {
-      dispatch(clear());
-    }, 5000);
+    const target = event.target.quote.value;
     event.target.quote.value = '';
+    dispatch(addNewAnecdote(target));
   };
+
   return (
     <form onSubmit={addaQuote} >
       <h2>create new</h2>

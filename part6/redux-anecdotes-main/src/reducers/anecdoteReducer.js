@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {createSlice} from '@reduxjs/toolkit';
 import {getAll, addAnecdote} from '../services/anecdotes';
+import {notify, clear} from './notificationReducer';
 
 
 const anecdotesAtStart = [];
@@ -26,7 +27,7 @@ const anecdoteSlice = createSlice({
       state.sort((a, b) => b.votes - a.votes);
     },
     add(state, action) {
-      const quoteToAdd = asObject(action.payload);
+      const quoteToAdd = action.payload;
       const noteAdded = [...state, quoteToAdd];
       return noteAdded;
     },
@@ -40,11 +41,21 @@ const anecdoteSlice = createSlice({
 export const {vote, add, initialize} = anecdoteSlice.actions;
 
 export const initializeAnecdotes = () => {
-  // const dispatch = useDispatch();
   return async (dispatch) => {
     const quotes = await getAll();
     console.log(quotes);
     dispatch(initialize(quotes));
+  };
+};
+
+export const addNewAnecdote = (target) => {
+  return async (dispatch) => {
+    const newQuote = await addAnecdote(target);
+    dispatch(add(newQuote));
+    dispatch(notify(`Added: ${newQuote.content}`));
+    setTimeout(()=> {
+      dispatch(clear());
+    }, 5000);
   };
 };
 
