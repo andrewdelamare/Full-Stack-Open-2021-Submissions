@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {createSlice} from '@reduxjs/toolkit';
+import {getAll, addAnecdote} from '../services/anecdotes';
+
 
 const anecdotesAtStart = [];
 
@@ -36,4 +38,14 @@ const anecdoteSlice = createSlice({
 });
 
 export const {vote, add, initialize} = anecdoteSlice.actions;
+
+export const initializeAnecdotes = () => {
+  // const dispatch = useDispatch();
+  return async (dispatch) => {
+    const quotes = await getAll();
+    console.log(quotes);
+    dispatch(initialize(quotes));
+  };
+};
+
 export default anecdoteSlice.reducer;
