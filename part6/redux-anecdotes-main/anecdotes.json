@@ -43,7 +43,7 @@
     {
       "content": "Yay for breaking everything!",
       "id": "52339",
-      "votes": 17
+      "votes": 19
     },
     {
       "content": "Please dont break",
@@ -63,6 +63,11 @@
     {
       "content": "Hey look it works!",
       "id": "35429",
+      "votes": 1
+    },
+    {
+      "content": "Using connect, a new anecdote has been added",
+      "id": "43884",
       "votes": 0
     }
   ]

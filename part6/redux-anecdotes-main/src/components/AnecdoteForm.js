@@ -1,16 +1,14 @@
 /* eslint-disable no-unused-vars */
-import {useSelector, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
 import {addNewAnecdote} from '../reducers/anecdoteReducer';
 
 
-const AnecdoteForm = () => {
-  const dispatch = useDispatch();
-
+const AnecdoteForm = (props) => {
   const addaQuote = (event) => {
     event.preventDefault();
     const target = event.target.quote.value;
     event.target.quote.value = '';
-    dispatch(addNewAnecdote(target));
+    props.addNewAnecdote(target);
   };
 
   return (
@@ -22,4 +20,7 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm;
+export default connect(
+    null,
+    {addNewAnecdote},
+)(AnecdoteForm);
