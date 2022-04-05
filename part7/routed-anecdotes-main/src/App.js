@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/prop-types */
@@ -194,8 +195,8 @@ function App() {
     }, 5000);
   };
 
-  const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
-
+  // const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
+  /*
   const vote = (id) => {
     const anecdote = anecdoteById(id);
 
@@ -206,7 +207,7 @@ function App() {
 
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
-
+  */
   return (
     <Router>
       <h1>Software anecdotes</h1>
