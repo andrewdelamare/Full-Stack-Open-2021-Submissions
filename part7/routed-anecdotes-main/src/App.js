@@ -129,6 +129,17 @@ function CreateNew({ addNew }) {
         </div>
         <button type="submit">create</button>
       </form>
+      <button
+        type="button"
+        onClick={() => {
+          content.reset();
+          author.reset();
+          info.reset();
+        }}
+      >
+        reset
+
+      </button>
     </div>
   );
 }
