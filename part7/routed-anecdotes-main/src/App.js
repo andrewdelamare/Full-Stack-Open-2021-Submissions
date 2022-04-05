@@ -7,6 +7,7 @@ import {
   BrowserRouter as Router,
   Routes, Route, Link, useParams, useNavigate,
 } from 'react-router-dom';
+import { useField } from './hooks/index';
 
 function Menu({ ane, cre, abo }) {
   const padding = {
@@ -62,12 +63,18 @@ function About() {
 
       <em>
         An anecdote is a brief, revealing account of an individual person or an incident.
-        Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself,
-        such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative.
+        Occasionally humorous, anecdotes differ from jokes because their primary purpose
+        is not simply to provoke laughter but to reveal a truth more general than the brief tale
+        itself, such as to characterize a person by delineating a specific quirk or trait,
+        to communicate an abstract idea about a person, place,
+        or thing through the concrete details of a short narrative.
         An anecdote is "a story with a point."
       </em>
 
-      <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
+      <p>
+        Software engineering is full of excellent anecdotes,
+        at this app you can find the best and add more.
+      </p>
     </div>
   );
 }
@@ -88,18 +95,18 @@ function Footer() {
   );
 }
 
-function CreateNew(props) {
-  const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
-  const [info, setInfo] = useState('');
+function CreateNew({ addNew }) {
+  const content = useField('content');
+  const author = useField('author');
+  const info = useField('info');
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate('/');
-    props.addNew({
-      content,
-      author,
-      info,
+    addNew({
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
   };
@@ -110,15 +117,15 @@ function CreateNew(props) {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name="content" value={content} onChange={(e) => setContent(e.target.value)} />
+          <input name={content.type} value={content.value} onChange={content.onChange} />
         </div>
         <div>
           author
-          <input name="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input name={author.type} value={author.value} onChange={author.onChange} />
         </div>
         <div>
           url for more info
-          <input name="info" value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input name={info.type} value={info.value} onChange={info.onChange} />
         </div>
         <button type="submit">create</button>
       </form>
@@ -166,7 +173,7 @@ function App() {
   ]);
 
   const [notification, setNotification] = useState(null);
-  
+
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
