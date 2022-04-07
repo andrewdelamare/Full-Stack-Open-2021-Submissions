@@ -1,0 +1,68 @@
+POST http://localhost:3003/api/blogs 
+Content-Type: application/json
+
+{
+    "title": "a blog 2",
+    "author": "no one 2",
+    "url": "fake 2",
+    "likes": 1
+}
+
+###
+
+GET http://localhost:3003/api/blogs 
+Content-Type: application/json
+
+###
+
+POST http://localhost:3003/api/blogs 
+Content-Type: application/json
+
+{
+    "author": "no one 2",
+    "likes": 1
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "fakeUser789",
+    "name": "I do not exist",
+    "password": "fakeeeeee"
+}
+
+###
+
+GET http://localhost:3001/api/users
+Content-Type: application/json
+
+###
+
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "fakeUser78",
+    "password": "fakeeeeee"
+}
+
+###
+
+POST http://localhost:3003/api/blogs 
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZha2VVc2VyNzgiLCJpZCI6IjYyMWNiNWRkNzkwNTYyNDZkMDIzMDM0NCIsImlhdCI6MTY0NjMwMTU2MX0.kvQFS43oxU75D3kKoRYg-oIdq4J5o9ggJalYDJoYsLc
+
+{
+    "title": "This is a blog, full of blog content",
+    "author": "Someone cool",
+    "url": "fake 1100",
+    "likes": 1100
+}
+
+###
+
+DELETE http://localhost:3001/api/blogs/621ddf2f0bb44ee82c9bbca2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZha2VVc2VyNzg5IiwiaWQiOiI2MjE2MTY1OTczMjZkMWM2NGM3Njg0ZTUiLCJpYXQiOjE2NDYxMzEwMjB9.iw_-ZuW8tWyN2TxvBQuIq-FqpTD_1G7QwWE01Skkxxg
