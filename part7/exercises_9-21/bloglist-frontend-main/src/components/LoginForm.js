@@ -1,8 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const loginForm = ({
-  username, setUsername, password, setPassword, handleLogin,
+  username,
+  setUsername,
+  password,
+  setPassword,
+  handleLogin,
 }) => (
   <form onSubmit={handleLogin}>
     <div>
@@ -23,7 +27,9 @@ const loginForm = ({
         onChange={({ target }) => setPassword(target.value)}
       />
     </div>
-    <button type="submit" id="login">login</button>
+    <button type="submit" id="login">
+      login
+    </button>
   </form>
 );
 

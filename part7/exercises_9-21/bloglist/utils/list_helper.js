@@ -12,10 +12,10 @@ const totalLikes = (blogs) => {
 
 const favoriteBlog = (blogs) => {
   let fav = {
-    _id: '5a422ba71b54a676234d17fb',
-    title: 'TDD harms architecture',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+    _id: "5a422ba71b54a676234d17fb",
+    title: "TDD harms architecture",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
     likes: 0,
     __v: 0,
   };
@@ -44,36 +44,34 @@ const countBlogs = (arr) => {
 
 const mostBlogs = (blogs) => {
   const obj = countBlogs(blogs);
-  console.log('list of occurences after find something', obj);
+  console.log("list of occurences after find something", obj);
   let mostNum = 0;
-  let mostAuthor = '';
+  let mostAuthor = "";
   for (const [key, value] of Object.entries(obj)) {
     if (value > mostNum) {
       mostNum = value;
       mostAuthor = key;
     }
   }
-  return (
-    {
-      author: mostAuthor,
-      blogs: mostNum,
-    });
+  return {
+    author: mostAuthor,
+    blogs: mostNum,
+  };
 };
 
 const mostLikes = (blogs) => {
   let mostNum = 0;
-  let mostAuthor = '';
+  let mostAuthor = "";
   blogs.forEach((blog) => {
     if (blog.likes > mostNum) {
       mostNum = blog.likes;
       mostAuthor = blog.author;
     }
   });
-  return (
-    {
-      author: mostAuthor,
-      likes: mostNum,
-    });
+  return {
+    author: mostAuthor,
+    likes: mostNum,
+  };
 };
 
 module.exports = {

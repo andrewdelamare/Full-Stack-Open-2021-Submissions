@@ -1,25 +1,25 @@
 /* eslint-disable react/react-in-jsx-scope */
-import React, { useState, useEffect } from 'react';
-import Blog from './components/Blog';
-import BlogEntry from './components/BlogEntry';
-import Notification from './components/Notification';
-import Toggleable from './components/Toggleable';
-import blogService from './services/blogs';
-import loginService from './services/login';
-import LoginForm from './components/LoginForm';
+import React, { useState, useEffect } from "react";
+import Blog from "./components/Blog";
+import BlogEntry from "./components/BlogEntry";
+import Notification from "./components/Notification";
+import Toggleable from "./components/Toggleable";
+import blogService from "./services/blogs";
+import loginService from "./services/login";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
   const [newBlog, setNewBlog] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [notification, setNotification] = useState({ msg: null, type: null });
 
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   const handleTitle = async (value) => {
     await setTitle(value);
@@ -49,7 +49,7 @@ function App() {
   };
 
   useEffect(async () => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
       const u = JSON.parse(loggedUserJSON);
       setUser(u);
@@ -63,17 +63,18 @@ function App() {
     event.preventDefault();
     try {
       const u = await loginService.login({
-        username, password,
+        username,
+        password,
       });
       setUser(u);
       setUsername(username);
       setPassword(password);
       setToken(u.token);
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(u));
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(u));
       const bl = await blogService.getAll();
       setBlogs(bl);
     } catch (exception) {
-      setNotification({ msg: 'Incorrect username or password', type: false });
+      setNotification({ msg: "Incorrect username or password", type: false });
       console.log(exception);
       setTimeout(() => {
         setNotification({ msg: null, type: null });
@@ -86,14 +87,14 @@ function App() {
     try {
       const response = await blogService.addBlog(newBlog, token);
       const newList = blogs.concat(response);
-      setNotification({ msg: 'Your blog was added!', type: true });
+      setNotification({ msg: "Your blog was added!", type: true });
       setTimeout(() => {
         setNotification({ msg: null, type: null });
       }, 5000);
       setBlogs(newList);
-      setTitle('');
-      setAuthor('');
-      setUrl('');
+      setTitle("");
+      setAuthor("");
+      setUrl("");
     } catch (exception) {
       setNotification({ msg: `${exception.response.data}`, type: false });
       console.log(exception);
@@ -109,12 +110,12 @@ function App() {
       await blogService.deleteIt(idOfBlog, token);
       const bl = await blogService.getAll();
       setBlogs(bl);
-      setNotification({ msg: 'Blog Deleted Successfully', type: true });
+      setNotification({ msg: "Blog Deleted Successfully", type: true });
       setTimeout(() => {
         setNotification({ msg: null, type: null });
       }, 5000);
     } catch (exception) {
-      setNotification({ msg: 'failed to delete blog', type: false });
+      setNotification({ msg: "failed to delete blog", type: false });
       console.log(exception);
       setTimeout(() => {
         setNotification({ msg: null, type: null });
@@ -129,10 +130,10 @@ function App() {
   };
   const blogList = () => (
     <div>
-      <h2>
-        {`Logged in as ${user.username}`}
-      </h2>
-      <button onClick={resetUser} type="button">Logout</button>
+      <h2>{`Logged in as ${user.username}`}</h2>
+      <button onClick={resetUser} type="button">
+        Logout
+      </button>
       <Toggleable id="addBlogToggle" buttonLabel="Add Blog">
         <BlogEntry
           handleNewBlog={handleNewBlog}
@@ -171,12 +172,7 @@ function App() {
     <div>
       <Notification message={notification.msg} type={notification.type} />
       <h2>Blogs</h2>
-      {user === null
-        ? (
-          loginForm()
-        )
-        : blogList()}
-
+      {user === null ? loginForm() : blogList()}
     </div>
   );
 }

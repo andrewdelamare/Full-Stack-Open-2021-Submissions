@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
 function BlogList({ blogs }) {
   return (
     <div>
-      <h2>
-        {`Logged in as ${user.username}`}
-      </h2>
-      <button onClick={resetUser} type="button">Logout</button>
+      <h2>{`Logged in as ${user.username}`}</h2>
+      <button onClick={resetUser} type="button">
+        Logout
+      </button>
       <BlogEntry
         addBlog={handleNewBlog}
         author={author}
@@ -16,7 +16,9 @@ function BlogList({ blogs }) {
         url={url}
         setUrl={setUrl}
       />
-      {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+      {blogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} />
+      ))}
     </div>
   );
 }

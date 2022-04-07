@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React from "react";
 
 // I had to move state out to the app component in order
 // to test things the way that the course exercises demanded
 
 function BlogEntry({
-  handleNewBlog, title, handleTitle, author, handleAuthor, url, handleUrl,
+  handleNewBlog,
+  title,
+  handleTitle,
+  author,
+  handleAuthor,
+  url,
+  handleUrl,
 }) {
   return (
     <form onSubmit={handleNewBlog}>
@@ -55,9 +61,10 @@ function BlogEntry({
           }}
         />
       </div>
-      <button id="createBlogButton" type="submit">create</button>
+      <button id="createBlogButton" type="submit">
+        create
+      </button>
     </form>
-
   );
 }
 
