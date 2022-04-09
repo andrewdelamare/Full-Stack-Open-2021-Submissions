@@ -7,6 +7,7 @@ import Toggleable from "./components/Toggleable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
+import { displayNotification } from "./reducers/notificationReducer";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
@@ -15,7 +16,6 @@ function App() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [notification, setNotification] = useState({ msg: null, type: null });
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -74,11 +74,8 @@ function App() {
       const bl = await blogService.getAll();
       setBlogs(bl);
     } catch (exception) {
-      setNotification({ msg: "Incorrect username or password", type: false });
+      displayNotification("Incorrect username or password", false, 5);
       console.log(exception);
-      setTimeout(() => {
-        setNotification({ msg: null, type: null });
-      }, 5000);
     }
   };
 
@@ -87,20 +84,14 @@ function App() {
     try {
       const response = await blogService.addBlog(newBlog, token);
       const newList = blogs.concat(response);
-      setNotification({ msg: "Your blog was added!", type: true });
-      setTimeout(() => {
-        setNotification({ msg: null, type: null });
-      }, 5000);
+      displayNotification("Your blog was added!", 5);
       setBlogs(newList);
       setTitle("");
       setAuthor("");
       setUrl("");
     } catch (exception) {
-      setNotification({ msg: `${exception.response.data}`, type: false });
+      displayNotification(`${exception.response.data}`, false, 5);
       console.log(exception);
-      setTimeout(() => {
-        setNotification({ msg: null, type: null });
-      }, 5000);
     }
   };
 
@@ -110,16 +101,10 @@ function App() {
       await blogService.deleteIt(idOfBlog, token);
       const bl = await blogService.getAll();
       setBlogs(bl);
-      setNotification({ msg: "Blog Deleted Successfully", type: true });
-      setTimeout(() => {
-        setNotification({ msg: null, type: null });
-      }, 5000);
+      displayNotification("Blog Deleted Successfully", true, 5);
     } catch (exception) {
-      setNotification({ msg: "failed to delete blog", type: false });
+      displayNotification("failed to delete blog", false, 5);
       console.log(exception);
-      setTimeout(() => {
-        setNotification({ msg: null, type: null });
-      }, 5000);
     }
   };
 
@@ -170,7 +155,7 @@ function App() {
   );
   return (
     <div>
-      <Notification message={notification.msg} type={notification.type} />
+      <Notification />
       <h2>Blogs</h2>
       {user === null ? loginForm() : blogList()}
     </div>

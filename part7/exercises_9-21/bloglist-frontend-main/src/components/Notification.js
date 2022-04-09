@@ -1,42 +1,63 @@
-/* eslint-disable react/prop-types */
-import React from "react";
+import {connect} from 'react-redux';
 
-const successStyles = {
-  color: "green",
-  background: "lightgrey",
-  fontSize: "18px",
-  borderStyle: "solid",
-  borderRadius: "7px",
-  padding: "8px",
-  marginBottom: "8px",
-};
-const failureStyles = {
-  color: "red",
-  background: "lightgrey",
-  fontSize: "18px",
-  borderStyle: "solid",
-  borderRadius: "7px",
-  padding: "8px",
-  marginBottom: "8px",
-};
+const Notification = (props) => {
+  const note= props.notification.note;
+  const type = props.notification.type
 
-function Notification({ message, type }) {
-  if (message === null) {
-    return null;
+  const successStyles = {
+    color: "green",
+    background: "lightgrey",
+    fontSize: "18px",
+    borderStyle: "solid",
+    borderRadius: "7px",
+    padding: "8px",
+    marginBottom: "8px",
+  };
+  const failureStyles = {
+    color: "red",
+    background: "lightgrey",
+    fontSize: "18px",
+    borderStyle: "solid",
+    borderRadius: "7px",
+    padding: "8px",
+    marginBottom: "8px",
+  };
+  const neutralStyles= {
+    color: "yellow",
+    background: "lightgrey",
+    fontSize: "18px",
+    borderStyle: "solid",
+    borderRadius: "7px",
+    padding: "8px",
+    marginBottom: "8px",
   }
-  if (type === true) {
+
+  if(type === true){
     return (
-      <div className="success" id="success" style={successStyles}>
-        {message}
+      <div style={successStyles}>
+        {note}
       </div>
     );
-  }
-  if (type === false) {
+  }else if (type === false){
     return (
-      <div className="failure" id="failure" style={failureStyles}>
-        {message}
+      <div style={failureStyles}>
+        {note}
       </div>
     );
-  }
-}
-export default Notification;
+  }else if (type === null){ 
+  return (
+    <div>
+      {note}
+    </div>
+  );}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification,
+  };
+};
+
+const ConnectedNotification = connect(mapStateToProps)(Notification);
+
+export default ConnectedNotification;

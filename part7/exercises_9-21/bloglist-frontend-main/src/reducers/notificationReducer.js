@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
+import { PromiseProvider } from 'mongoose';
 import {useSelector} from 'react-redux';
 
-const initialState = '';
+const initialState = {note: '', type: null};
 
 const notificationSlice = createSlice({
   name: 'notification',
@@ -15,7 +16,7 @@ const notificationSlice = createSlice({
       return state;
     },
     clear(state) {
-      state = '';
+      state = {note: '', type: null};
       return state;
     },
   },
@@ -23,14 +24,14 @@ const notificationSlice = createSlice({
 
 export const {notify, clear} = notificationSlice.actions;
 
-export const displayNotification = (note, time) => {
+export const displayNotification = (note, type, time) => {
   return async (dispatch) => {
     const highestId = window.setTimeout(() => {
       for (let i = highestId; i >= 0; i--) {
         window.clearInterval(i);
       }
     }, 0);
-    dispatch(notify(note));
+    dispatch(notify({note: note, type: type}));
     setTimeout(async ()=> {
       console.log('clearing notification!!!');
       dispatch(clear());
