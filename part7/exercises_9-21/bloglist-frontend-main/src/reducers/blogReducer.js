@@ -1,20 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getAll, addBlog, updateBlog} from '../services/blogs';
+import blogService from '../services/blogs';
 import {displayNotification} from './notificationReducer';
 
-
-const blogsAtStart = [getAll()];
-/*
-export const asObject = (anecdote) => {
-  const getId = () => (100000 * Math.random()).toFixed(0);
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0,
-  };
-};
-*/
-const initialState = blogsAtStart.map();
+const initialState ={blogs: [], }
 
 const blogSlice = createSlice({
   name: 'blogs',
@@ -27,13 +15,13 @@ const blogSlice = createSlice({
       state.sort((a, b) => b.votes - a.votes);
     },
     add(state, action) {
-      const quoteToAdd = action.payload;
-      const noteAdded = [...state, quoteToAdd];
-      return noteAdded;
+      const blogToAdd = action.payload;
+      const blogAdded = [...state, blogToAdd];
+      return blogAdded;
     },
     initialize(state, action) {
-      state = action.payload;
-      state.sort((a, b) => b.votes - a.votes);
+      state.blogs = action.payload;
+      state.blogs.sort((a, b) => b.votes - a.votes);
       return state;
     },
   },
@@ -41,19 +29,19 @@ const blogSlice = createSlice({
 
 export const {vote, add, initialize} = blogSlice.actions;
 
-export const initializeAnecdotes = () => {
+export const initializeBlogs = () => {
   return async (dispatch) => {
-    const quotes = await getAll();
-    console.log(quotes);
-    dispatch(initialize(quotes));
+    const blogs = await blogService.getAll();
+    console.log(blogs);
+    dispatch(initialize(blogs));
   };
 };
 
 export const addNewBlog = (target) => {
   return async (dispatch) => {
-    const newQuote = await addBlog(target);
-    dispatch(add(newQuote));
-    dispatch(displayNotification(`Added: ${newQuote.content}`, 5));
+    const newBlog = await blogService.addBlog(target);
+    dispatch(add(newBlog));
+    dispatch(displayNotification(`Added: ${newBlog.content}`, 5));
   };
 };
 
@@ -64,7 +52,7 @@ export const voteIt = (quote, votes) => {
     console.log(newVotes);
     const updated = {content: quote.content, id: quote.id, votes: newVotes};
     console.log(updated);
-    addVote(updated);
+    blogService.updateBlog(updated);
     dispatch(vote(updated));
   };
 };

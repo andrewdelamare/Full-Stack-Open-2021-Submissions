@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 
 
 function App() {
- const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -18,14 +18,16 @@ function App() {
  
   const dispatch = useDispatch();
 
-  useEffect(async () => {
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
+      async function getThemBlogs(){
       const u = JSON.parse(loggedUserJSON);
       setUser(u);
       setToken(u.token);
       const bl = await blogService.getAll();
-      setBlogs(bl);
+      setBlogs(bl);}
+      getThemBlogs();
     }
   }, []);
 

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { displayNotification } from "../reducers/notificationReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import BlogEntry from "./BlogEntry";
 import Blog from "./Blog";
 import Toggleable from "./Toggleable"
 import blogService from "../services/blogs";
-
-const BlogList = ({ user, resetUser, token, blogs, setBlogs }) => {
+//{ user, resetUser, token, blogs, setBlogs }
+const BlogList = (props) => {
   const [newBlog, setNewBlog] = useState([]);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -14,8 +14,8 @@ const BlogList = ({ user, resetUser, token, blogs, setBlogs }) => {
 
   const dispatch = useDispatch();
 
-  const handleTitle = async (value) => {
-    await setTitle(value);
+  const handleTitle = (value) => {
+    setTitle(value);
     setNewBlog({
       title,
       author,
@@ -23,8 +23,8 @@ const BlogList = ({ user, resetUser, token, blogs, setBlogs }) => {
     });
   };
 
-  const handleAuthor = async (value) => {
-    await setAuthor(value);
+  const handleAuthor = (value) => {
+    setAuthor(value);
     setNewBlog({
       title,
       author,
@@ -32,8 +32,8 @@ const BlogList = ({ user, resetUser, token, blogs, setBlogs }) => {
     });
   };
 
-  const handleUrl = async (value) => {
-    await setUrl(value);
+  const handleUrl = (value) => {
+    setUrl(value);
     setNewBlog({
       title,
       author,
@@ -96,4 +96,13 @@ const BlogList = ({ user, resetUser, token, blogs, setBlogs }) => {
   );
 }
 
-export default BlogList;
+
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs,
+  };
+};
+
+const ConnectedNotification = connect(mapStateToProps)(BlogList);
+
+export default ConnectedNotification;

@@ -52,8 +52,8 @@ const Notification = (props) => {
   );}else{
     return (
       <div>
-      {note}
-    </div>
+        {note}
+      </div>
     );
   }
 };

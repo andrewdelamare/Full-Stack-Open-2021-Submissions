@@ -1,13 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
+import {connect} from 'react-redux';
 import PropTypes from "prop-types";
+import loginService from "../services/login";
 
-const loginForm = ({
-  username,
-  setUsername,
-  password,
-  setPassword,
-  handleLogin,
-}) => (
+const LoginForm = (props) => {
+  const username = props.user.username
+  const password = props.user.password
+  const user = props.user.user
+  const token = props.user.token
+  /*
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  */ 
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    try {
+      const u = await loginService.login({
+        username,
+        password,
+      });
+      setUser(u);
+      setUsername(username);
+      setPassword(password);
+      setToken(u.token);
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(u));
+      const bl = await blogService.getAll();
+      setBlogs(bl);
+    } catch (exception) {
+      dispatch(displayNotification("Incorrect username or password", false, 5))
+      console.log(exception);
+    }
+  };
+  
+  const resetUser = () => {
+    loginService.logout();
+    const nul = null;
+    setUser(nul);
+  };
+  return (
   <form onSubmit={handleLogin}>
     <div>
       Username:
@@ -31,7 +63,8 @@ const loginForm = ({
       login
     </button>
   </form>
-);
+  )
+};
 
 loginForm.propTypes = {
   handleLogin: PropTypes.func.isRequired,
@@ -41,4 +74,12 @@ loginForm.propTypes = {
   password: PropTypes.string.isRequired,
 };
 
-export default loginForm;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+const ConnectedLoginForm = connect(mapStateToProps)(LoginForm);
+
+export default ConnectedLoginForm;
