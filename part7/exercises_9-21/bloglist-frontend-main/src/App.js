@@ -8,6 +8,7 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 import { displayNotification } from "./reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
@@ -20,6 +21,8 @@ function App() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleTitle = async (value) => {
     await setTitle(value);
@@ -74,7 +77,7 @@ function App() {
       const bl = await blogService.getAll();
       setBlogs(bl);
     } catch (exception) {
-      displayNotification("Incorrect username or password", false, 5);
+      dispatch(displayNotification("Incorrect username or password", false, 5))
       console.log(exception);
     }
   };
@@ -84,13 +87,13 @@ function App() {
     try {
       const response = await blogService.addBlog(newBlog, token);
       const newList = blogs.concat(response);
-      displayNotification("Your blog was added!", 5);
+      dispatch(displayNotification("Your blog was added!", true, 5))
       setBlogs(newList);
       setTitle("");
       setAuthor("");
       setUrl("");
     } catch (exception) {
-      displayNotification(`${exception.response.data}`, false, 5);
+      dispatch(displayNotification(`${exception.response.data}`, false, 5))
       console.log(exception);
     }
   };
@@ -101,9 +104,9 @@ function App() {
       await blogService.deleteIt(idOfBlog, token);
       const bl = await blogService.getAll();
       setBlogs(bl);
-      displayNotification("Blog Deleted Successfully", true, 5);
+      dispatch(displayNotification("Blog Deleted Successfully", true, 5))
     } catch (exception) {
-      displayNotification("failed to delete blog", false, 5);
+      dispatch(displayNotification("failed to delete blog", false, 5))
       console.log(exception);
     }
   };

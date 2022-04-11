@@ -49,7 +49,13 @@ const Notification = (props) => {
     <div>
       {note}
     </div>
-  );}
+  );}else{
+    return (
+      <div>
+      {note}
+    </div>
+    );
+  }
 };
 
 const mapStateToProps = (state) => {
