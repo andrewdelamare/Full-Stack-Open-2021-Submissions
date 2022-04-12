@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import store from "../store";
 import { displayNotification } from "../reducers/notificationReducer";
 import { useDispatch, connect } from "react-redux";
 import BlogEntry from "./BlogEntry";
 import Blog from "./Blog";
 import Toggleable from "./Toggleable"
 import blogService from "../services/blogs";
-//{ user, resetUser, token, blogs, setBlogs }
+import { addNewBlog } from "../reducers/blogReducer";
+
 const BlogList = (props) => {
+  const blogs = props.blogs
   const [newBlog, setNewBlog] = useState([]);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -44,10 +47,10 @@ const BlogList = (props) => {
   const handleNewBlog = async (event) => {
     event.preventDefault();
     try {
-      const response = await blogService.addBlog(newBlog, token);
+      const response = await blogService.addBlog(newBlog, store.user.token);
       const newList = blogs.concat(response);
       dispatch(displayNotification("Your blog was added!", true, 5))
-      setBlogs(newList);
+      dispatch(addNewBlog(newList))
       setTitle("");
       setAuthor("");
       setUrl("");
@@ -60,9 +63,9 @@ const BlogList = (props) => {
   const removeBlog = async (idOfBlog) => {
     try {
       console.log(idOfBlog);
-      await blogService.deleteIt(idOfBlog, token);
+      await blogService.deleteIt(idOfBlog, store.user.token);
       const bl = await blogService.getAll();
-      setBlogs(bl);
+      //setBlogs(bl);
       dispatch(displayNotification("Blog Deleted Successfully", true, 5))
     } catch (exception) {
       dispatch(displayNotification("failed to delete blog", false, 5))
@@ -72,8 +75,8 @@ const BlogList = (props) => {
 
   return (
     <div>
-      <h2>{`Logged in as ${user.username}`}</h2>
-      <button onClick={resetUser} type="button">
+      <h2>{`Logged in as ${store.user.username}`}</h2>
+      <button onClick={console.log('you tried to log out')} type="button">
         Logout
       </button>
       <Toggleable id="addBlogToggle" buttonLabel="Add Blog">

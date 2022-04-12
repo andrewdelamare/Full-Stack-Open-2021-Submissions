@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import {connect} from 'react-redux';
+import React, {useState} from "react";
+import {connect, useDispatch} from 'react-redux';
 import PropTypes from "prop-types";
 import loginService from "../services/login";
+import { initializeBlogs } from "../reducers/blogReducer";
+import { updateUserInfo } from "../reducers/userReducer";
+import { displayNotification } from "../reducers/notificationReducer";
 
 const LoginForm = (props) => {
-  const username = props.user.username
-  const password = props.user.password
-  const user = props.user.user
-  const token = props.user.token
-  /*
+  const tokenStored = props.user.token
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  */ 
+ 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -26,14 +27,13 @@ const LoginForm = (props) => {
       setPassword(password);
       setToken(u.token);
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(u));
-      const bl = await blogService.getAll();
-      setBlogs(bl);
+      dispatch(initializeBlogs())
     } catch (exception) {
       dispatch(displayNotification("Incorrect username or password", false, 5))
       console.log(exception);
     }
   };
-  
+ 
   const resetUser = () => {
     loginService.logout();
     const nul = null;
@@ -47,7 +47,7 @@ const LoginForm = (props) => {
         type="text"
         value={username}
         id="username"
-        onChange={({ target }) => setUsername(target.value)}
+        onChange={({ target }) => (setUsername(target.value))}
       />
     </div>
     <div>
@@ -56,7 +56,7 @@ const LoginForm = (props) => {
         type="password"
         value={password}
         id="password"
-        onChange={({ target }) => setPassword(target.value)}
+        onChange={({ target }) => (setPassword(target.value))}
       />
     </div>
     <button type="submit" id="login">
@@ -65,15 +65,12 @@ const LoginForm = (props) => {
   </form>
   )
 };
-
-loginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  setUsername: PropTypes.func.isRequired,
+/*
+LoginForm.propTypes = {
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
 };
-
+*/
 const mapStateToProps = (state) => {
   return {
     user: state.user,

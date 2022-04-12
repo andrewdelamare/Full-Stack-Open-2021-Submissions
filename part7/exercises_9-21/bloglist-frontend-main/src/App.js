@@ -67,13 +67,7 @@ function App() {
     />
   )
   const loginForm = () => (
-    <LoginForm
-      username={username}
-      setUsername={setUsername}
-      password={password}
-      setPassword={setPassword}
-      handleLogin={handleLogin}
-    />
+    <LoginForm />
   );
   return (
     <div>
