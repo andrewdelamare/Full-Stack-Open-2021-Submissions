@@ -7,13 +7,13 @@ import { updateUserInfo } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 
 const LoginForm = (props) => {
-  const tokenStored = props.user.token
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+
  
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -27,6 +27,7 @@ const LoginForm = (props) => {
       setPassword(password);
       setToken(u.token);
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(u));
+      dispatch(updateUserInfo(u, token))
       dispatch(initializeBlogs())
     } catch (exception) {
       dispatch(displayNotification("Incorrect username or password", false, 5))
@@ -73,7 +74,7 @@ LoginForm.propTypes = {
 */
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
+    userInfo: state.userInfo,
   };
 };
 

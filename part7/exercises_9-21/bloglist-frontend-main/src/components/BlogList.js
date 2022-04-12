@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import store from "../store";
-import { displayNotification } from "../reducers/notificationReducer";
-import { useDispatch, connect } from "react-redux";
 import BlogEntry from "./BlogEntry";
 import Blog from "./Blog";
 import Toggleable from "./Toggleable"
+import { displayNotification } from "../reducers/notificationReducer";
+import { useDispatch, connect } from "react-redux";
 import blogService from "../services/blogs";
 import { addNewBlog } from "../reducers/blogReducer";
 
 const BlogList = (props) => {
-  const blogs = props.blogs
+  const _store = store.getState()
+  const blogs = props.blogs.blogs
   const [newBlog, setNewBlog] = useState([]);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -47,10 +48,7 @@ const BlogList = (props) => {
   const handleNewBlog = async (event) => {
     event.preventDefault();
     try {
-      const response = await blogService.addBlog(newBlog, store.user.token);
-      const newList = blogs.concat(response);
-      dispatch(displayNotification("Your blog was added!", true, 5))
-      dispatch(addNewBlog(newList))
+      dispatch(addNewBlog(newBlog, _store.userInfo.token))
       setTitle("");
       setAuthor("");
       setUrl("");
@@ -63,7 +61,7 @@ const BlogList = (props) => {
   const removeBlog = async (idOfBlog) => {
     try {
       console.log(idOfBlog);
-      await blogService.deleteIt(idOfBlog, store.user.token);
+      await blogService.deleteIt(idOfBlog, _store.userInfo.token);
       const bl = await blogService.getAll();
       //setBlogs(bl);
       dispatch(displayNotification("Blog Deleted Successfully", true, 5))
@@ -72,11 +70,12 @@ const BlogList = (props) => {
       console.log(exception);
     }
   };
-
+  const loggedinName = () => _store.userInfo.user === null ? "..." : _store.userInfo.user.username
+  console.log("This is the newBlog", newBlog)
   return (
     <div>
-      <h2>{`Logged in as ${store.user.username}`}</h2>
-      <button onClick={console.log('you tried to log out')} type="button">
+      <h2>{`Logged in as ${loggedinName()}`}</h2>
+      <button type="button">
         Logout
       </button>
       <Toggleable id="addBlogToggle" buttonLabel="Add Blog">
@@ -91,7 +90,7 @@ const BlogList = (props) => {
       />
       </Toggleable>
       {blogs
-        .sort((a, b) => b.likes - a.likes)
+        //.sort((a, b) => b.likes - a.likes)
         .map((blog) => (
           <Blog key={blog.id} blog={blog} removeBlog={removeBlog} updateBlog={blogService.updateBlog}/>
       ))}

@@ -1,7 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import blogService from '../services/blogs';
 import {displayNotification} from './notificationReducer';
-
 const initialState ={blogs: [], }
 
 const blogSlice = createSlice({
@@ -16,7 +15,7 @@ const blogSlice = createSlice({
     },
     add(state, action) {
       const blogToAdd = action.payload;
-      const blogAdded = [...state, blogToAdd];
+      const blogAdded = [...state.blogs.blogs, blogToAdd];
       return blogAdded;
     },
     initialize(state, action) {
@@ -37,9 +36,10 @@ export const initializeBlogs = () => {
   };
 };
 
-export const addNewBlog = (target) => {
+export const addNewBlog = (target, token) => {
   return async (dispatch) => {
-    const newBlog = await blogService.addBlog(target);
+    const newBlog = await blogService.addBlog(target, token);
+    console.log("inner new blog", newBlog)
     dispatch(add(newBlog));
     dispatch(displayNotification(`Added: ${newBlog.content}`, 5));
   };
