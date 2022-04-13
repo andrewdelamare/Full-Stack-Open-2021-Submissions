@@ -7,7 +7,7 @@ import loginService from "../services/login"
 import { displayNotification } from "../reducers/notificationReducer";
 import { useDispatch, connect } from "react-redux";
 import blogService from "../services/blogs";
-import { addNewBlog } from "../reducers/blogReducer";
+import { addNewBlog, deleteIt } from "../reducers/blogReducer";
 
 const BlogList = (props) => {
   const _store = store.getState()
@@ -55,7 +55,7 @@ const BlogList = (props) => {
       setTitle("");
       setAuthor("");
       setUrl("");
-      //blogs = [...props.blogList.blogs]
+      dispatch(displayNotification(`Added: ${newBlog.title}`, true, 5));
     } catch (exception) {
       dispatch(displayNotification(`${exception.response.data}`, false, 5))
       console.log(exception);
@@ -66,8 +66,7 @@ const BlogList = (props) => {
     try {
       console.log(idOfBlog);
       await blogService.deleteIt(idOfBlog, _store.userInfo.token);
-      const bl = await blogService.getAll();
-      //setBlogs(bl);
+      dispatch(deleteIt(idOfBlog))
       dispatch(displayNotification("Blog Deleted Successfully", true, 5))
     } catch (exception) {
       dispatch(displayNotification("failed to delete blog", false, 5))
@@ -75,7 +74,6 @@ const BlogList = (props) => {
     }
   };
   const loggedinName = () => _store.userInfo.user === null ? "..." : _store.userInfo.user.username
-  console.log("This is the newBlog", newBlog)
 
   const logOut = () => {
     loginService.logout()

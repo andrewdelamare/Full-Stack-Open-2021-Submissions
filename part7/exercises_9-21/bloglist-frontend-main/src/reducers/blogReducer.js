@@ -1,12 +1,16 @@
 import {createSlice} from '@reduxjs/toolkit';
 import blogService from '../services/blogs';
-import {displayNotification} from './notificationReducer';
 const initialState = {blogs: []}
 
 const blogSlice = createSlice({
   name: 'blogList',
   initialState,
   reducers: {
+    remove(state, action) {
+      const blogId = action.payload
+      state.blogs = [...state.blogs].filter(blog => blog.id !== blogId)
+      return state;
+    },
     vote(state, action) {
       const id = action.payload.id;
       const toChange = state.find((n) => n.id === id);
@@ -25,13 +29,13 @@ const blogSlice = createSlice({
   },
 });
 
-export const {vote, add, initialize} = blogSlice.actions;
+export const {remove, vote, add, initialize} = blogSlice.actions;
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
     const blogs = await blogService.getAll();
-    console.log(blogs);
-    dispatch(initialize(blogs));
+    const sorted = blogs.sort((a, b) => b.likes - a.likes)
+    dispatch(initialize(sorted));
   };
 };
 
@@ -40,7 +44,6 @@ export const addNewBlog = (target, token) => {
     const newBlog = await blogService.addBlog(target, token);
     console.log("inner new blog", newBlog)
     dispatch(add(newBlog));
-    dispatch(displayNotification(`Added: ${newBlog.content}`, 5));
   };
 };
 
@@ -55,5 +58,10 @@ export const voteIt = (quote, votes) => {
     dispatch(vote(updated));
   };
 };
+
+export const deleteIt = (id) => {
+  return async (dispatch) => {
+    dispatch(remove(id))
+}}
 
 export default blogSlice.reducer;
