@@ -7,7 +7,7 @@ import loginService from "../services/login"
 import { displayNotification } from "../reducers/notificationReducer";
 import { useDispatch, connect } from "react-redux";
 import blogService from "../services/blogs";
-import { addNewBlog, deleteIt } from "../reducers/blogReducer";
+import { addNewBlog, deleteIt, likeIt } from "../reducers/blogReducer";
 
 const BlogList = (props) => {
   const _store = store.getState()
@@ -80,6 +80,10 @@ const BlogList = (props) => {
     props.logInOut()
   }
 
+  const addALike = (blog) => {
+    dispatch(likeIt(blog, _store.userInfo.token));
+  }
+
   return (
     <div>
       <h2>{`Logged in as ${loggedinName()}`}</h2>
@@ -99,7 +103,7 @@ const BlogList = (props) => {
       </Toggleable>
       {[...props.blogList.blogs]
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} removeBlog={removeBlog} updateBlog={blogService.updateBlog}/>
+          <Blog key={blog.id} blog={blog} removeBlog={removeBlog} addALike={addALike}/>
       ))}
     </div>
   );

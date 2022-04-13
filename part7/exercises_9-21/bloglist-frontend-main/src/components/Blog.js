@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 
-function Blog({ blog, removeBlog, updateBlog }) {
+function Blog({ blog, removeBlog, addALike }) {
   const [visible, setVisible] = useState(false);
-  const [updatedBlog, setUpdatedBlog] = useState(blog);
+  //const [updatedBlog, setUpdatedBlog] = useState(blog);
   const [likes, setLikes] = useState(blog.likes);
 
   const hideWhenVisible = {
@@ -28,11 +28,11 @@ function Blog({ blog, removeBlog, updateBlog }) {
   };
 
   const addLike = () => {
-    const blogCopy = blog;
-    blogCopy.likes += 1;
+    const blogCopy = {...blog};
+    blogCopy.likes ++;
     setLikes(likes + 1);
-    setUpdatedBlog(blogCopy);
-    updateBlog(updatedBlog);
+    //setUpdatedBlog(blogCopy);
+    addALike(blogCopy);
   };
 
   const deleteBlog = async () => {
