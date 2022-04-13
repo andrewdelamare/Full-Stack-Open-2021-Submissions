@@ -23,18 +23,29 @@ function App() {
       setLoggedIn(true)
     }
   }, [dispatch]);
-
+  const logInOut = () => setLoggedIn(!isLoggedIn)
   const blogList = () => (
-    <BlogList />
+    <BlogList logInOut={logInOut} />
   )
   const loginForm = () => (
-    <LoginForm />
+    <LoginForm logInOut={logInOut} />
   );
+
+  const showTheRightPage = () => {
+    //store.getState() === false ? loginForm() : blogList()
+    const currentState = isLoggedIn
+    console.log(currentState)
+    if(currentState === false){
+      return loginForm()
+    }else if(currentState === true){
+      return blogList()
+    }
+  }
   return (
     <div>
       <Notification />
       <h2>Blogs</h2>
-      {isLoggedIn === "false" ? loginForm() : blogList()}
+      {showTheRightPage()}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import store from "../store";
 import BlogEntry from "./BlogEntry";
 import Blog from "./Blog";
 import Toggleable from "./Toggleable"
+import loginService from "../services/login"
 import { displayNotification } from "../reducers/notificationReducer";
 import { useDispatch, connect } from "react-redux";
 import blogService from "../services/blogs";
@@ -15,6 +16,7 @@ const BlogList = (props) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  console.log(props.logInOut)
 
   const dispatch = useDispatch();
 
@@ -72,10 +74,16 @@ const BlogList = (props) => {
   };
   const loggedinName = () => _store.userInfo.user === null ? "..." : _store.userInfo.user.username
   console.log("This is the newBlog", newBlog)
+
+  const logOut = () => {
+    loginService.logout()
+    props.logInOut()
+  }
+
   return (
     <div>
       <h2>{`Logged in as ${loggedinName()}`}</h2>
-      <button type="button">
+      <button onClick={logOut} type="button">
         Logout
       </button>
       <Toggleable id="addBlogToggle" buttonLabel="Add Blog">

@@ -5,8 +5,9 @@ import loginService from "../services/login";
 import { initializeBlogs } from "../reducers/blogReducer";
 import { updateUserInfo } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
+import login from "../services/login";
 
-const LoginForm = (props) => {
+const LoginForm = ({ logInOut }) => {
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
@@ -29,6 +30,7 @@ const LoginForm = (props) => {
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(u));
       dispatch(updateUserInfo(u, token))
       dispatch(initializeBlogs())
+      logInOut()
     } catch (exception) {
       dispatch(displayNotification("Incorrect username or password", false, 5))
       console.log(exception);
