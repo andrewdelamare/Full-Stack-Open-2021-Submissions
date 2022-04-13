@@ -1,10 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
 import blogService from '../services/blogs';
 import {displayNotification} from './notificationReducer';
-const initialState ={blogs: [], }
+const initialState = {blogs: []}
 
 const blogSlice = createSlice({
-  name: 'blogs',
+  name: 'blogList',
   initialState,
   reducers: {
     vote(state, action) {
@@ -15,12 +15,11 @@ const blogSlice = createSlice({
     },
     add(state, action) {
       const blogToAdd = action.payload;
-      const blogAdded = [...state.blogs.blogs, blogToAdd];
-      return blogAdded;
+      state.blogs = [...state.blogs, blogToAdd];
+      return state;
     },
     initialize(state, action) {
       state.blogs = action.payload;
-      state.blogs.sort((a, b) => b.votes - a.votes);
       return state;
     },
   },

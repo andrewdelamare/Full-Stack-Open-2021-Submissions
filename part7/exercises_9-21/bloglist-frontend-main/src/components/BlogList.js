@@ -11,12 +11,12 @@ import { addNewBlog } from "../reducers/blogReducer";
 
 const BlogList = (props) => {
   const _store = store.getState()
-  const blogs = props.blogs.blogs
   const [newBlog, setNewBlog] = useState([]);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  console.log(props.logInOut)
+  //const blogss = blogs.sort((a, b) => b.likes - a.likes)
+  //console.log(blogss)
 
   const dispatch = useDispatch();
 
@@ -50,10 +50,12 @@ const BlogList = (props) => {
   const handleNewBlog = async (event) => {
     event.preventDefault();
     try {
-      dispatch(addNewBlog(newBlog, _store.userInfo.token))
+      const token = store.getState().userInfo.token;
+      dispatch(addNewBlog(newBlog, token));
       setTitle("");
       setAuthor("");
       setUrl("");
+      //blogs = [...props.blogList.blogs]
     } catch (exception) {
       dispatch(displayNotification(`${exception.response.data}`, false, 5))
       console.log(exception);
@@ -97,8 +99,7 @@ const BlogList = (props) => {
           handleUrl={handleUrl}
       />
       </Toggleable>
-      {blogs
-        //.sort((a, b) => b.likes - a.likes)
+      {[...props.blogList.blogs]
         .map((blog) => (
           <Blog key={blog.id} blog={blog} removeBlog={removeBlog} updateBlog={blogService.updateBlog}/>
       ))}
@@ -109,7 +110,7 @@ const BlogList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    blogs: state.blogs,
+    blogList: state.blogList,
   };
 };
 
