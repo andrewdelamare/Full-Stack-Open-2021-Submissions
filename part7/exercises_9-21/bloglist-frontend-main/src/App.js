@@ -8,6 +8,7 @@ import store from "./store";
 import Notification from "./components/Notification";
 import UserList from "./components/UserList"
 import BlogList from "./components/BlogList";
+import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import UPage from "./components/UPage";
 import { useDispatch } from "react-redux";
@@ -30,15 +31,19 @@ function App() {
     }
   }, [dispatch]);
   const logInOut = () => setLoggedIn(!isLoggedIn)
-  const blogList = () => (
+  const blogList = () => {
+    return (
     <BlogList logInOut={logInOut} />
+  )}
+  const blogPage = () => (
+    <Blog logInOut={logInOut} />
   )
   const usersPage = () => (
     <UserList logInOut={logInOut} />
   )
-  const uPage = () => (
-    <UPage logInOut={logInOut} />
-  )
+  const uPage = () => {
+    return (<UPage logInOut={logInOut} />)}
+    
   const loginForm = () => (
     <LoginForm logInOut={logInOut} />
   );
@@ -59,6 +64,7 @@ function App() {
         <Route path="/" element={showTheRightPage(blogList)} />
         <Route path="/users" element={showTheRightPage(usersPage)} />
         <Route path="/blogs" element={showTheRightPage(blogList)} />
+        <Route path="/:id" element={showTheRightPage(blogPage)} />
         <Route path="/users/:id" element={showTheRightPage(uPage)} />
       </Routes>
       

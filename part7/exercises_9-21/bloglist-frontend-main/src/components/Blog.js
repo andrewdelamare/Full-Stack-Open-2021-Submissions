@@ -1,38 +1,54 @@
-/* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect, useDispatch} from 'react-redux';
+import store from "../store";
+import loginService from "../services/login";
+import blogService from "../services/blogs";
+import { displayNotification } from "../reducers/notificationReducer";
+import { deleteIt, likeIt } from "../reducers/blogReducer";
+import {
+  useParams
+} from "react-router-dom";
+import { updateUserInfo } from "../reducers/userReducer";
+import { initializeBlogs } from "../reducers/blogReducer";
 
-function Blog({ blog, removeBlog, addALike }) {
-  const [visible, setVisible] = useState(false);
-  //const [updatedBlog, setUpdatedBlog] = useState(blog);
-  const [likes, setLikes] = useState(blog.likes);
+const Blog = (props) => {
+  const dispatch = useDispatch();
+  const userInfo = store.getState().userInfo
+  const [likes, setLikes] = useState(null);
+  const [blog, setBlog] = useState({
+      title: "_",
+      author: "",
+      url: "",
+      likes: 0,
+      user: {
+        username: "",
+        name: "",
+        id: ""
+      },
+      id: ""
+    })
+  const id = useParams().id;
+  const loggedinName = () => userInfo.user === null ? "..." : userInfo.user.username;
+  //let blog = blogsList.blogs.find(b => b.id === id)
+  if(blog.title === "_"){
+    dispatch(initializeBlogs())
+    const blogsList = props.blogList;
+    console.log(blog)
+    const blogee = blogsList.blogs.find(b => b.id === id)
+    console.log(blogee)
+    setBlog(blogee)
+  }
 
-  const hideWhenVisible = {
-    display: visible ? "none" : "",
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-  const showWhenVisible = {
-    display: visible ? "" : "none",
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
-
-  const addLike = () => {
-    const blogCopy = {...blog};
-    blogCopy.likes ++;
-    setLikes(likes + 1);
-    //setUpdatedBlog(blogCopy);
-    addALike(blogCopy);
+  const removeBlog = async (idOfBlog) => {
+    try {
+      console.log(idOfBlog);
+      await blogService.deleteIt(idOfBlog, userInfo.token);
+      dispatch(deleteIt(idOfBlog))
+      dispatch(displayNotification("Blog Deleted Successfully", true, 5))
+    } catch (exception) {
+      dispatch(displayNotification("failed to delete blog", false, 5))
+      console.log(exception);
+    }
   };
 
   const deleteBlog = async () => {
@@ -41,33 +57,59 @@ function Blog({ blog, removeBlog, addALike }) {
       removeBlog(blog.id);
     }
   };
-  return (
-    <div className="blog">
-      <div style={hideWhenVisible} className="someShown">
-        {blog.title} {blog.author}{" "}
-        <button onClick={toggleVisibility} type="button" id="showDetailsButton">
-          Show Details
-        </button>
-      </div>
-      <div style={showWhenVisible} className="allShown">
-        <div className="title">{blog.title}</div>
-        <button onClick={toggleVisibility} type="button">
-          Hide Details
-        </button>
-        <div className="author">Author: {blog.author}</div>
-        <div className="likes">
-          Likes: {likes}{" "}
+
+  const addALike = (blog) => {
+    dispatch(likeIt(blog, userInfo.token));
+  }
+  const addLike = (blog) => {
+    const blogCopy = {...blog};
+    blogCopy.likes ++;
+    setLikes(likes + 1);
+    console.log(blogCopy)
+    addALike(blogCopy);
+  };
+
+  const logOut = () => {
+    loginService.logout()
+    props.logInOut()
+  }
+
+  const DisplayBlog = () => (
+  <div>
+    <h2>{`Logged in as ${loggedinName()}`}</h2>
+    <button onClick={logOut} type="button">
+        Logout
+    </button>
+    <h3>{blog.title}</h3>
+    <h4>{blog.author}</h4>
+    <div className="likes">
+          Likes: {blog.likes}{" "}
           <button type="button" onClick={addLike} id="likeButton">
             Like
           </button>
-        </div>
-        <div className="url">URL: {blog.url}</div>
+    </div>
+    <div className="url">URL: {blog.url}</div>
         <button onClick={deleteBlog} type="button" id="deleteBlogButton">
           Delete Blog
         </button>
-      </div>
-    </div>
+  </div>
   );
-}
 
-export default Blog;
+  return (
+    <div>
+      {blog === undefined ? dispatch(initializeBlogs()) : <DisplayBlog />}
+    </div>
+  )
+};
+
+
+
+const mapStateToProps = (state) => {
+  return {
+    blogList: state.blogList,
+  };
+};
+
+const ConnectedBlog = connect(mapStateToProps)(Blog);
+
+export default ConnectedBlog;

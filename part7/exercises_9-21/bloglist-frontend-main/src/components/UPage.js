@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from "react";
-import store from "../store";
+import React from "react";
 import { connect} from 'react-redux';
 import loginService from "../services/login";
 import {

@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import store from "../store";
 import BlogEntry from "./BlogEntry";
-import Blog from "./Blog";
 import Toggleable from "./Toggleable"
 import loginService from "../services/login"
 import { displayNotification } from "../reducers/notificationReducer";
 import { useDispatch, connect } from "react-redux";
-import blogService from "../services/blogs";
-import { addNewBlog, deleteIt, likeIt } from "../reducers/blogReducer";
+import { addNewBlog, initializeBlogs } from "../reducers/blogReducer";
+import {
+  Link
+} from "react-router-dom";
+import { updateUserInfo } from "../reducers/userReducer";
+
 
 const BlogList = (props) => {
   const _store = store.getState()
@@ -15,11 +18,23 @@ const BlogList = (props) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  //const blogss = blogs.sort((a, b) => b.likes - a.likes)
-  //console.log(blogss)
+  const [isLoggedIn, setLoggedIn] = useState(false)
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    if (loggedUserJSON) {
+      console.log('useeffectthinghappening')
+      const u = JSON.parse(loggedUserJSON);
+      dispatch(updateUserInfo(u, u.token))
+      dispatch(initializeBlogs())
+      setLoggedIn(true)
+    }
+  }, [dispatch]);
 
+
+  
+  
   const handleTitle = (value) => {
     setTitle(value);
     setNewBlog({
@@ -62,26 +77,11 @@ const BlogList = (props) => {
     }
   };
 
-  const removeBlog = async (idOfBlog) => {
-    try {
-      console.log(idOfBlog);
-      await blogService.deleteIt(idOfBlog, _store.userInfo.token);
-      dispatch(deleteIt(idOfBlog))
-      dispatch(displayNotification("Blog Deleted Successfully", true, 5))
-    } catch (exception) {
-      dispatch(displayNotification("failed to delete blog", false, 5))
-      console.log(exception);
-    }
-  };
   const loggedinName = () => _store.userInfo.user === null ? "..." : _store.userInfo.user.username
 
   const logOut = () => {
     loginService.logout()
     props.logInOut()
-  }
-
-  const addALike = (blog) => {
-    dispatch(likeIt(blog, _store.userInfo.token));
   }
 
   return (
@@ -102,15 +102,25 @@ const BlogList = (props) => {
           handleUrl={handleUrl}
       />
       </Toggleable>
+    <table>
+      <thead>
+         <tr>
+              <th colSpan="1"></th>
+         </tr>
+      </thead>
+      <tbody>
       {[...props.blogList.blogs]
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} removeBlog={removeBlog} addALike={addALike}/>
+          <tr key={blog.id}>
+            <td><Link to={`/${blog.id}`} >{blog.title}</Link> By: {blog.author}</td>  
+          </tr>
       ))}
+      </tbody>
+    </table>
+      
     </div>
   );
-}
-
-
+};
 const mapStateToProps = (state) => {
   return {
     blogList: state.blogList,
