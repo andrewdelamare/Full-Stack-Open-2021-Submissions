@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-const initialState ={ user: null, token: null }
+const initialState ={ user: null, token: null, users:null }
 
 const userSlice = createSlice({
   name: 'userInfo',
@@ -17,15 +17,25 @@ const userSlice = createSlice({
       const updatedState = {...state, token};
       return updatedState;
     },
+    updateUsers(state, action) {
+      const users = action.payload;
+      const updatedState = {...state, users};
+      return updatedState;
+    },
   },
 })
 
-export const {updateUser, updateToken} = userSlice.actions;
+export const {updateUser, updateToken, updateUsers} = userSlice.actions;
 
 export const updateUserInfo = (user, token) => {
   return (dispatch) => {
     dispatch(updateUser(user))
     dispatch(updateToken(token))
+  }
+}
+export const addAllUsers = (users) => {
+  return (dispatch) => {
+    dispatch(updateUsers(users))
   }
 }
 

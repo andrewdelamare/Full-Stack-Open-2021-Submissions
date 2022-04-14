@@ -1,30 +1,36 @@
 import React, {useState, useEffect} from "react";
-import store from "../store";
 import {useDispatch, connect} from 'react-redux';
 import loginService from "../services/login";
 import {getAll} from "../services/users";
+import {addAllUsers} from "../reducers/userReducer";
+import {
+  Link
+} from "react-router-dom";
 
 const UserList = (props) => {
+  const userInfo = props.userInfo
   const dispatch = useDispatch();
   const [allusers, setAllusers] = useState([])
   useEffect(() => {
-    getAll().then(response => setAllusers(response))
+    getAll()
+      .then(response => {
+        setAllusers(response)
+        dispatch(addAllUsers(response))
+      })
 
   }, []);
-  
-  const _store = store.getState();
-  const loggedinName = () => _store.userInfo.user === null ? "..." : _store.userInfo.user.username
+
+  const loggedinName = () => userInfo.user === null ? "..." : userInfo.user.username
 
   const logOut = () => {
     loginService.logout()
     props.logInOut()
   }
   const UserTableRow = ({user}) => {
-    
     return (
       <tr>
         <td>
-          {user.name}
+          <Link to={`/users/${user.id}`} >{user.name}</Link>
         </td>
         <td>- -</td>
         <td>
