@@ -90,6 +90,7 @@ const BlogList = (props) => {
       <button onClick={logOut} type="button">
         Logout
       </button>
+      <h1>Blogs</h1>
       <Toggleable id="addBlogToggle" buttonLabel="Add Blog">
         <BlogEntry
           handleNewBlog={handleNewBlog}
@@ -116,6 +117,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const ConnectedNotification = connect(mapStateToProps)(BlogList);
+const ConnectedBlogs = connect(mapStateToProps)(BlogList);
 
-export default ConnectedNotification;
+export default ConnectedBlogs;

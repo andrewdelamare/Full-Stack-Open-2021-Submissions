@@ -1,7 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from "react-router-dom";
 import store from "./store";
 import Notification from "./components/Notification";
+import UserList from "./components/UserList"
 import BlogList from "./components/BlogList";
 import LoginForm from "./components/LoginForm";
 import { useDispatch } from "react-redux";
@@ -27,26 +32,32 @@ function App() {
   const blogList = () => (
     <BlogList logInOut={logInOut} />
   )
+  const usersPage = () => (
+    <UserList logInOut={logInOut} />
+  )
   const loginForm = () => (
     <LoginForm logInOut={logInOut} />
   );
 
-  const showTheRightPage = () => {
-    //store.getState() === false ? loginForm() : blogList()
+  const showTheRightPage = (rightPage) => {
     const currentState = isLoggedIn
     console.log(currentState)
     if(currentState === false){
       return loginForm()
     }else if(currentState === true){
-      return blogList()
+      return rightPage()
     }
   }
   return (
-    <div>
+    <Router>
       <Notification />
-      <h2>Blogs</h2>
-      {showTheRightPage()}
-    </div>
+      <Routes>
+        <Route path="/" element={showTheRightPage(blogList)} />
+        <Route path="/users" element={showTheRightPage(usersPage)} />
+        <Route path="/blogs" element={showTheRightPage(blogList)} />
+      </Routes>
+      
+    </Router>
   );
 }
 
