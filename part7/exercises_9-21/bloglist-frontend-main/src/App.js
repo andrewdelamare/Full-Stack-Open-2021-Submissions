@@ -14,6 +14,7 @@ import UPage from "./components/UPage";
 import { useDispatch } from "react-redux";
 import { updateUserInfo } from "./reducers/userReducer";
 import { initializeBlogs } from "./reducers/blogReducer";
+import loginService from "./services/login";
 
 
 function App() {
@@ -30,7 +31,16 @@ function App() {
       setLoggedIn(true)
     }
   }, [dispatch]);
+
+  const userInfo = store.getState().userInfo
+  const loggedinName = () => userInfo.user === null ? "..." : userInfo.user.username;
   const logInOut = () => setLoggedIn(!isLoggedIn)
+
+  const logOut = () => {
+    loginService.logout()
+    logInOut()
+  }
+
   const blogList = () => {
     return (
     <BlogList logInOut={logInOut} />
@@ -48,13 +58,24 @@ function App() {
     <LoginForm logInOut={logInOut} />
   );
 
+  const padding = {
+    padding: 10
+  }
+
   const showTheRightPage = (rightPage) => {
     const currentState = isLoggedIn
     console.log(currentState)
     if(currentState === false){
       return loginForm()
     }else if(currentState === true){
-      return rightPage()
+      return (
+      <div>
+        <Link style={padding} to="/">Blogs</Link>
+        <Link  style={padding} to="/users">Users</Link>
+        {`            Logged in as ${loggedinName()}               `}
+        <button onClick={logOut} type="button" stype={padding}>Logout</button>
+        {rightPage()}
+      </div>)
     }
   }
   return (

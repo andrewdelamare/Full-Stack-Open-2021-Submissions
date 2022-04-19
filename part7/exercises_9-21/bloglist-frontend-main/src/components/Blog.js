@@ -37,6 +37,7 @@ const Blog = (props) => {
     const blogee = blogsList.blogs.find(b => b.id === id)
     console.log(blogee)
     setBlog(blogee)
+    setLikes(blogee.likes)
   }
 
   const removeBlog = async (idOfBlog) => {
@@ -61,11 +62,11 @@ const Blog = (props) => {
   const addALike = (blog) => {
     dispatch(likeIt(blog, userInfo.token));
   }
-  const addLike = (blog) => {
+  const addLike = () => {
     const blogCopy = {...blog};
     blogCopy.likes ++;
     setLikes(likes + 1);
-    console.log(blogCopy)
+    setBlog(blogCopy)
     addALike(blogCopy);
   };
 
@@ -76,14 +77,10 @@ const Blog = (props) => {
 
   const DisplayBlog = () => (
   <div>
-    <h2>{`Logged in as ${loggedinName()}`}</h2>
-    <button onClick={logOut} type="button">
-        Logout
-    </button>
     <h3>{blog.title}</h3>
     <h4>{blog.author}</h4>
     <div className="likes">
-          Likes: {blog.likes}{" "}
+          Likes: {likes}{" "}
           <button type="button" onClick={addLike} id="likeButton">
             Like
           </button>

@@ -17,10 +17,6 @@ const UPage = (props) => {
   }
   return (
   <div>
-    <h2>{`Logged in as ${loggedinName()}`}</h2>
-    <button onClick={logOut} type="button">
-        Logout
-    </button>
     <h3>{user.name}</h3>
     <h4>Added Blogs</h4>
     <ul>

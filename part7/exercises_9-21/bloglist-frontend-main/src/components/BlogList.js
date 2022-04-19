@@ -86,10 +86,6 @@ const BlogList = (props) => {
 
   return (
     <div>
-      <h2>{`Logged in as ${loggedinName()}`}</h2>
-      <button onClick={logOut} type="button">
-        Logout
-      </button>
       <h1>Blogs</h1>
       <Toggleable id="addBlogToggle" buttonLabel="Add Blog">
         <BlogEntry

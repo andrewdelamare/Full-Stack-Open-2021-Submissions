@@ -45,10 +45,6 @@ const UserList = (props) => {
   }
   return (
   <div>
-    <h2>{`Logged in as ${loggedinName()}`}</h2>
-    <button onClick={logOut} type="button">
-        Logout
-    </button>
     <h3>
     Users
     </h3>
