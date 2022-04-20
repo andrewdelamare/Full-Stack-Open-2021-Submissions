@@ -6,6 +6,7 @@ import { initializeBlogs } from "../reducers/blogReducer";
 import { updateUserInfo } from "../reducers/userReducer";
 import { displayNotification } from "../reducers/notificationReducer";
 import login from "../services/login";
+import { Table, Form, Button } from 'react-bootstrap'
 
 const LoginForm = ({ logInOut }) => {
   const dispatch = useDispatch();
@@ -43,7 +44,8 @@ const LoginForm = ({ logInOut }) => {
     setUser(nul);
   };
   return (
-  <form onSubmit={handleLogin}>
+  <div className="container">
+  <Form onSubmit={handleLogin}>
     <div>
       Username:
       <input
@@ -62,10 +64,11 @@ const LoginForm = ({ logInOut }) => {
         onChange={({ target }) => (setPassword(target.value))}
       />
     </div>
-    <button type="submit" id="login">
+    <Button type="submit" id="login">
       login
-    </button>
-  </form>
+    </Button>
+  </Form>
+  </div>
   )
 };
 /*

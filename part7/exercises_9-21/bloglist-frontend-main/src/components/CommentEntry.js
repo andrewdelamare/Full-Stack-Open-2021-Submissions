@@ -1,4 +1,5 @@
 import React from "react";
+import { Form, Button } from 'react-bootstrap'
 
 function CommentEntry({
   handleNewComment,
@@ -6,7 +7,7 @@ function CommentEntry({
   handleComment,
 }) {
   return (
-    <form onSubmit={handleNewComment}>
+    <Form onSubmit={handleNewComment}>
       <div>Add a comment</div>
       <div>
         <input
@@ -22,10 +23,10 @@ function CommentEntry({
           }}
         />
       </div>
-      <button id="createBlogButton" type="submit">
+      <Button id="createBlogButton" type="submit">
         create
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 }
 

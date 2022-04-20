@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-
+import {Alert} from 'react-bootstrap'
 const Notification = (props) => {
   const note= props.notification.note;
   const type = props.notification.type
@@ -34,15 +34,15 @@ const Notification = (props) => {
 
   if(type === true){
     return (
-      <div style={successStyles}>
+      <Alert variant='success' >
         {note}
-      </div>
+      </Alert>
     );
   }else if (type === false){
     return (
-      <div style={failureStyles}>
+      <Alert variant='danger' >
         {note}
-      </div>
+      </Alert>
     );
   }else if (type === null){ 
   return (

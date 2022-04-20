@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect, useDispatch} from 'react-redux';
 import store from "../store";
-import loginService from "../services/login";
 import blogService from "../services/blogs";
 import { displayNotification } from "../reducers/notificationReducer";
 import { deleteIt, likeIt, commentIt } from "../reducers/blogReducer";
@@ -9,8 +8,8 @@ import {
   useParams
 } from "react-router-dom";
 import { initializeBlogs } from "../reducers/blogReducer";
-import Togglable from "./Toggleable";
 import CommentEntry from "./CommentEntry";
+import { Table, Form, Button } from 'react-bootstrap'
 
 const Blog = (props) => {
   const dispatch = useDispatch();
@@ -69,15 +68,10 @@ const Blog = (props) => {
   const addLike = () => {
     const blogCopy = {...blog};
     blogCopy.likes ++;
-    
+    addALike(blogCopy)
     setLikes(likes + 1);
     setBlog(blogCopy)
   };
-
-  const logOut = () => {
-    loginService.logout()
-    props.logInOut()
-  }
 
   const DisplayComments = () => {
     return blog.comments.map(comments => <p>{`${comments}`}</p>)
@@ -103,14 +97,14 @@ const Blog = (props) => {
     <h4>{blog.author}</h4>
     <div className="likes">
           Likes: {likes}{" "}
-          <button type="button" onClick={addLike} id="likeButton">
+          <Button type="button" onClick={addLike} id="likeButton">
             Like
-          </button>
+          </Button>
     </div>
     <div className="url">URL: {blog.url}</div>
-        <button onClick={deleteBlog} type="button" id="deleteBlogButton">
+        <Button onClick={deleteBlog} type="button" id="deleteBlogButton">
           Delete Blog
-        </button>
+        </Button>
     <p>comments:</p>
     <DisplayComments />
     <CommentEntry handleNewComment={handleNewComment} comment={comment} handleComment={handleComment} /> 

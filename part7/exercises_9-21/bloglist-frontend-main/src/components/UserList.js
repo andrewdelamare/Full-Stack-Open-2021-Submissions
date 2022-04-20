@@ -6,6 +6,7 @@ import {addAllUsers} from "../reducers/userReducer";
 import {
   Link
 } from "react-router-dom";
+import { Table, Form, Button } from 'react-bootstrap'
 
 const UserList = (props) => {
   const userInfo = props.userInfo
@@ -32,11 +33,11 @@ const UserList = (props) => {
         <td>
           <Link to={`/users/${user.id}`} >{user.name}</Link>
         </td>
-        <td>- -</td>
+        <td></td>
         <td>
           {user.username}
         </td>
-        <td> - - </td>
+        <td></td>
         <td>
           {user.blogs.length}
         </td>
@@ -48,7 +49,7 @@ const UserList = (props) => {
     <h3>
     Users
     </h3>
-    <table>
+    <Table>
       <thead>
          <tr>
               <th colSpan="5"></th>
@@ -73,7 +74,7 @@ const UserList = (props) => {
             <UserTableRow key={u.id} user={u}/>
         ))}
       </tbody>
-    </table>
+    </Table>
   </div>
   )
 };

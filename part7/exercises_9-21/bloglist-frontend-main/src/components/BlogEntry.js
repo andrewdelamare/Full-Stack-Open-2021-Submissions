@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-
+import { Table, Form, Button } from 'react-bootstrap'
 // I had to move state out to the app component in order
 // to test things the way that the course exercises demanded
 
@@ -14,7 +14,7 @@ function BlogEntry({
   handleUrl,
 }) {
   return (
-    <form onSubmit={handleNewBlog}>
+    <Form onSubmit={handleNewBlog}>
       <div>Add a new blog</div>
       <div>
         Title:
@@ -61,10 +61,10 @@ function BlogEntry({
           }}
         />
       </div>
-      <button id="createBlogButton" type="submit">
+      <Button id="createBlogButton" type="submit">
         create
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 }
 

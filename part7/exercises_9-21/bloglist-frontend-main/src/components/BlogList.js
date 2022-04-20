@@ -10,6 +10,7 @@ import {
   Link
 } from "react-router-dom";
 import { updateUserInfo } from "../reducers/userReducer";
+import { Table, Form, Button } from 'react-bootstrap'
 
 
 const BlogList = (props) => {
@@ -77,12 +78,6 @@ const BlogList = (props) => {
     }
   };
 
-  const loggedinName = () => _store.userInfo.user === null ? "..." : _store.userInfo.user.username
-
-  const logOut = () => {
-    loginService.logout()
-    props.logInOut()
-  }
 
   return (
     <div>
@@ -98,7 +93,7 @@ const BlogList = (props) => {
           handleUrl={handleUrl}
       />
       </Toggleable>
-    <table>
+    <Table>
       <thead>
          <tr>
               <th colSpan="1"></th>
@@ -112,7 +107,7 @@ const BlogList = (props) => {
           </tr>
       ))}
       </tbody>
-    </table>
+    </Table>
       
     </div>
   );

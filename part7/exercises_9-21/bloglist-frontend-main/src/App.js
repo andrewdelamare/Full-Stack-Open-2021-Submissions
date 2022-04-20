@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { updateUserInfo } from "./reducers/userReducer";
 import { initializeBlogs } from "./reducers/blogReducer";
 import loginService from "./services/login";
-
+import { Navbar, Button, Nav } from 'react-bootstrap'
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false)
@@ -69,17 +69,22 @@ function App() {
       return loginForm()
     }else if(currentState === true){
       return (
-      <div>
-        <Link style={padding} to="/">Blogs</Link>
-        <Link  style={padding} to="/users">Users</Link>
-        {`            Logged in as ${loggedinName()}               `}
-        <button onClick={logOut} type="button" stype={padding}>Logout</button>
+      <div className="container">
+        <Navbar bg="light" expand="md">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav.Link href="#" as="span" ><Link style={padding} to="/">Blogs</Link></Nav.Link>
+          <Nav.Link href="#" as="span" ><Link  style={padding} to="/users">Users</Link></Nav.Link>
+            {`-- -- --  Logged in as ${loggedinName()}  -- -- --`}
+          <Button onClick={logOut} type="button" stype={padding}>Logout</Button>
+        </Navbar.Collapse>
+        </Navbar>
         {rightPage()}
       </div>)
     }
   }
   return (
-    <Router>
+    <Router className="container">
       <Notification />
       <Routes>
         <Route path="/" element={showTheRightPage(blogList)} />

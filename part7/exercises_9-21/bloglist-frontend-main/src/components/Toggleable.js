@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import { Table, Form, Button } from 'react-bootstrap'
 
 function Togglable({ id, buttonLabel, children }) {
   const [visible, setVisible] = useState(false);
@@ -14,15 +15,15 @@ function Togglable({ id, buttonLabel, children }) {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility} type="button" id={id}>
+        <Button onClick={toggleVisibility} type="button" id={id}>
           {buttonLabel}
-        </button>
+        </Button>
       </div>
       <div style={showWhenVisible}>
         {children}
-        <button onClick={toggleVisibility} type="button">
+        <Button onClick={toggleVisibility} type="button">
           cancel
-        </button>
+        </Button>
       </div>
     </div>
   );
