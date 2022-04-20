@@ -49,7 +49,18 @@ blogsRouter.delete(
   }
 );
 
-blogsRouter.put("/api/blogs/:id", async (request, response) => {
+blogsRouter.put("/api/blogs/:id/like", async (request, response) => {
+  const { id } = request.params;
+  const update = request.body;
+  console.log("THIS IS THE UPDATE TO BE SENT: ", update);
+  await Blog.findByIdAndUpdate(id, update, { runValidators: true });
+  const updated = await Blog.findById(id);
+  console.log("THIS IS THE RESPONSE", updated);
+  response.json(updated);
+  response.status(200).end();
+});
+
+blogsRouter.put("/api/blogs/:id/comment", async (request, response) => {
   const { id } = request.params;
   const update = request.body;
   console.log("THIS IS THE UPDATE TO BE SENT: ", update);

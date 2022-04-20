@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect, useDispatch} from 'react-redux';
 import store from "../store";
 import loginService from "../services/login";
 import blogService from "../services/blogs";
 import { displayNotification } from "../reducers/notificationReducer";
-import { deleteIt, likeIt } from "../reducers/blogReducer";
+import { deleteIt, likeIt, commentIt } from "../reducers/blogReducer";
 import {
   useParams
 } from "react-router-dom";
-import { updateUserInfo } from "../reducers/userReducer";
 import { initializeBlogs } from "../reducers/blogReducer";
+import Togglable from "./Toggleable";
+import CommentEntry from "./CommentEntry";
 
 const Blog = (props) => {
   const dispatch = useDispatch();
   const userInfo = store.getState().userInfo
-  const [likes, setLikes] = useState(null);
+  const [likes, setLikes] = useState([]);
   const [blog, setBlog] = useState({
       title: "_",
       author: "",
@@ -27,9 +28,8 @@ const Blog = (props) => {
       },
       id: ""
     })
-  const id = useParams().id;
-  const loggedinName = () => userInfo.user === null ? "..." : userInfo.user.username;
-  //let blog = blogsList.blogs.find(b => b.id === id)
+    const [comment, setComment] = useState('');
+    const id = useParams().id;
   if(blog.title === "_"){
     dispatch(initializeBlogs())
     const blogsList = props.blogList;
@@ -59,15 +59,19 @@ const Blog = (props) => {
     }
   };
 
+  const handleComment = (value) => {
+    setComment(value);
+  };
+
   const addALike = (blog) => {
     dispatch(likeIt(blog, userInfo.token));
   }
   const addLike = () => {
     const blogCopy = {...blog};
     blogCopy.likes ++;
+    
     setLikes(likes + 1);
     setBlog(blogCopy)
-    addALike(blogCopy);
   };
 
   const logOut = () => {
@@ -75,7 +79,25 @@ const Blog = (props) => {
     props.logInOut()
   }
 
-  const DisplayBlog = () => (
+  const DisplayComments = () => {
+    return blog.comments.map(comments => <p>{`${comments}`}</p>)
+  }
+
+  const handleNewComment = (event) => {
+    event.preventDefault();
+    let blogCopy = {...blog};
+    console.log(blogCopy.comments)
+    console.log(comment)
+    const comments = [...blogCopy.comments , comment]
+    console.log(comments)
+    blogCopy.comments = comments
+    console.log(blogCopy)
+    setComment('');
+    setBlog(blogCopy)
+    dispatch(commentIt(blogCopy));
+  }
+
+  const displayBlog = () => (
   <div>
     <h3>{blog.title}</h3>
     <h4>{blog.author}</h4>
@@ -89,12 +111,15 @@ const Blog = (props) => {
         <button onClick={deleteBlog} type="button" id="deleteBlogButton">
           Delete Blog
         </button>
+    <p>comments:</p>
+    <DisplayComments />
+    <CommentEntry handleNewComment={handleNewComment} comment={comment} handleComment={handleComment} /> 
   </div>
   );
 
   return (
     <div>
-      {blog === undefined ? dispatch(initializeBlogs()) : <DisplayBlog />}
+      {blog === undefined ? dispatch(initializeBlogs()) : displayBlog()}
     </div>
   )
 };

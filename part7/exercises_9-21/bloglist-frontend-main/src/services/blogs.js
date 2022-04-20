@@ -17,7 +17,7 @@ const addBlog = async (newBlog, token) => {
   return response.data;
 };
 
-const updateBlog = async (updatedBlog, token) => {
+const likeBlog = async (updatedBlog, token) => {
   const bToken = `bearer ${token}`;
   const config = {
     headers: { Authorization: bToken },
@@ -25,7 +25,20 @@ const updateBlog = async (updatedBlog, token) => {
   const updatedInfo = {
     likes: updatedBlog.likes,
   };
-  const idUrl = `api/blogs/${updatedBlog.id}`;
+  const idUrl = `api/blogs/${updatedBlog.id}/like`;
+  const response = await axios.put(idUrl, updatedInfo, config);
+  return response.data;
+};
+
+const commentBlog = async (updatedBlog, token) => {
+  const bToken = `bearer ${token}`;
+  const config = {
+    headers: { Authorization: bToken },
+  };
+  const updatedInfo = {
+    comments: updatedBlog.comments,
+  };
+  const idUrl = `api/blogs/${updatedBlog.id}/comment`;
   const response = await axios.put(idUrl, updatedInfo, config);
   return response.data;
 };
@@ -43,6 +56,7 @@ const deleteIt = async (blogToDelete, token) => {
 export default {
   getAll,
   addBlog,
-  updateBlog,
+  likeBlog,
+  commentBlog,
   deleteIt,
 };
