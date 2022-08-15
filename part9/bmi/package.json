@@ -1,0 +1,16 @@
+{
+  "name": "bmi",
+  "version": "1.0.0",
+  "description": "Full Stack Mooc ts module 9.1 +",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "bmi": "ts-node bmiCalculator.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew de Lamare",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.7.4"
+  }
+}
