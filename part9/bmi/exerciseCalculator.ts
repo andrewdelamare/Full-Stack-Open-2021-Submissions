@@ -32,4 +32,8 @@ const exerciceCalculator = (arr: number[] , goal: number) => {
   }
   return result
 }
-console.log(exerciceCalculator([3, 0, 2, 4.5, 0, 3, 1], 2))
+
+let args = process.argv
+let arg1 = parseFloat(process.argv[2])
+let arg2plus = process.argv.slice(3).map(i => parseFloat(i))
+console.log(exerciceCalculator(arg2plus, arg1))

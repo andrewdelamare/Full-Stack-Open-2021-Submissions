@@ -12,4 +12,7 @@ const bmiCalculator = (h: number, w: number) => {
   : console.log("An unknown error occured")
 }
 
-bmiCalculator(177, 74)
+let args = process.argv
+let arg1 = parseFloat(process.argv[2])
+let arg2 = parseInt(args[3])
+bmiCalculator(arg1, arg2)
