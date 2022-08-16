@@ -8,7 +8,15 @@ interface result {
   average: number;
 }
 
-const exerciceCalculator = (arr: number[], goal: number) => {
+export const exerciceCalculator = (arr: number[], goal: number) => {
+  if (!arr || !goal) {
+    return new Error('parameters missing');
+  }
+
+  if (isNaN(goal) || arr.some((i: number) => isNaN(i))) {
+    return new Error('malformatted parameters');
+  }
+
   const numDays: number = arr.length;
   const trainingDays: number = arr.filter((val) => val > 0).length;
   const avg: number = arr.reduce((p, c) => p + c) / numDays;
@@ -43,7 +51,6 @@ const exerciceCalculator = (arr: number[], goal: number) => {
   return result;
 };
 
-let args = process.argv;
-let arg1 = parseFloat(process.argv[2]);
-let arg2plus = process.argv.slice(3).map((i) => parseFloat(i));
+const arg1 = parseFloat(process.argv[2]);
+const arg2plus = process.argv.slice(3).map((i) => parseFloat(i));
 console.log(exerciceCalculator(arg2plus, arg1));

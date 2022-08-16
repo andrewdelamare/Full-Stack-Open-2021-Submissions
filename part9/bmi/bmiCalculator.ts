@@ -22,7 +22,7 @@ export const bmiCalculator = (h: number, w: number) => {
   return bmi;
 };
 
-let argss = process.argv;
-let args1 = parseFloat(process.argv[2]);
-let arg2 = parseInt(argss[3]);
+const argss = process.argv;
+const args1 = parseFloat(process.argv[2]);
+const arg2 = parseInt(argss[3]);
 bmiCalculator(args1, arg2);
