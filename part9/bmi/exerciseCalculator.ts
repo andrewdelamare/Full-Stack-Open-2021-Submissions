@@ -1,3 +1,13 @@
+interface result {
+  periodLength: number,
+  trainingDays: number,
+  success: boolean,
+  rating: number,
+  ratingDescription: string,
+  target: number,
+  average: number
+}
+
 const exerciceCalculator = (arr: number[] , goal: number) => {
   const numDays: number = arr.length
   const trainingDays: number = arr.filter(val => val > 0).length
@@ -12,15 +22,7 @@ const exerciceCalculator = (arr: number[] , goal: number) => {
   : difference > 0 && difference <= 0.3 ? "Good work but could use some improvement"
   : difference > 0.3 && difference <= 0.5 ? "You really need to focus on improvement"
   : "Did you even try?"
-  interface result {
-    periodLength: number,
-    trainingDays: number,
-    success: boolean,
-    rating: number,
-    ratingDescription: string,
-    target: number,
-    average: number
-  }
+  
   const result: result = {
     periodLength: numDays,
     trainingDays: trainingDays,
