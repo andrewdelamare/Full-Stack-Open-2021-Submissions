@@ -1,5 +1,5 @@
 import patients from "../../data/patients.json";
-import { Patient, PatientSensitive, newPatient } from "./types";
+import { Patient, PatientSensitive, newPatient, Gender } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -14,8 +14,16 @@ export const getAllPatients = (): Patient[] => {
   return nonSensitive;
 };
 
-/* const isString = (text: unknown): text is string => {
+const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
+};
+
+const parseString = (s: unknown): string => {
+  if (!s || !isString(s)) {
+    throw new Error('Incorrect or missing value');
+  }
+
+  return s;
 };
 
 const isDate = (date: string): boolean => {
@@ -27,7 +35,18 @@ const parseDate = (date: unknown): string => {
       throw new Error('Incorrect or missing date: ' + date);
   }
   return date;
-}; */
+}; 
+
+const isGender = (str: string): str is Gender => {
+  return ['male', 'female', 'other'].includes(str);
+};
+
+const parseGender = (g: unknown): Gender => {
+  if (!g || !isString(g) || !isGender(g)) {
+      throw new Error('Incorrect or missing gender: ' + g);
+  }
+  return g;
+};
 
 export const addPatient = (p: newPatient): PatientSensitive => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
@@ -35,7 +54,11 @@ export const addPatient = (p: newPatient): PatientSensitive => {
   const newP = {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     id: newId,
-    ...p
+    name: parseString(p.name),
+    dateOfBirth: parseDate(p.dateOfBirth),
+    ssn: parseString(p.ssn),
+    gender: parseGender(p.gender),
+    occupation: parseString(p.occupation)
   };
   patients.push(newP);
   return newP;
