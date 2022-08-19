@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { Patient } from "../types";
 import { setPatientView } from "../state";
 export const PatientView = () => {
-  const [{ patient }, dispatch] = useStateValue();
+  const [{ patient, diagnosisList }, dispatch] = useStateValue();
   const {id} = useParams();
   React.useEffect(() => {
     const fetchPatientData = async () => {
@@ -26,7 +26,7 @@ export const PatientView = () => {
   const patientEntries = patient?.entries?.map((e) => (
     <div key={e.id}>
       <p>{e.date} {e.description}</p>
-      {e.diagnosisCodes?.map(d => (<p key={d}>{d}</p>))}
+      {e.diagnosisCodes?.map(d => (<p key={d}>{d} {diagnosisList?.filter(diag => diag.code === d)[0].name}</p>))}
     </div>
     ));
 

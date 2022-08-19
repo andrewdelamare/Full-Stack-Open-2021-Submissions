@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { State } from "./state";
-import { Patient } from "../types";
+import { Diagnosis, Patient } from "../types";
 
 
 export type Action =
@@ -15,6 +15,10 @@ export type Action =
   | {
     type: "SET_PATIENT_VIEW"
     payload: Patient;
+  }
+  | {
+    type: "SET_DIAGNOSIS"
+    payload: Diagnosis[];
   };
 
 export const setPatientList = (pList: Patient[]): Action => {
@@ -35,6 +39,13 @@ export const setPatientView = (p: Patient): Action => {
   return {
     type: 'SET_PATIENT_VIEW',
     payload: p
+  };
+};
+
+export const setDiagnosisList = (dList: Diagnosis[]): Action => {
+  return {
+    type: 'SET_DIAGNOSIS',
+    payload: dList
   };
 };
 
@@ -64,6 +75,15 @@ export const reducer = (state: State, action: Action): State => {
           return {
             ...state,
             patient: action.payload
+          };
+        }else{
+          return state;
+        }
+      case "SET_DIAGNOSIS":
+        if (action.payload !== state.diagnosisList){
+          return {
+            ...state,
+            diagnosisList: action.payload
           };
         }else{
           return state;

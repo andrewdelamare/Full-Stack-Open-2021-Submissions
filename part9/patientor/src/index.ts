@@ -7,7 +7,7 @@ app.use(express.json());
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 app.use(cors());
 
-app.use("/api/diagnoses", diagnosesRouter);
+app.use("/api/diagnosis", diagnosesRouter);
 app.use("/api/patients", patientRouter);
 
 app.get("/api/ping", (_req, res) => {
