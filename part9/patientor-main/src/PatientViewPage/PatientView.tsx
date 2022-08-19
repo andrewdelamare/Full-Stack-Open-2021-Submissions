@@ -23,12 +23,21 @@ export const PatientView = () => {
     void fetchPatientData();
   }, [dispatch]);
 
+  const patientEntries = patient?.entries?.map((e) => (
+    <div key={e.id}>
+      <p>{e.date} {e.description}</p>
+      {e.diagnosisCodes?.map(d => (<p key={d}>{d}</p>))}
+    </div>
+    ));
+
   return (
     <div>
       <h1>{patient?.name}</h1>
       <p>{patient?.gender}</p>
       <p>{patient?.ssn}</p>
       <p>{patient?.occupation}</p>
+      <h2>Entries</h2>
+      {patientEntries}
     </div>
   );
 };
