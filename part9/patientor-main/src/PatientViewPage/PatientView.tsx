@@ -3,7 +3,7 @@ import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
 import { useParams } from "react-router-dom";
-import { Patient } from "../types";
+import { Entry, Patient } from "../types";
 import { setPatientView } from "../state";
 export const PatientView = () => {
   const [{ patient, diagnosisList }, dispatch] = useStateValue();
@@ -23,12 +23,42 @@ export const PatientView = () => {
     void fetchPatientData();
   }, [dispatch]);
 
-  const patientEntries = patient?.entries?.map((e) => (
-    <div key={e.id}>
-      <p>{e.date} {e.description}</p>
-      {e.diagnosisCodes?.map(d => (<p key={d}>{d} {diagnosisList?.filter(diag => diag.code === d)[0].name}</p>))}
-    </div>
-    ));
+  const assertNever = (value: never): never => {
+    throw new Error(
+      `Unhandled discriminated union member: ${JSON.stringify(value)}`
+    );
+  };
+
+  const patientEntries = patient?.entries?.map((e: Entry) => { 
+    switch (e.type) {
+      case "Hospital":
+      return (
+      <div key={e.id}>
+        <p>{e.date} Hospital Care</p>
+        <p>{e.description} </p>
+        <p>Discharge: {e.discharge.date} {e.discharge.criteria}</p>
+        {e.diagnosisCodes?.map(d => (<p key={d}>{d} {diagnosisList?.filter(diag => diag.code === d)[0].name} - {e.specialist} </p>))}
+      </div>);
+      case "HealthCheck":
+        return (
+        <div key={e.id}>
+          <p>{e.date} Health Check</p>
+          <p>{e.description} </p>
+          <p>Health check rating: {e.healthCheckRating}</p>
+          {e.diagnosisCodes?.map(d => (<p key={d}>{d} {diagnosisList?.filter(diag => diag.code === d)[0].name} - {e.specialist}</p>))}
+        </div>);
+      case "OccupationalHealthcare":
+        return (
+        <div key={e.id}>
+          <p>{e.date} Occupational Healthcare </p>
+          <p>{e.description} </p>
+          <p>Sick leave: {e.sickLeave?.startDate} - {e.sickLeave?.endDate} </p>
+          {e.diagnosisCodes?.map(d => (<p key={d}>{d} {diagnosisList?.filter(diag => diag.code === d)[0].name} - {e.specialist}</p>))}
+        </div>);
+      default:
+        return assertNever(e);
+    }
+    });
 
   return (
     <div>
