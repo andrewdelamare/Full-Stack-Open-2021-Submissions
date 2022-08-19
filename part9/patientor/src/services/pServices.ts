@@ -1,10 +1,10 @@
-import patients from "../../data/patients.json";
+import patients from "../../data/patients";
 import { PatientSensitive, newPatient, Gender, PublicPatient } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 
 export const getAllPatients = (): PublicPatient[] => {
-  const nonSensitive = patients.map(({ id, name, dateOfBirth, gender, occupation}) => ({
+  const nonSensitive: PublicPatient[] = patients.map(({ id, name, dateOfBirth, gender, occupation}) => ({
     id,
     name,
     dateOfBirth,
