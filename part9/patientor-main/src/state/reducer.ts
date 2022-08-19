@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { State } from "./state";
 import { Patient } from "../types";
+
 
 export type Action =
   | {
@@ -14,6 +16,27 @@ export type Action =
     type: "SET_PATIENT_VIEW"
     payload: Patient;
   };
+
+export const setPatientList = (pList: Patient[]): Action => {
+  return {
+    type: 'SET_PATIENT_LIST',
+    payload: pList
+  };
+};
+
+export const addPatient = (p: Patient) => {
+  return {
+    type: 'ADD_PATIENT',
+    payload: p
+  };
+};
+
+export const setPatientView = (p: Patient): Action => {
+  return {
+    type: 'SET_PATIENT_VIEW',
+    payload: p
+  };
+};
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {

@@ -4,7 +4,7 @@ import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
 import { useParams } from "react-router-dom";
 import { Patient } from "../types";
-
+import { setPatientView } from "../state";
 export const PatientView = () => {
   const [{ patient }, dispatch] = useStateValue();
   const {id} = useParams();
@@ -15,7 +15,7 @@ export const PatientView = () => {
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `${apiBaseUrl}/patients/${id}`
         );
-        dispatch({ type: "SET_PATIENT_VIEW", payload: patientFromApi });
+        dispatch(setPatientView(patientFromApi));
       } catch (e) {
         console.error(e);
       }
