@@ -1,9 +1,9 @@
 import patients from "../../data/patients.json";
-import { Patient, PatientSensitive, newPatient, Gender } from "./types";
+import { PatientSensitive, newPatient, Gender, PublicPatient } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 
-export const getAllPatients = (): Patient[] => {
+export const getAllPatients = (): PublicPatient[] => {
   const nonSensitive = patients.map(({ id, name, dateOfBirth, gender, occupation}) => ({
     id,
     name,
@@ -12,6 +12,12 @@ export const getAllPatients = (): Patient[] => {
     occupation
   }));
   return nonSensitive;
+};
+
+export const getPatient = (pId: string): PatientSensitive | undefined => {
+  const pat: PatientSensitive | undefined = patients.filter(p => p.id === pId)[0];
+  const patSen: PatientSensitive = !pat.entries ? { ...pat, entries: []} : pat;
+  return patSen;
 };
 
 const isString = (text: unknown): text is string => {
@@ -58,7 +64,8 @@ export const addPatient = (p: newPatient): PatientSensitive => {
     dateOfBirth: parseDate(p.dateOfBirth),
     ssn: parseString(p.ssn),
     gender: parseGender(p.gender),
-    occupation: parseString(p.occupation)
+    occupation: parseString(p.occupation),
+    entries:[]
   };
   patients.push(newP);
   return newP;
