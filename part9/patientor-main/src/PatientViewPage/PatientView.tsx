@@ -45,6 +45,28 @@ export const PatientView = () => {
         dispatch({ type: "SET_PATIENT_VIEW", payload: data.data });
         closeModal();
       }
+
+      if(values.type === "HospitalForm" || values.type === "HospitalForm" && values.dischargeDate || values.type === "HospitalForm" && values.criteria || values.type === "HospitalForm" && values.criteria && values.dischargeDate){
+        const formFixed = {
+          type: "Hospital",
+          description: values.description,
+          date: values.date,
+          specialist: values.specialist,
+          diagnosisCodes: values.diagnosisCodes,
+          discharge: {
+            date: values.dischargeDate,
+            criteria: values.criteria
+          }
+        };
+        const data = await axios.post<Patient>(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          `${apiBaseUrl}/patients/${id}/entries`,
+          formFixed
+        );
+        dispatch({ type: "SET_PATIENT_VIEW", payload: data.data });
+        closeModal();
+      }
+
       const data = await axios.post<Patient>(
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `${apiBaseUrl}/patients/${id}/entries`,
@@ -114,6 +136,10 @@ export const PatientView = () => {
           return (
             <div></div>
           );
+      case "HospitalForm":
+        return (
+          <div></div>
+        );
       default:
         return assertNever(e);
     }

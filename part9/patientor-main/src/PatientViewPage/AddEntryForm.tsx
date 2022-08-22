@@ -25,7 +25,7 @@ const HealthCheckOptions: EntryTypeOption[] = [
 ];
 
 const EntryOptions: EntryTypeOption[] = [
-  { value: "Hospital", label: "Hospital" },
+  { value: "HospitalForm", label: "Hospital" },
   { value: "HealthCheck", label: "Health Check" },
   { value: "OccupationalHealthcareForm", label: "Occupational Healthcare" },
 ];
@@ -96,11 +96,9 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           : (<div></div>)}
           {values.type === "OccupationalHealthcareForm" ? (<Field label="Sick Leave End" placeholder="YYYY-MM-DD" name="endDate" component={TextField} />) 
           : (<div></div>)}
-          {values.type === "Hospital" ? (<Field label="Date" placeholder="YYYY-MM-DD" name="date" component={TextField} />) 
+          {values.type === "HospitalForm" ? (<Field label="Discharge Date" placeholder="YYYY-MM-DD" name="dischargeDate" component={TextField} />) 
           : (<div></div>)}
-          {values.type === "Hospital" ? (<Field label="Date" placeholder="YYYY-MM-DD" name="date" component={TextField} />) 
-          : (<div></div>)}
-          {values.type === "Hospital" ? (<Field label="Date" placeholder="YYYY-MM-DD" name="date" component={TextField} />) 
+          {values.type === "HospitalForm" ? (<Field label="Discarge Criteria" placeholder="Criteria" name="criteria" component={TextField} />) 
           : (<div></div>)}
             
             <Grid>
