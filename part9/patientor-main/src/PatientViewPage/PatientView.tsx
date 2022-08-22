@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from "react";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
@@ -5,7 +6,7 @@ import { useStateValue } from "../state";
 import { useParams } from "react-router-dom";
 import { Entry, Patient } from "../types";
 import { setPatientView } from "../state";
-import { EntryFormValues } from "./AddEntryForm";
+//import { EntryFormValues } from "./AddEntryForm";
 import AddEntryModal from "./AddEntryModal";
 import { Button } from "@material-ui/core";
 export const PatientView = () => {
@@ -21,8 +22,29 @@ export const PatientView = () => {
     setError(undefined);
   };
 
-  const submitNewEntry = async (values: EntryFormValues) => {
+  const submitNewEntry = async (values: any) => {
     try {
+      if(values.type === "OccupationalHealthcareForm" && values.startDate && values.endDate){
+        const formFixed = {
+          type: "OccupationalHealthcare",
+          description: values.description,
+          date: values.date,
+          specialist: values.specialist,
+          diagnosisCodes: values.diagnosisCodes,
+          employerName: values.employerName,
+          sickLeave: {
+            startDate: values.startDate,
+            endDate: values.endDate
+          }
+        };
+        const data = await axios.post<Patient>(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          `${apiBaseUrl}/patients/${id}/entries`,
+          formFixed
+        );
+        dispatch({ type: "SET_PATIENT_VIEW", payload: data.data });
+        closeModal();
+      }
       const data = await axios.post<Patient>(
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `${apiBaseUrl}/patients/${id}/entries`,
@@ -85,9 +107,13 @@ export const PatientView = () => {
         <div key={e.id}>
           <p>{e.date} Occupational Healthcare </p>
           <p>{e.description} </p>
-          <p>Sick leave: {e.sickLeave?.startDate} - {e.sickLeave?.endDate} </p>
+          { e.sickLeave ? (<p>Sick leave: {e.sickLeave?.startDate} - {e.sickLeave?.endDate} </p>) : (<div></div>) }
           {e.diagnosisCodes?.map(d => (<p key={d}>{d} {diagnosisList?.filter(diag => diag.code === d)[0].name} - {e.specialist}</p>))}
         </div>);
+      case "OccupationalHealthcareForm":
+          return (
+            <div></div>
+          );
       default:
         return assertNever(e);
     }

@@ -24,6 +24,12 @@ const HealthCheckOptions: EntryTypeOption[] = [
   { value: 3, label: "Critical Risk" },
 ];
 
+const EntryOptions: EntryTypeOption[] = [
+  { value: "Hospital", label: "Hospital" },
+  { value: "HealthCheck", label: "Health Check" },
+  { value: "OccupationalHealthcareForm", label: "Occupational Healthcare" },
+];
+
 
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnosisList }] = useStateValue();
@@ -55,9 +61,10 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         return errors;
       }}
     >
-      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
         return (
           <Form className="form ui">
+            <SelectEntryField label="Entry Type" name="type" options={EntryOptions}/>
             <Field
               label="Description"
               placeholder="Description"
@@ -76,12 +83,26 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="date"
               component={TextField}
             />
-            <SelectEntryField label="Health Check Rating" name="healthCheckRating" options={HealthCheckOptions}/>
             <DiagnosisSelection
             setFieldValue={setFieldValue}
             setFieldTouched={setFieldTouched}
             diagnoses={diagnosisList}
-          />    
+          />
+          {values.type === "HealthCheck" ? (<SelectEntryField label="Health Check Rating" name="healthCheckRating" options={HealthCheckOptions}/>) 
+          : (<div></div>)}
+          {values.type === "OccupationalHealthcareForm" ? (<Field label="Employer Name" placeholder="Employer Name" name="employerName" component={TextField} />) 
+          : (<div></div>)}
+          {values.type === "OccupationalHealthcareForm" ? (<Field label="Sick Leave Start" placeholder="YYYY-MM-DD" name="startDate" component={TextField} />) 
+          : (<div></div>)}
+          {values.type === "OccupationalHealthcareForm" ? (<Field label="Sick Leave End" placeholder="YYYY-MM-DD" name="endDate" component={TextField} />) 
+          : (<div></div>)}
+          {values.type === "Hospital" ? (<Field label="Date" placeholder="YYYY-MM-DD" name="date" component={TextField} />) 
+          : (<div></div>)}
+          {values.type === "Hospital" ? (<Field label="Date" placeholder="YYYY-MM-DD" name="date" component={TextField} />) 
+          : (<div></div>)}
+          {values.type === "Hospital" ? (<Field label="Date" placeholder="YYYY-MM-DD" name="date" component={TextField} />) 
+          : (<div></div>)}
+            
             <Grid>
               <Grid item>
                 <Button

@@ -12,7 +12,7 @@ import { InputLabel } from "@material-ui/core";
 import Input from '@material-ui/core/Input';
 
 export type EntryTypeOption = {
-  value: number;
+  value: number | string;
   label: string;
 };
 
@@ -20,7 +20,6 @@ type SelectEntryFieldProps = {
   name: string;
   label: string;
   options: EntryTypeOption[];
-  // eslint-disable-next-line @typescript-eslint/ban-types
 };
 
 export const SelectEntryField = ({ name, label, options }: SelectEntryFieldProps) => (

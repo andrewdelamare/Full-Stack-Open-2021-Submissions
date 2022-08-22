@@ -48,6 +48,13 @@ interface HospitalEntry extends BaseEntry {
   }
 }
 
+interface OccupationalHealthcareEntryForm extends BaseEntry {
+  type: "OccupationalHealthcareForm";
+  employerName: string;
+  startDate?: string, 
+  endDate?: string
+}
+
 interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
@@ -60,4 +67,5 @@ interface OccupationalHealthcareEntry extends BaseEntry {
 export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
+  | OccupationalHealthcareEntryForm
   | HealthCheckEntry;

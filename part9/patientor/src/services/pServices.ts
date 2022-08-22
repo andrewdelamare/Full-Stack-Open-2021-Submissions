@@ -117,18 +117,37 @@ export const addEntry = (e: Entry, pId: string) => {
     if (patient){ patient.entries?.push(newE);}
     return patient;
   } else if (e.type === "OccupationalHealthcare"){
-    const newE: Entry = {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      id: newId,
-      description: parseString(e.description),
-      date: parseDate(e.date),
-      specialist: parseString(e.specialist),
-      diagnosisCodes: e.diagnosisCodes?.map(d => parseString(d)),
-      type: e.type,
-      employerName: parseString(e.employerName)
-    };
-    if (patient){ patient.entries?.push(newE);}
-    return patient;
+    if (e.sickLeave){
+      const newE: Entry = {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        id: newId,
+        description: parseString(e.description),
+        date: parseDate(e.date),
+        specialist: parseString(e.specialist),
+        diagnosisCodes: e.diagnosisCodes?.map(d => parseString(d)),
+        type: e.type,
+        employerName: parseString(e.employerName),
+        sickLeave: {
+          startDate: parseDate(e.sickLeave?.startDate),
+          endDate: parseDate(e.sickLeave?.endDate)
+        }
+      };
+      if (patient){ patient.entries?.push(newE);}
+      return patient;
+    } else {
+      const newE: Entry = {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        id: newId,
+        description: parseString(e.description),
+        date: parseDate(e.date),
+        specialist: parseString(e.specialist),
+        diagnosisCodes: e.diagnosisCodes?.map(d => parseString(d)),
+        type: e.type,
+        employerName: parseString(e.employerName),
+      };
+      if (patient){ patient.entries?.push(newE);}
+      return patient;
+    }
   }else{
     return patient;
   }
