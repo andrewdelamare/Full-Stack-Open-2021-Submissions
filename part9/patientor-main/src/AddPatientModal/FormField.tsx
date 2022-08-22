@@ -11,6 +11,41 @@ import { Diagnosis, Gender } from "../types";
 import { InputLabel } from "@material-ui/core";
 import Input from '@material-ui/core/Input';
 
+export type EntryTypeOption = {
+  value: number;
+  label: string;
+};
+
+type SelectEntryFieldProps = {
+  name: string;
+  label: string;
+  options: EntryTypeOption[];
+  // eslint-disable-next-line @typescript-eslint/ban-types
+};
+
+export const SelectEntryField = ({ name, label, options }: SelectEntryFieldProps) => (
+  <>
+    <InputLabel>{label}</InputLabel>
+    <Field
+      fullWidth
+      style={{ marginBottom: "0.5em" }}
+      label={label}
+      component={FormikSelect}
+      name={name}
+
+    >
+      {options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label || option.value}
+        </MenuItem>
+      ))}
+    </Field>
+  </>
+);
+
+
+
+
 // structure of a single option
 export type GenderOption = {
   value: Gender;
@@ -105,7 +140,7 @@ export const DiagnosisSelection = ({
   setFieldValue,
   setFieldTouched,
 }: {
-  diagnoses: Diagnosis[];
+  diagnoses: Diagnosis[] | undefined;
   setFieldValue: FormikProps<{ diagnosisCodes: string[] }>["setFieldValue"];
   setFieldTouched: FormikProps<{ diagnosisCodes: string[] }>["setFieldTouched"];
 }) => {
@@ -117,7 +152,7 @@ export const DiagnosisSelection = ({
     setFieldValue(field, selectedDiagnoses);
   };
 
-  const stateOptions = diagnoses.map((diagnosis) => ({
+  const stateOptions = diagnoses?.map((diagnosis) => ({
     key: diagnosis.code,
     text: `${diagnosis.name} (${diagnosis.code})`,
     value: diagnosis.code,
@@ -127,7 +162,7 @@ export const DiagnosisSelection = ({
     <FormControl style={{ width: 552, marginBottom: '30px' }}>
       <InputLabel>Diagnoses</InputLabel>
       <Select multiple value={selectedDiagnoses} onChange={(e) => onChange(e.target.value as string[])} input={<Input />}>
-        {stateOptions.map((option) => (
+        {stateOptions?.map((option) => (
           <MenuItem key={option.key} value={option.value}>
             {option.text}
           </MenuItem>

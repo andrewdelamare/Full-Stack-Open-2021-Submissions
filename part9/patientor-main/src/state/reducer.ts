@@ -70,7 +70,7 @@ export const reducer = (state: State, action: Action): State => {
           [action.payload.id]: action.payload
         }
       };
-      case "SET_PATIENT_VIEW":
+    case "SET_PATIENT_VIEW":
         if (action.payload !== state.patient){
           return {
             ...state,
@@ -79,7 +79,7 @@ export const reducer = (state: State, action: Action): State => {
         }else{
           return state;
         }
-      case "SET_DIAGNOSIS":
+    case "SET_DIAGNOSIS":
         if (action.payload !== state.diagnosisList){
           return {
             ...state,

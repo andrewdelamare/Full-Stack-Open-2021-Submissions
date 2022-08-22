@@ -5,9 +5,42 @@ import { useStateValue } from "../state";
 import { useParams } from "react-router-dom";
 import { Entry, Patient } from "../types";
 import { setPatientView } from "../state";
+import { EntryFormValues } from "./AddEntryForm";
+import AddEntryModal from "./AddEntryModal";
+import { Button } from "@material-ui/core";
 export const PatientView = () => {
   const [{ patient, diagnosisList }, dispatch] = useStateValue();
   const {id} = useParams();
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const data = await axios.post<Patient>(
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      dispatch({ type: "SET_PATIENT_VIEW", payload: data.data });
+      closeModal();
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        console.error(e?.response?.data || "Unrecognized axios error");
+        setError(String(e?.response?.data?.error) || "Unrecognized axios error");
+      } else {
+        console.error("Unknown error", e);
+        setError("Unknown error");
+      }
+    }
+  };
+
   React.useEffect(() => {
     const fetchPatientData = async () => {
       try {
@@ -68,6 +101,15 @@ export const PatientView = () => {
       <p>{patient?.occupation}</p>
       <h2>Entries</h2>
       {patientEntries}
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button variant="contained" onClick={() => openModal()}>
+        Add New Entry
+      </Button>
     </div>
   );
 };

@@ -32,10 +32,6 @@ const parseString = (s: unknown): string => {
   return s;
 };
 
-const isNum = (text: unknown): text is number => {
-  return typeof text === 'number' || text instanceof Number;
-};
-
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
@@ -58,12 +54,13 @@ const parseGender = (g: unknown): Gender => {
   return g;
 };
 
-const isHCR = (num: number): num is HealthCheckRating => {
+const isHCR = (num: any): num is HealthCheckRating => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return [0, 1, 2, 3].includes(num);
 };
 
 const parseHCR = (hcr: unknown): HealthCheckRating => {
-  if (!hcr || !isNum(hcr) || !isHCR(hcr)) {
+  if (!isHCR(hcr)) {
       throw new Error('Incorrect or missing health check rating: ' + hcr);
   }
   return hcr;
