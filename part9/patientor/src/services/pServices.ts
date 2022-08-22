@@ -1,5 +1,5 @@
 import patients from "../../data/patients";
-import { PatientSensitive, newPatient, Gender, PublicPatient } from "./types";
+import { PatientSensitive, newPatient, Gender, PublicPatient, Entry, HealthCheckRating } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -32,6 +32,10 @@ const parseString = (s: unknown): string => {
   return s;
 };
 
+const isNum = (text: unknown): text is number => {
+  return typeof text === 'number' || text instanceof Number;
+};
+
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
@@ -54,6 +58,17 @@ const parseGender = (g: unknown): Gender => {
   return g;
 };
 
+const isHCR = (num: number): num is HealthCheckRating => {
+  return [0, 1, 2, 3].includes(num);
+};
+
+const parseHCR = (hcr: unknown): HealthCheckRating => {
+  if (!hcr || !isNum(hcr) || !isHCR(hcr)) {
+      throw new Error('Incorrect or missing health check rating: ' + hcr);
+  }
+  return hcr;
+};
+
 export const addPatient = (p: newPatient): PatientSensitive => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const newId = uuidv4();
@@ -69,4 +84,55 @@ export const addPatient = (p: newPatient): PatientSensitive => {
   };
   patients.push(newP);
   return newP;
+};
+
+export const addEntry = (e: Entry, pId: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  const newId = uuidv4();
+  const patient: PatientSensitive | undefined = patients.filter(p => p.id === pId)[0];
+  if (e.type === "HealthCheck"){
+    const newE: Entry = {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      id: newId,
+      description: parseString(e.description),
+      date: parseDate(e.date),
+      specialist: parseString(e.specialist),
+      diagnosisCodes: e.diagnosisCodes?.map(d => parseString(d)),
+      type: "HealthCheck",
+      healthCheckRating: parseHCR(e.healthCheckRating)
+    };
+    if (patient){ patient.entries?.push(newE);}
+    return patient;
+  }else if (e.type === "Hospital"){
+    const newE: Entry = {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      id: newId,
+      description: parseString(e.description),
+      date: parseDate(e.date),
+      specialist: parseString(e.specialist),
+      diagnosisCodes: e.diagnosisCodes?.map(d => parseString(d)),
+      type: e.type,
+      discharge: {
+        date: parseDate(e.discharge.date), 
+        criteria: parseString(e.discharge.criteria)
+      }
+    };
+    if (patient){ patient.entries?.push(newE);}
+    return patient;
+  } else if (e.type === "OccupationalHealthcare"){
+    const newE: Entry = {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      id: newId,
+      description: parseString(e.description),
+      date: parseDate(e.date),
+      specialist: parseString(e.specialist),
+      diagnosisCodes: e.diagnosisCodes?.map(d => parseString(d)),
+      type: e.type,
+      employerName: parseString(e.employerName)
+    };
+    if (patient){ patient.entries?.push(newE);}
+    return patient;
+  }else{
+    return patient;
+  }
 };
