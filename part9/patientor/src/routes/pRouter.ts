@@ -17,9 +17,14 @@ patientRouter.get("/:id", (req, res) => {
 patientRouter.post('/:id/entries', (req, res) => {
   const entry = req.body;
   const id = req.params.id;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const updatedPatient = addEntry(entry, id);
-  res.json(updatedPatient);
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const updatedPatient = addEntry(entry, id);
+    res.json(updatedPatient);
+  } catch (error: any) {
+    console.log(error.message);
+    res.status(400).json({error: error.message});
+  }
 });
 
 patientRouter.post('/', (req, res) => {

@@ -30,13 +30,13 @@ export const PatientView = () => {
       );
       dispatch({ type: "SET_PATIENT_VIEW", payload: data.data });
       closeModal();
-    } catch (e: unknown) {
+    } catch (e: any) {
       if (axios.isAxiosError(e)) {
-        console.error(e?.response?.data || "Unrecognized axios error");
-        setError(String(e?.response?.data?.error) || "Unrecognized axios error");
+        console.error(e?.response?.data);
+        setError(String(e?.response?.data?.error));
       } else {
-        console.error("Unknown error", e);
-        setError("Unknown error");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setError(e?.rsponse?.data?.error);
       }
     }
   };
