@@ -1,58 +1,52 @@
 const router = require('express').Router();
 const { Blog } = require('../models');
+const { checkForExistence } = require("../utils/middleware")
 
 router.get('/', async (req, res) => {
   const blogs = await Blog.findAll()
   return res.json(blogs)
 })
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const newBlog = req.body;
     console.log(newBlog);
     const created = await Blog.create(newBlog);
     return res.json(created);
   } catch (error) {
-    res.status(404).end();
+    next(error);
   }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
   try {
     const blogId = req.params.id;
-    const found = await Blog.findByPk(blogId);
-    console.log(found);
-    if (found){ 
-      await Blog.destroy({
-        where: {
-          id: blogId
-        }
-      });
+    await checkForExistence(blogId);
+    await Blog.destroy({
+      where: {
+        id: blogId
+      }
+    });
     return res.status(200).send();
-  } else {
-    return res.status(400).send("This blog does not exist")
-  }
   } catch (error) {
-    res.status(404).end()
+    next(error);
   }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const blogId = req.params.id;
-    const found = await Blog.findByPk(blogId);
-    const likes = req.body.likes;
-
-    if (found && likes){ 
-      await Blog.update({ likes }, {
-        where: {
-          id: blogId
-        }
-      });
+    const likes = req.body.likes; 
+    await checkForExistence(blogId); 
+    const updated = await Blog.update({ likes }, {
+      where: {
+        id: blogId
+      }
+    });
+    console.log(updated);
     return res.status(200).send();
-  }
   } catch (error) {
-    res.status(404).end();
+    next(error)
   }
 })
 
