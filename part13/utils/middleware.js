@@ -37,8 +37,8 @@ const checkNonexistence = async (val, col, model) => {
   } else {
     throw new Error ("This method only handles username checking, please expand it to check other columns if needed.")
   }
-
-  if (results !== null) {
+  console.log(results)
+  if (results.length > 0) {
     throw new Error("An entry with this value already exists!")
   }
 }
