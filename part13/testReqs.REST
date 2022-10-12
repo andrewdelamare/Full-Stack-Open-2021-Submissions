@@ -24,3 +24,28 @@ Content-Type: application/json
 {
     "likes": 2
 }
+
+###
+
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "name": "sample",
+    "username": "sampleusername3"
+}
+
+###
+
+PUT http://localhost:3001/api/users/sampleusername 
+Content-Type: application/json
+
+{
+    "username": "smample"
+}
+
+###
+
+GET http://localhost:3001/api/users
+
+###

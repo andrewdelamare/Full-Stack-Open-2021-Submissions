@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Blog } = require('../models');
-const { checkForExistence } = require("../utils/middleware")
+const { checkForPk } = require("../utils/middleware")
 
 router.get('/', async (req, res) => {
   const blogs = await Blog.findAll()
@@ -21,7 +21,7 @@ router.post('/', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   try {
     const blogId = req.params.id;
-    await checkForExistence(blogId);
+    await checkForPk(blogId, Blog);
     await Blog.destroy({
       where: {
         id: blogId
@@ -37,7 +37,7 @@ router.put('/:id', async (req, res, next) => {
   try {
     const blogId = req.params.id;
     const likes = req.body.likes; 
-    await checkForExistence(blogId); 
+    await checkForPk(blogId, Blog); 
     const updated = await Blog.update({ likes }, {
       where: {
         id: blogId
