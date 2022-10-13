@@ -4,6 +4,7 @@ GET http://localhost:3001/api/blogs
 
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZUBmYWtlLmNvbSIsImlkIjoxLCJpYXQiOjE2NjU2NDMzOTd9.TbHpBLNMsNxma6f-MUycet1WM_ZeVSEP8RC48dWiSXM
 
 {
     "author": "sample",
@@ -14,7 +15,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3001/api/blogs/7
+DELETE http://localhost:3001/api/blogs/6
 
 ###
 
@@ -32,7 +33,7 @@ Content-Type: application/json
 
 {
     "name": "sample",
-    "username": "sampleusername3@fake.com"
+    "username": "sample@fake.com"
 }
 
 ###
@@ -47,5 +48,15 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3001/api/users
+
+###
+
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "sample@fake.com",
+    "password": "secret"
+}
 
 ###
