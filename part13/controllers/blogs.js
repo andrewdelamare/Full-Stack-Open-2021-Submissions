@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Blog, User } = require('../models');
-const { checkForPk, tokenExtractor } = require("../utils/middleware")
+const { checkForPk, checkBlogCreator, tokenExtractor } = require("../utils/middleware")
 
 router.get('/', async (req, res) => {
   const blogs = await Blog.findAll()
@@ -19,15 +19,15 @@ router.post('/', tokenExtractor, async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', tokenExtractor, checkBlogCreator,  async (req, res, next) => {
   try {
     const blogId = req.params.id;
-    await checkForPk(blogId, Blog);
-    await Blog.destroy({
+    const success = await Blog.destroy({
       where: {
         id: blogId
       }
     });
+    console.log(success);
     return res.status(200).send();
   } catch (error) {
     next(error);
