@@ -7,10 +7,10 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZUBmYWtlLmNvbSIsImlkIjoxLCJpYXQiOjE2NjU2NDMzOTd9.TbHpBLNMsNxma6f-MUycet1WM_ZeVSEP8RC48dWiSXM
 
 {
-    "author": "new person",
+    "author": "new son",
     "url": "fakeurl.com",
     "title": "save this",
-    "likes": 2
+    "likes": 200
 }
 
 ###
@@ -65,6 +65,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3001/api/blogs?search=new
+GET http://localhost:3001/api/blogs?search=
 
 ###
