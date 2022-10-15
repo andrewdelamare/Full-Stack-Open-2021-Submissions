@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhb
 {
     "author": "sample",
     "url": "fakeurl.com",
-    "title": "fake title",
+    "title": "save this",
     "likes": 2
 }
 
@@ -62,5 +62,9 @@ Content-Type: application/json
     "username": "sample2@fake.com",
     "password": "secret"
 }
+
+###
+
+GET http://localhost:3001/api/blogs?search=save
 
 ###
