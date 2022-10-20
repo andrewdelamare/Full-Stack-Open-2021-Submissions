@@ -68,3 +68,7 @@ Content-Type: application/json
 GET http://localhost:3001/api/blogs?search=
 
 ###
+
+GET http://localhost:3001/api/authors
+
+###

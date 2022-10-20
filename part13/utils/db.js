@@ -1,12 +1,12 @@
-const { DATABASE_URL } = require('./config');
-const { Sequelize } = require('sequelize')
+const { DATABASE_URL } = require("./config");
+const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize(DATABASE_URL)
+const sequelize = new Sequelize(DATABASE_URL);
 
 const connectToDb = async () => {
   try {
-   sequelize.authenticate();
-   console.log("Connected to database");
+    sequelize.authenticate();
+    console.log("Connected to database");
   } catch (error) {
     console.log("Failed to connect to database");
     process.exit(1);
@@ -14,4 +14,4 @@ const connectToDb = async () => {
   return null;
 };
 
-module.exports = {sequelize, connectToDb};
+module.exports = { sequelize, connectToDb };
