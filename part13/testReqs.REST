@@ -4,28 +4,29 @@ GET http://localhost:3001/api/blogs
 
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZUBmYWtlLmNvbSIsImlkIjoxLCJpYXQiOjE2NjU2NDMzOTd9.TbHpBLNMsNxma6f-MUycet1WM_ZeVSEP8RC48dWiSXM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZUBmYWtlLmNvbSIsImlkIjoxLCJpYXQiOjE2NjY3ODk2MDl9.Fjid8Ny2p2fYDGJTkm7sm9qM-JWgVhHLBstnc1pnX2Q
 
 {
     "author": "new son",
     "url": "fakeurl.com",
     "title": "save this",
-    "likes": 200
+    "likes": 200,
+    "year": 2025
 }
 
 ###
 
 DELETE http://localhost:3001/api/blogs/14
 //sample 1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZUBmYWtlLmNvbSIsImlkIjoxLCJpYXQiOjE2NjU2NDMzOTd9.TbHpBLNMsNxma6f-MUycet1WM_ZeVSEP8RC48dWiSXM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZUBmYWtlLmNvbSIsImlkIjoxLCJpYXQiOjE2NjY3ODc2NTR9.9nkl3aMCwmNZqwLY4nLDTFuLw8adyynC0dTHn5f8xUA
 //sample 2 
-//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZTJAZmFrZS5jb20iLCJpZCI6MiwiaWF0IjoxNjY1NjQ3NTU1fQ.Q-8zsmFQcHVASgMGID1pYBurAUahbCxlOo48ngLMRrM
+//Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZUBmYWtlLmNvbSIsImlkIjoxLCJpYXQiOjE2NjY3ODc2NTR9.9nkl3aMCwmNZqwLY4nLDTFuLw8adyynC0dTHn5f8xUA
 
 ###
 
 PUT http://localhost:3001/api/blogs/5 
 Content-Type: application/json
-
+ 
 {
     "likes": 2
 }
@@ -36,8 +37,8 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "name": "sample2",
-    "username": "sample2@fake.com"
+    "name": "sample",
+    "username": "sample@fake.com"
 }
 
 ###
@@ -59,7 +60,7 @@ POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-    "username": "sample2@fake.com",
+    "username": "sample@fake.com",
     "password": "secret"
 }
 

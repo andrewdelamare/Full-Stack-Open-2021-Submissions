@@ -24,6 +24,9 @@ Blog.init(
       type: DataTypes.INTEGER,
       default: 0,
     },
+    year: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     sequelize,

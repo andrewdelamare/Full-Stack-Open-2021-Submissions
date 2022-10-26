@@ -35,6 +35,7 @@ const checkNonexistence = async (val, col, model) => {
   let results;
   if (col === "username") {
     results = await model.findAll({
+      attributes: ["username"],
       where: {
         username: val,
       },

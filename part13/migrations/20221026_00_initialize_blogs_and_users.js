@@ -24,6 +24,7 @@ module.exports = {
         default: 0,
       },
     });
+
     await queryInterface.createTable("users", {
       id: {
         type: DataTypes.INTEGER,
@@ -42,7 +43,14 @@ module.exports = {
           isEmail: true,
         },
       },
+      created_at: {
+        type: DataTypes.DATE,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+      },
     });
+
     await queryInterface.addColumn("blogs", "user_id", {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -50,7 +58,7 @@ module.exports = {
     });
   },
   down: async ({ context: queryInterface }) => {
-    await queryInterface.dropTable("notes");
+    await queryInterface.dropTable("blogs");
     await queryInterface.dropTable("users");
   },
 };
